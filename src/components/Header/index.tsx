@@ -11,7 +11,7 @@ export function Header() {
             Flow
           </Text>
         </Text>
-        <Flex direction="column" gap="4px" marginLeft="100px">
+        <Flex direction="column" gap="4px" marginLeft="9rem">
           <Text fontWeight="600" color="#2F2F2F">
             Bem vindo, Daniel
           </Text>
