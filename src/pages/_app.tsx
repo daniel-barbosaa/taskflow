@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import 'material-icons/iconfont/material-icons.css';
 import type { AppProps } from "next/app";
 import { ChakraProvider, theme } from '@chakra-ui/react'
 
