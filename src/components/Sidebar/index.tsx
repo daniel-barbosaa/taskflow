@@ -27,11 +27,11 @@ export function Sidebar() {
         gap="5px"
         fontWeight="400"
         color="#718096"
-        alignItems="center"
-        fontSize="20px"
+        fontSize="lg"
         href=""
+        
       >
-        <Text className="material-icons-outlined" color="#718096" w="24px">
+        <Text className="material-icons-outlined" color="#718096" w="24px"fontSize="lg">
         dashboard
         </Text>
         Dashboard
@@ -46,11 +46,10 @@ export function Sidebar() {
         gap="5px"
         fontWeight="400"
         color="#718096"
-        alignItems="center"
-        fontSize="20px"
+        fontSize="lg"
         href=""
       >
-        <Text className="material-icons-outlined" color="#718096" w="24px">
+        <Text className="material-icons-outlined" color="#718096" w="24px" fontSize="lg">
           rule_folder
         </Text>
         Projetos
@@ -66,11 +65,10 @@ export function Sidebar() {
         gap="5px"
         fontWeight="400"
         color="#718096"
-        alignItems="center"
-        fontSize="20px"
+        fontSize="lg"
         href=""
       >
-        <Text className="material-icons-outlined" color="#718096" w="24px">
+        <Text className="material-icons-outlined" color="#718096" w="24px"fontSize="lg">
           task
         </Text>
         Tarefas
