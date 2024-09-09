@@ -233,6 +233,9 @@ export default function Dashboard() {
           </Flex>
 
           <Box>
+            <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="10px">
+              Projetos recentes
+            </Text>
             <TableTasks />
           </Box>
           <SimpleGrid minChildWidth="400px" gap="2rem">

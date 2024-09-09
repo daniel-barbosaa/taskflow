@@ -13,7 +13,6 @@ export function Sidebar() {
       direction="column"
       padding="40px 30px"
       gap="30px"
-      h="870"
     >
       <Link
         sx={{
