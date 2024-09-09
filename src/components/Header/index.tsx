@@ -3,7 +3,7 @@ import Avatar from 'react-avatar';
 
 export function Header() {
   return (
-    <Flex w="100%"  as="header" padding="20px 30px" justify="space-between" bg="#ffffff" borderBottom="1px solid #CBD5E0">
+    <Flex w="100%"  as="header" padding="20px 30px" justify="space-between" >
       <Flex>
         <Text fontSize="2xl" fontWeight="bold">
           task

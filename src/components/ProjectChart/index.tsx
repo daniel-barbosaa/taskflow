@@ -1,13 +1,11 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from "recharts";
 
 const data = [
@@ -55,14 +53,20 @@ const data = [
   },
 ];
 
-export function ProjectChart() {
+export function ProjectChart({ prop = 'default value' }) {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+  setIsClient(true) 
+  })
+
   return (
-    <Box>
+    <Box as="section">
       <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="2rem">
         Tarefas por projeto
       </Text>
-      <Flex align="center">
-      <BarChart
+      <Flex as="div" align="center">
+        {isClient && <BarChart
           width={500}
           height={300}
           data={data}
@@ -74,11 +78,12 @@ export function ProjectChart() {
           }}
           barSize={20}
         >
-          <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
+          <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }}  />
           <YAxis />
           <Tooltip />
           <Bar dataKey="pv" fill="#3A84FF" background={{ fill: '#eee' }} />
-        </BarChart>
+        </BarChart>}
+      
       </Flex>
     </Box>
   );

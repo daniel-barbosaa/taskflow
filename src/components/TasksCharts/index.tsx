@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
 const data = [
@@ -9,13 +10,18 @@ const data = [
 const COLORS = ["#A461FF", "#38CB89", "#FFC658"];
 
 export function TasksCharts() {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  })
   return (
     <Box>
       <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="10px">
         Status das tarefas
       </Text>
       <Flex align="center">
-        <PieChart width={200} height={200}>
+        {isClient && <PieChart width={200} height={200}>
           <Pie
             cx={80}
             cy={100}
@@ -33,7 +39,8 @@ export function TasksCharts() {
               />
             ))}
           </Pie>
-        </PieChart>
+        </PieChart>}
+        
         <Flex direction="column" >
             <Flex align="center" justify="space-between">
                 <Flex align="center"gap="5px">

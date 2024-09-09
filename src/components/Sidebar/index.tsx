@@ -1,21 +1,19 @@
 import { Flex, Text, Link, LinkProps } from "@chakra-ui/react";
-import {usePathname} from 'next/navigation'
+import { usePathname } from "next/navigation";
 
 export function Sidebar() {
-    const path = usePathname()  
-    const isActive = false
+  const path = usePathname();
+  const isActive = false;
 
-    console.log(path)
+  console.log(path);
   return (
     <Flex
       as="aside"
-      bg="#ffffff"
       w="64"
       direction="column"
       padding="40px 30px"
       gap="30px"
       h="870"
-      borderRight="1px solid #CBD5E0"
     >
       <Link
         sx={{
@@ -29,10 +27,14 @@ export function Sidebar() {
         color="#718096"
         fontSize="lg"
         href=""
-        
       >
-        <Text className="material-icons-outlined" color="#718096" w="24px"fontSize="lg">
-        dashboard
+        <Text
+          className="material-icons-outlined"
+          color="#718096"
+          w="24px"
+          fontSize="lg"
+        >
+          dashboard
         </Text>
         Dashboard
       </Link>
@@ -49,7 +51,12 @@ export function Sidebar() {
         fontSize="lg"
         href=""
       >
-        <Text className="material-icons-outlined" color="#718096" w="24px" fontSize="lg">
+        <Text
+          className="material-icons-outlined"
+          color="#718096"
+          w="24px"
+          fontSize="lg"
+        >
           rule_folder
         </Text>
         Projetos
@@ -68,7 +75,12 @@ export function Sidebar() {
         fontSize="lg"
         href=""
       >
-        <Text className="material-icons-outlined" color="#718096" w="24px"fontSize="lg">
+        <Text
+          className="material-icons-outlined"
+          color="#718096"
+          w="24px"
+          fontSize="lg"
+        >
           task
         </Text>
         Tarefas
