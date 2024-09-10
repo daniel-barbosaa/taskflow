@@ -2,18 +2,18 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Flex,
-  Box,
   Text,
+  Button,
 } from "@chakra-ui/react";
+import { ActionPopover } from "../ActionsPopover";
+import { ActionPopoverTasks } from "../ActionsPopoverTasks";
 
-export function TableProjects() {
+export function TableTasks() {
   return (
     <TableContainer
       bg="#ffffff"
@@ -24,13 +24,40 @@ export function TableProjects() {
       <Table size="sm">
         <Thead>
           <Tr>
-            <Th>Projeto</Th>
-            <Th>Status</Th>
-            <Th isNumeric>Ultima atualização</Th>
+            <Th color="gray.500">Tarefa</Th>
+            <Th color="gray.500">Projeto</Th>
+            <Th color="gray.500">Status</Th>
+            <Th isNumeric color="gray.500">
+              Atualização
+            </Th>
+            <Th></Th>
           </Tr>
         </Thead>
         <Tbody color="gray.500">
-          <Tr>
+          <Tr cursor="pointer">
+            <Td>
+              <Text
+                sx={{
+                  position: "relative",
+                  overflow: "hidden",
+                  _after: {
+                    content: '""',
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    width: "100%",
+                    height: "3rem",
+                    bg: "linear-gradient( to right, transparent, white)",
+                  },
+                }}
+              >
+                {`Esta é uma frase longa, mas eu quero mostrar apenas parte dela.`.substring(
+                  0,
+                  35
+                )}
+                ...
+              </Text>
+            </Td>
             <Td>Ignews</Td>
             <Td>
               <Flex align="center" gap="5px">
@@ -54,8 +81,12 @@ export function TableProjects() {
               </Flex>
             </Td>
             <Td isNumeric>há 1 minuto</Td>
+            <Td isNumeric>
+              <ActionPopoverTasks />
+            </Td>
           </Tr>
           <Tr>
+            <Td>Remover bug</Td>
             <Td>Dahsgo.</Td>
             <Td>
               <Flex align="center" gap="5px">
@@ -79,8 +110,12 @@ export function TableProjects() {
               </Flex>
             </Td>
             <Td isNumeric>3 horas atrás</Td>
+            <Td isNumeric>
+              <ActionPopoverTasks />
+            </Td>
           </Tr>
           <Tr>
+            <Td>Nova tela</Td>
             <Td>MyFintech</Td>
             <Td>
               {" "}
@@ -101,10 +136,13 @@ export function TableProjects() {
                     update
                   </Text>
                 </Flex>
-                Em progresso
+                Em andamento
               </Flex>
             </Td>
             <Td isNumeric>ontem</Td>
+            <Td isNumeric>
+              <ActionPopoverTasks />
+            </Td>
           </Tr>
         </Tbody>
       </Table>

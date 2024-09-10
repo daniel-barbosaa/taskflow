@@ -1,7 +1,7 @@
 import { Header } from "@/src/components/Header";
 import { ProjectChart } from "@/src/components/ProjectChart";
 import { Sidebar } from "@/src/components/Sidebar";
-import { TableTasks } from "@/src/components/TableProjects";
+import { TableProjects } from "@/src/components/TableProjects";
 import { TasksCharts } from "@/src/components/TasksCharts";
 import {
   Flex,
@@ -236,7 +236,7 @@ export default function Dashboard() {
             <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="10px">
               Projetos recentes
             </Text>
-            <TableTasks />
+            <TableProjects />
           </Box>
           <SimpleGrid minChildWidth="400px" gap="2rem">
             <TasksCharts />
