@@ -16,12 +16,14 @@ import {
 } from "@chakra-ui/react";
 import { ActionPopover } from "@/src/components/ActionsPopover";
 import { ButtonAddNew } from "@/src/components/ButtonAddNew";
+import { ModalNewProject } from "@/src/components/ModalNewProject";
 
 export default function Dashboard() {
   return (
     <Flex direction="column" h="100vh" position="relative">
       <Header />
-      <ButtonAddNew>Adicionar projeto</ButtonAddNew>
+      
+      <ModalNewProject/>
       <Flex maxW={1280} mx="left">
         <Sidebar />
         <Flex

@@ -4,12 +4,13 @@ import { Sidebar } from "@/src/components/Sidebar";
 import { Flex, Box, Text } from "@chakra-ui/react";
 import { ButtonAddNew } from "@/src/components/ButtonAddNew";
 import { TableTasks } from "@/src/components/TableTasks";
+import { ModalNewTask } from "@/src/components/ModalNewTask";
 
 export default function Dashboard() {
   return (
     <Flex direction="column" h="100vh" position="relative">
       <Header />
-      <ButtonAddNew>Adicionar tarefas</ButtonAddNew>
+      <ModalNewTask/>
       <Flex maxW={1280} mx="left">
         <Sidebar />
         <Flex
