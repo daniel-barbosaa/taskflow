@@ -27,18 +27,17 @@ import { useModal } from "../../contexts/ModalControlProject";
 
 export function ModalNewTask() {
   const {isOpen, onClose, onOpen, setModalType, modalType} = useModal()
-  const [projectName, setProjectName] = useState("");
-  const [description, setDescription] = useState("");
+  const [task, setTask] = useState("");
+  const [project, setProject] = useState("");
   const [status, setStatus] = useState("");
-  const [sliderValue, setSliderValue] = useState(50);
+
 
   function HandleSubmitData(e: any) {
     e.preventDefault();
     console.log({
-      projectName,
-      description,
+      task,
+      project,
       status,
-      sliderValue,
     });
   }
 
@@ -62,11 +61,11 @@ export function ModalNewTask() {
           <form onSubmit={HandleSubmitData}>
             <ModalBody>
               <Stack mb="3">
-                <FormLabel>Nome</FormLabel>
-                <Input
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
-                  placeholder="Nome do projeto"
+                <FormLabel mb="0">Tarefa</FormLabel>
+                <Textarea
+                  value={task}
+                  onChange={(e) => setTask(e.target.value)}
+                  placeholder=""
                   sx={{
                     _focus: {
                       border: "1px solid #3A84FF",
@@ -76,21 +75,7 @@ export function ModalNewTask() {
                 />
               </Stack>
               <Stack mb="3">
-                <FormLabel>Descrição</FormLabel>
-                <Textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Nome do projeto"
-                  sx={{
-                    _focus: {
-                      border: "1px solid #3A84FF",
-                      outline: "none",
-                    },
-                  }}
-                />
-              </Stack>
-              <Stack>
-                <FormLabel>Status</FormLabel>
+                <FormLabel mb="0">Status</FormLabel>
                 <Select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
@@ -100,39 +85,18 @@ export function ModalNewTask() {
                   <option value="finalizado">Finalizado</option>
                 </Select>
               </Stack>
-
-              <Box p={4} pt={6}>
-                <FormLabel mb="8">Porcentagem do projeto</FormLabel>
-                <Slider
-                  aria-label="slider-ex-6"
-                  onChange={(val) => setSliderValue(val)}
+              <Stack>
+                <FormLabel mb="0">Projeto</FormLabel>
+                <Select
+                  value={project}
+                  onChange={(e) => setProject(e.target.value)}
                 >
-                  <SliderMark value={25} {...labelStyles}>
-                    25%
-                  </SliderMark>
-                  <SliderMark value={50} {...labelStyles}>
-                    50%
-                  </SliderMark>
-                  <SliderMark value={75} {...labelStyles}>
-                    75%
-                  </SliderMark>
-                  <SliderMark
-                    value={sliderValue}
-                    textAlign="center"
-                    bg="blue.500"
-                    color="white"
-                    mt="-10"
-                    ml="-5"
-                    w="12"
-                  >
-                    {sliderValue}%
-                  </SliderMark>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <SliderThumb />
-                </Slider>
-              </Box>
+                  <option value="ignews">IgNews</option>
+                  <option value="ignews">Dashgo.</option>
+                  <option value="ignews">WaiterApp</option>
+                </Select>
+              </Stack>
+
             </ModalBody>
 
             <ModalFooter>

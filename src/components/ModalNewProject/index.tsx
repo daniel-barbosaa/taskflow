@@ -62,7 +62,7 @@ export function ModalNewProject() {
           <form onSubmit={HandleSubmitData}>
             <ModalBody>
               <Stack mb="3">
-                <FormLabel>Nome</FormLabel>
+                <FormLabel mb="0">Nome</FormLabel>
                 <Input
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
@@ -76,7 +76,7 @@ export function ModalNewProject() {
                 />
               </Stack>
               <Stack mb="3">
-                <FormLabel>Descrição</FormLabel>
+                <FormLabel mb="0">Descrição</FormLabel>
                 <Textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -90,7 +90,7 @@ export function ModalNewProject() {
                 />
               </Stack>
               <Stack>
-                <FormLabel>Status</FormLabel>
+                <FormLabel mb="0">Status</FormLabel>
                 <Select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
