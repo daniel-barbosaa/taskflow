@@ -12,19 +12,18 @@ import {
   Button,
 } from "@chakra-ui/react";
 
+
 import { SignInButton } from "../components/SignInButton";
 import { SignInButtonGoogle } from "../components/SignInButtonGoogle";
 import Image from "next/image";
-import IllustrationImage from "../assets/illustration.png"
+import IllustrationImage from "../assets/illustration.png";
 import { useState } from "react";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Login() {
-  const [show, setShow] = useState(false)
-  const handleClick = () => setShow(!show)
-
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
 
   return (
     <Flex>
@@ -51,19 +50,41 @@ export default function Login() {
                 <FormLabel fontSize="md" color="gray.600" marginTop="1rem">
                   Senha
                 </FormLabel>
-                <InputGroup size='md'>
+                <InputGroup size="md">
                   <Input
-                    pr='4.5rem'
-                    type={show ? 'text' : 'password'}
-                    placeholder='Sua senha'
+                    pr="4.5rem"
+                    type={show ? "text" : "password"}
+                    placeholder="Sua senha"
                   />
-                  <InputRightElement width='4.5rem'>
-                    <Button h='1.75rem' size='sm' onClick={handleClick} bg="transparent" sx={{
-                      _hover: {
-                        bg: "transparent"
-                      }
-                    }}>
-                      {show ?  <Text className="material-icons-outlined" color="#718096" fontSize="16px">visibility_off</Text> : <Text className="material-icons-outlined" color="#718096" fontSize="16px">visibility</Text> }
+                  <InputRightElement width="4.5rem">
+                    <Button
+                      h="1.75rem"
+                      size="sm"
+                      onClick={handleClick}
+                      bg="transparent"
+                      sx={{
+                        _hover: {
+                          bg: "transparent",
+                        },
+                      }}
+                    >
+                      {show ? (
+                        <Text
+                          className="material-icons-outlined"
+                          color="#718096"
+                          fontSize="16px"
+                        >
+                          visibility_off
+                        </Text>
+                      ) : (
+                        <Text
+                          className="material-icons-outlined"
+                          color="#718096"
+                          fontSize="16px"
+                        >
+                          visibility
+                        </Text>
+                      )}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
@@ -75,14 +96,22 @@ export default function Login() {
         </Flex>
       </Flex>
       <Flex width="50%" justify="center">
-        <Flex align="center" >
+        <Flex align="center">
           <Box position="relative" marginBottom="6rem">
-           <Image src={IllustrationImage} alt="ilustração"/>
+            <Image src={IllustrationImage} alt="ilustração" />
           </Box>
-          <Box position="absolute" bottom="0" right="0" width="50%" h="50%" bg="transparent" backdropFilter="blur(10px)" opacity="0.8"></Box>
+          <Box
+            position="absolute"
+            bottom="0"
+            right="0"
+            width="50%"
+            h="50%"
+            bg="transparent"
+            backdropFilter="blur(10px)"
+            opacity="0.8"
+          ></Box>
         </Flex>
       </Flex>
-
     </Flex>
   );
 }

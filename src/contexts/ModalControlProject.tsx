@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 
-interface ModalContextType {
+interface ModalContextType  {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;

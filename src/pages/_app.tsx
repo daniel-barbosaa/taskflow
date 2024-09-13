@@ -3,6 +3,7 @@ import "material-icons/iconfont/material-icons.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider, theme } from "@chakra-ui/react";
 import { ModalProvider } from "../contexts/ModalControlProject";
+import "../services/firebase"
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

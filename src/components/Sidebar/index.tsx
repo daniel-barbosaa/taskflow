@@ -1,89 +1,90 @@
-import { Flex, Text, Link, LinkProps } from "@chakra-ui/react";
+import Dashboard from "@/src/pages/dashboard";
+import {
+  Flex,
+  Text,
+  Link as ChakraLink,
+  LinkProps,
+  Box,
+} from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
+import { ReactNode } from "react";
+import { ActiveLink } from "./ActiveLink";
 
-export function Sidebar() {
+interface sidebarProps {
+  children: ReactNode;
+  href: string;
+}
+
+export function Sidebar({ children, href }: sidebarProps) {
   const path = usePathname();
   const isActive = false;
 
   console.log(path);
   return (
-    <Flex
-      as="aside"
-      w="64"
-      direction="column"
-      padding="40px 30px"
-      gap="30px"
-    >
-      <Link
-        sx={{
-          _hover: {
-            textDecoration: "none",
-          },
-        }}
-        display="flex"
-        gap="5px"
-        fontWeight="400"
-        color="#718096"
-        fontSize="lg"
-        href=""
-      >
-        <Text
-          className="material-icons-outlined"
+    <Flex as="aside" w="64" direction="column" padding="40px 30px" gap="10px">
+      <ActiveLink href="/dashboard">
+        <Box
+          display="flex"
+          gap="5px"
+          fontWeight="400"
           color="#718096"
-          w="24px"
           fontSize="lg"
+          p="10px 30px 10px 10px"
+          borderRadius="6px"
+          sx={{
+            _hover: {
+              textDecoration: "none",
+            },
+          }}
         >
-          dashboard
-        </Text>
-        Dashboard
-      </Link>
-      <Link
-        sx={{
-          _hover: {
-            textDecoration: "none",
-          },
-        }}
-        display="flex"
-        gap="5px"
-        fontWeight="400"
-        color="#718096"
-        fontSize="lg"
-        href=""
-      >
-        <Text
-          className="material-icons-outlined"
+          <Text className="material-icons-outlined" w="24px" fontSize="lg">
+            dashboard
+          </Text>
+          Dashboard
+        </Box>
+      </ActiveLink>
+      <ActiveLink href="/projects">
+        <Box
+          display="flex"
+          gap="5px"
+          fontWeight="400"
           color="#718096"
-          w="24px"
           fontSize="lg"
+          p="10px 30px 10px 10px"
+          borderRadius="6px"
+          sx={{
+            _hover: {
+              textDecoration: "none",
+            },
+          }}
         >
-          rule_folder
-        </Text>
-        Projetos
-      </Link>
-
-      <Link
-        sx={{
-          _hover: {
-            textDecoration: "none",
-          },
-        }}
-        display="flex"
-        gap="5px"
-        fontWeight="400"
-        color="#718096"
-        fontSize="lg"
-        href=""
-      >
-        <Text
-          className="material-icons-outlined"
+          <Text className="material-icons-outlined" w="24px" fontSize="lg">
+            rule_folder
+          </Text>
+          Projetos
+        </Box>
+      </ActiveLink>
+      <ActiveLink href="/tasks">
+        <Box
+          display="flex"
+          gap="5px"
+          fontWeight="400"
           color="#718096"
-          w="24px"
           fontSize="lg"
+          p="10px 30px 10px 10px"
+          borderRadius="6px"
+          sx={{
+            _hover: {
+              textDecoration: "none",
+            },
+          }}
         >
-          task
-        </Text>
-        Tarefas
-      </Link>
+          <Text className="material-icons-outlined" w="24px" fontSize="lg">
+            task
+          </Text>
+          Tarefas
+        </Box>
+      </ActiveLink>
     </Flex>
   );
 }
