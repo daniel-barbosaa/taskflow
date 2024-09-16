@@ -12,18 +12,36 @@ import {
   Heading,
   Text,
   Progress,
-  Button,
 } from "@chakra-ui/react";
 import { ActionPopover } from "@/src/components/ActionsPopover";
-import { ButtonAddNew } from "@/src/components/ButtonAddNew";
 import { ModalNewProject } from "@/src/components/ModalNewProject";
 
-export default function Dashboard() {
+import { getAllProjectsById } from "@/src/services/projectService";
+
+import { GetServerSideProps } from "next";
+
+
+interface Project {
+  id: string,
+  name: string,
+  description: string,
+  progress: string,
+  status: string,
+  createdAt: string,
+  updatedAt: string,
+}
+interface ProjectsProps {
+  projects: Project[]
+}
+
+export default function Dashboard({ projects }: ProjectsProps) {
+  console.log(projects);
+
   return (
     <Flex direction="column" h="100vh" position="relative">
       <Header />
-      
-      <ModalNewProject/>
+
+      <ModalNewProject />
       <Flex maxW={1280} mx="left">
         <Sidebar />
         <Flex
@@ -154,18 +172,18 @@ export default function Dashboard() {
               borderRadius="8px"
               shadow="0 1px 4px 0 #00000013"
               overflow="visible"
-            //   sx={{
-            //     transition: "transform 0.3s ease-in-out",
-            //    _hover: {
-            //       cursor: 'pointer',
-            //       transform: "scale(1.02)",
-            //    }
-            //  }}
+              //   sx={{
+              //     transition: "transform 0.3s ease-in-out",
+              //    _hover: {
+              //       cursor: 'pointer',
+              //       transform: "scale(1.02)",
+              //    }
+              //  }}
             >
               <Box position="absolute" right="4">
-                <ActionPopover/>
+                <ActionPopover />
               </Box>
-              
+
               <Flex align="center" justify="space-between">
                 <Text
                   bg="#38cb898f"
@@ -659,3 +677,22 @@ export default function Dashboard() {
     </Flex>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const projects = await getAllProjectsById("rFJ6ijVTQQPSjZshkPAh");
+    console.log("Fetched projects:", projects); // Adicione este console.log
+    return {
+      props: {
+        projects,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+    return {
+      props: {
+        projects: [],
+      },
+    };
+  }
+};

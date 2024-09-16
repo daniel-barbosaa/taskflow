@@ -10,14 +10,9 @@ import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import { ActiveLink } from "./ActiveLink";
 
-interface sidebarProps {
-  children: ReactNode;
-  href: string;
-}
 
-export function Sidebar({ children, href }: sidebarProps) {
+export function Sidebar() {
   const path = usePathname();
-  const isActive = false;
 
   console.log(path);
   return (
