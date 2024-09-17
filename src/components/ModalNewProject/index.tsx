@@ -8,39 +8,58 @@ import {
   ModalCloseButton,
   Button,
   Input,
-  useDisclosure,
   Stack,
   Textarea,
   Select,
   FormLabel,
-  FormControl,
   SliderTrack,
   SliderMark,
   Slider,
   Box,
   SliderFilledTrack,
   SliderThumb,
+  Text,
 } from "@chakra-ui/react";
 import { ButtonAddNew } from "../ButtonAddNew";
 import { useState } from "react";
 import { useModal } from "../../contexts/ModalControlProject";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { addNewProject } from "../../services/projectService";
+
+interface Inputs {
+  name: string;
+  description: string;
+  status: string;
+  progress: number;
+}
 
 export function ModalNewProject() {
-  const {isOpen, onClose, onOpen, setModalType, modalType} = useModal()
-  const [projectName, setProjectName] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
+  const { isOpen, onClose, onOpen, setModalType, modalType } = useModal();
   const [sliderValue, setSliderValue] = useState(50);
 
-  function HandleSubmitData(e: any) {
-    e.preventDefault();
-    console.log({
-      projectName,
-      description,
-      status,
-      sliderValue,
-    });
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const projectData = {
+      ...data,
+      progress: sliderValue,
+    };
+
+    try {
+      if (modalType === "add") {
+        await addNewProject("rFJ6ijVTQQPSjZshkPAh", projectData);
+        onClose();
+        reset();
+      }
+    } catch (error) {
+      console.log("there was one error", error);
+    }
+  };
 
   const labelStyles = {
     mt: "2",
@@ -50,22 +69,28 @@ export function ModalNewProject() {
 
   return (
     <>
-      <ButtonAddNew onOpen={() => {
-        onOpen()
-        setModalType('')
-      }}>Novo projeto</ButtonAddNew>
+      <ButtonAddNew
+        onOpen={() => {
+          onOpen();
+          setModalType("add");
+        }}
+      >
+        Novo projeto
+      </ButtonAddNew>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color="gray.700">{modalType == "edit" ? "Atualizar Projeto" : 'Novo projeto'}</ModalHeader>
+          <ModalHeader color="gray.700">
+            {modalType == "edit" ? "Atualizar Projeto" : "Novo projeto"}
+          </ModalHeader>
           <ModalCloseButton />
-          <form onSubmit={HandleSubmitData}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
               <Stack mb="3">
                 <FormLabel mb="0">Nome</FormLabel>
                 <Input
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
+                  {...register("name", { required: true })}
+                  maxLength={20}
                   placeholder="Nome do projeto"
                   sx={{
                     _focus: {
@@ -74,12 +99,16 @@ export function ModalNewProject() {
                     },
                   }}
                 />
+                {errors.name && (
+                  <Text fontSize="sm" color="#FF6B6B">
+                    Seu projeto precisa de um nome
+                  </Text>
+                )}
               </Stack>
               <Stack mb="3">
                 <FormLabel mb="0">Descrição</FormLabel>
                 <Textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  {...register("description", { required: true })}
                   placeholder="Nome do projeto"
                   sx={{
                     _focus: {
@@ -88,17 +117,20 @@ export function ModalNewProject() {
                     },
                   }}
                 />
+                {errors.description && (
+                  <Text fontSize="sm" color="#FF6B6B">
+                    Adicione uma descrição
+                  </Text>
+                )}
               </Stack>
               <Stack>
                 <FormLabel mb="0">Status</FormLabel>
-                <Select
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                >
+                <Select {...register("status", { required: true })}>
                   <option value="em progresso">Em progresso</option>
                   <option value="na fila">Na fila</option>
                   <option value="finalizado">Finalizado</option>
                 </Select>
+                {errors.status && <Text>Error</Text>}
               </Stack>
 
               <Box p={4} pt={6}>
@@ -140,7 +172,9 @@ export function ModalNewProject() {
                 Cancelar
               </Button>
               <Button type="submit" colorScheme="blue">
-                {modalType === 'edit' ? 'Atualizar projeto' : 'Adicionar projeto'}
+                {modalType === "edit"
+                  ? "Atualizar projeto"
+                  : "Adicionar projeto"}
               </Button>
             </ModalFooter>
           </form>

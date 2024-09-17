@@ -20,18 +20,17 @@ import { getAllProjectsById } from "@/src/services/projectService";
 
 import { GetServerSideProps } from "next";
 
-
 interface Project {
-  id: string,
-  name: string,
-  description: string,
-  progress: string,
-  status: string,
-  createdAt: string,
-  updatedAt: string,
+  id: string;
+  name: string;
+  description: string;
+  progress: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
 }
 interface ProjectsProps {
-  projects: Project[]
+  projects: Project[];
 }
 
 export default function Dashboard({ projects }: ProjectsProps) {
@@ -678,17 +677,15 @@ export default function Dashboard({ projects }: ProjectsProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => { 
   try {
     const projects = await getAllProjectsById("rFJ6ijVTQQPSjZshkPAh");
-    console.log("Fetched projects:", projects); // Adicione este console.log
     return {
       props: {
         projects,
       },
     };
   } catch (error) {
-    console.error("Error in getServerSideProps:", error);
     return {
       props: {
         projects: [],

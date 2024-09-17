@@ -1,16 +1,15 @@
 import { db } from "./firebase";
-import { collection, getDocs, doc, getDoc, QuerySnapshot } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, QuerySnapshot, addDoc, serverTimestamp} from 'firebase/firestore';
 
 interface Project {
     id: string,
     name: string,
     description: string,
-    progress: string,
+    progress: number,
     status: string,
-    createdAt: string,
-    updatedAt: string,
+    createdAt?: any,
+    updatedAt?: any,
 }
-
 export async function getAllProjectsById(userId: string): Promise<Project[]>  {
 
     try {
@@ -27,7 +26,6 @@ export async function getAllProjectsById(userId: string): Promise<Project[]>  {
                 status: data.status || 'unknown',
                 createdAt: data.createdAt ? data.createdAt.toDate().toISOString() : new Date().toISOString(),
                 updatedAt: data.updatedAt ? data.updatedAt.toDate().toISOString() : new Date().toISOString()
-
             }
         })
 
@@ -35,5 +33,24 @@ export async function getAllProjectsById(userId: string): Promise<Project[]>  {
     } catch(error) {
         console.log(error)
         throw new Error()
+    }
+}
+
+export async function addNewProject(userId: string, projectData: any) {
+    try {
+        const projectsCollection = collection(db, `users/${userId}/projects`)
+        
+        const project = {
+            name: projectData.name,
+            description: projectData.description,
+            progress: projectData.progress,
+            status: projectData.status,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+        }
+        
+        await addDoc(projectsCollection, project)
+    }catch(error){
+        console.log("Error to the add project", error)
     }
 }
