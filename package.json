@@ -17,6 +17,7 @@
     "firebase": "^10.9.0",
     "framer-motion": "^11.3.31",
     "material-icons": "^1.13.12",
+    "moment": "^2.30.1",
     "next": "14.2.7",
     "prop-types": "^15.8.1",
     "react": "^18",

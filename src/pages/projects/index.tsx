@@ -4,6 +4,8 @@ import Image from "next/image";
 import Time from "../../assets/Time.png";
 import Check from "../../assets/Done.png";
 import FileImg from "../../assets/file.png";
+import moment from 'moment';
+import 'moment/locale/pt-br';
 
 import {
   Flex,
@@ -34,8 +36,6 @@ interface ProjectsProps {
 }
 
 export default function Dashboard({ projects }: ProjectsProps) {
-  console.log(projects);
-
   return (
     <Flex direction="column" h="100vh" position="relative">
       <Header />
@@ -163,513 +163,121 @@ export default function Dashboard({ projects }: ProjectsProps) {
             </Flex>
           </SimpleGrid>
           <SimpleGrid minChildWidth="300px" gap="10px">
-            <Box
-              maxW={270}
-              bg="#ffffff"
-              position="relative"
-              p="15px"
-              borderRadius="8px"
-              shadow="0 1px 4px 0 #00000013"
-              overflow="visible"
-              //   sx={{
-              //     transition: "transform 0.3s ease-in-out",
-              //    _hover: {
-              //       cursor: 'pointer',
-              //       transform: "scale(1.02)",
-              //    }
-              //  }}
-            >
-              <Box position="absolute" right="4">
-                <ActionPopover />
-              </Box>
-
-              <Flex align="center" justify="space-between">
-                <Text
-                  bg="#38cb898f"
-                  fontSize="xs"
-                  p="3px 7px"
-                  borderRadius="8px"
-                  color="#249261"
-                >
-                  Finalizado
-                </Text>
-              </Flex>
-              <Text fontSize="lg" fontWeight="500" mt="10px">
-                WaterApp
-              </Text>
-              <Text
-                noOfLines={3}
-                color="gray.600"
-                fontSize="xs"
-                mt="10px"
-                sx={{
-                  position: "relative",
-                  overflow: "hidden",
-                  _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    width: "100%",
-                    height: "3rem",
-                    bg: "linear-gradient( to bottom, transparent, white)",
-                  },
-                }}
+            {projects.map((project) => (
+              <Box
+                maxW={270}
+                bg="#ffffff"
+                position="relative"
+                p="15px"
+                borderRadius="8px"
+                shadow="0 1px 4px 0 #00000013"
+                overflow="visible"
+                //   sx={{
+                //     transition: "transform 0.3s ease-in-out",
+                //    _hover: {
+                //       cursor: 'pointer',
+                //       transform: "scale(1.02)",
+                //    }
+                //  }}
               >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Corporis, eius eligendi velit distinctio obcaecati molestias cum
-                ipsam odio veniam saepe totam ipsum ipsa reiciendis quae
-                expedita nemo, debitis architecto! Eum?
-              </Text>
-              <Box mt="20px">
-                <Flex justify="space-between">
-                  <Text fontSize="sm" fontWeight="600" color="gray.500">
-                    Progresso
-                  </Text>
-                  <Text
-                    textAlign="right"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color="gray"
-                    mt="5px"
-                  >
-                    100%
-                  </Text>
-                </Flex>
+                <Box position="absolute" right="4">
+                  <ActionPopover />
+                </Box>
 
-                <Progress
-                  value={100}
-                  size="xs"
-                  colorScheme="gray"
-                  mt="5px"
-                  borderRadius="8px"
-                />
-              </Box>
-
-              <Flex justify="flex-end" mt="20px">
-                <Flex align="center" color="gray.500" gap="5px">
-                  <Text fontSize="sm" className="material-symbols-outlined">
-                    calendar_month
-                  </Text>
-                  <Text fontSize="sm">jul 20</Text>
+                <Flex align="center" justify="space-between">
+                  {project.status === "finalizado" && (
+                    <Text
+                      bg="#38cb898f"
+                      fontSize="xs"
+                      p="3px 7px"
+                      borderRadius="8px"
+                      color="#249261"
+                    >
+                      Finalizado
+                    </Text>
+                  )}
+                  {project.status === "na fila" && (
+                    <Text
+                      bg="#ffc75860"
+                      fontSize="xs"
+                      p="3px 7px"
+                      borderRadius="8px"
+                      color="#fab833"
+                    >
+                      Na fila
+                    </Text>
+                  )}
+                  {project.status === "em progresso" && (
+                    <Text
+                      bg="#a361ff83"
+                      fontSize="xs"
+                      p="3px 7px"
+                      borderRadius="8px"
+                      color="#944cf8"
+                    >
+                      Em andamento
+                    </Text>
+                  )}
                 </Flex>
-              </Flex>
-            </Box>
-            <Box
-              maxW={270}
-              bg="#ffffff"
-              position="relative"
-              p="15px"
-              borderRadius="8px"
-              shadow="0 1px 4px 0 #00000013"
-            >
-              <Flex align="center" justify="space-between">
+                <Text fontSize="lg" fontWeight="500" mt="10px">
+                  {project.name}
+                </Text>
                 <Text
-                  bg="#ffc75860"
+                  noOfLines={3}
+                  color="gray.600"
                   fontSize="xs"
-                  p="3px 7px"
-                  borderRadius="8px"
-                  color="#fab833"
+                  mt="10px"
+                  sx={{
+                    position: "relative",
+                    overflow: "hidden",
+                    _after: {
+                      content: '""',
+                      position: "absolute",
+                      bottom: 0,
+                      right: 0,
+                      width: "100%",
+                      height: "3rem",
+                      bg: "linear-gradient( to bottom, transparent, white)",
+                    },
+                  }}
                 >
-                  Na fila
+                  {project.description}
                 </Text>
-                <Text color="gray.500" className="material-symbols-outlined">
-                  more_horiz
-                </Text>
-              </Flex>
-              <Text fontSize="lg" fontWeight="500" mt="10px">
-                Dashgo.
-              </Text>
-              <Text
-                noOfLines={3}
-                color="gray.600"
-                fontSize="xs"
-                mt="10px"
-                sx={{
-                  position: "relative",
-                  overflow: "hidden",
-                  _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    width: "100%",
-                    height: "3rem",
-                    bg: "linear-gradient( to bottom, transparent, white)",
-                  },
-                }}
-              >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Corporis, eius eligendi velit distinctio obcaecati molestias cum
-                ipsam odio veniam saepe totam ipsum ipsa reiciendis quae
-                expedita nemo, debitis architecto! Eum?
-              </Text>
-              <Box mt="20px">
-                <Flex justify="space-between">
-                  <Text fontSize="sm" fontWeight="600" color="gray.500">
-                    Progresso
-                  </Text>
-                  <Text
-                    textAlign="right"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color="gray"
+                <Box mt="20px">
+                  <Flex justify="space-between">
+                    <Text fontSize="sm" fontWeight="600" color="gray.500">
+                      Progresso
+                    </Text>
+                    <Text
+                      textAlign="right"
+                      fontSize="sm"
+                      fontWeight="bold"
+                      color="gray"
+                      mt="5px"
+                    >
+                      {`${project.progress}%`}
+                    </Text>
+                  </Flex>
+
+                  <Progress
+                    value={Number(project.progress)}
+                    size="xs"
+                    colorScheme="gray"
                     mt="5px"
-                  >
-                    75%
-                  </Text>
-                </Flex>
+                    borderRadius="8px"
+                  />
+                </Box>
 
-                <Progress
-                  value={75}
-                  size="xs"
-                  colorScheme="gray"
-                  mt="5px"
-                  borderRadius="8px"
-                />
+                <Flex justify="flex-end" mt="20px">
+                  <Flex align="center" color="gray.500" gap="5px">
+                    <Text fontSize="sm" className="material-symbols-outlined">
+                      calendar_month
+                    </Text>
+                    <Text fontSize="sm">{moment(project.createdAt).locale('pt-br').format('D MMM')}</Text>
+                  </Flex>
+                </Flex>
               </Box>
-
-              <Flex justify="flex-end" mt="20px">
-                <Flex align="center" color="gray.500" gap="5px">
-                  <Text fontSize="sm" className="material-symbols-outlined">
-                    calendar_month
-                  </Text>
-                  <Text fontSize="sm">ago 2</Text>
-                </Flex>
-              </Flex>
-            </Box>
-            <Box
-              maxW={270}
-              bg="#ffffff"
-              position="relative"
-              p="15px"
-              borderRadius="8px"
-              shadow="0 1px 4px 0 #00000013"
-            >
-              <Flex align="center" justify="space-between">
-                <Text
-                  bg="#a361ff83"
-                  fontSize="xs"
-                  p="3px 7px"
-                  borderRadius="8px"
-                  color="#944cf8"
-                >
-                  Em andamento
-                </Text>
-                <Text color="gray.500" className="material-symbols-outlined">
-                  more_horiz
-                </Text>
-              </Flex>
-              <Text fontSize="lg" fontWeight="500" mt="10px">
-                Ignews
-              </Text>
-              <Text
-                noOfLines={3}
-                color="gray.600"
-                fontSize="xs"
-                mt="10px"
-                sx={{
-                  position: "relative",
-                  overflow: "hidden",
-                  _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    width: "100%",
-                    height: "3rem",
-                    bg: "linear-gradient( to bottom, transparent, white)",
-                  },
-                }}
-              >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Corporis, eius eligendi velit distinctio obcaecati molestias cum
-                ipsam odio veniam saepe totam ipsum ipsa reiciendis quae
-                expedita nemo, debitis architecto! Eum?
-              </Text>
-              <Box mt="20px">
-                <Flex justify="space-between">
-                  <Text fontSize="sm" fontWeight="600" color="gray.500">
-                    Progresso
-                  </Text>
-                  <Text
-                    textAlign="right"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color="gray"
-                    mt="5px"
-                  >
-                    23%
-                  </Text>
-                </Flex>
-
-                <Progress
-                  value={23}
-                  size="xs"
-                  colorScheme="gray"
-                  mt="5px"
-                  borderRadius="8px"
-                />
-              </Box>
-
-              <Flex justify="flex-end" mt="20px">
-                <Flex align="center" color="gray.500" gap="5px">
-                  <Text fontSize="sm" className="material-symbols-outlined">
-                    calendar_month
-                  </Text>
-                  <Text fontSize="sm">jul 20</Text>
-                </Flex>
-              </Flex>
-            </Box>
-            <Box
-              maxW={270}
-              bg="#ffffff"
-              position="relative"
-              p="15px"
-              borderRadius="8px"
-              shadow="0 1px 4px 0 #00000013"
-            >
-              <Flex align="center" justify="space-between">
-                <Text
-                  bg="#a361ff83"
-                  fontSize="xs"
-                  p="3px 7px"
-                  borderRadius="8px"
-                  color="#944cf8"
-                >
-                  Em andamento
-                </Text>
-                <Text color="gray.500" className="material-symbols-outlined">
-                  more_horiz
-                </Text>
-              </Flex>
-              <Text fontSize="lg" fontWeight="500" mt="10px">
-                Ignews
-              </Text>
-              <Text
-                noOfLines={3}
-                color="gray.600"
-                fontSize="xs"
-                mt="10px"
-                sx={{
-                  position: "relative",
-                  overflow: "hidden",
-                  _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    width: "100%",
-                    height: "3rem",
-                    bg: "linear-gradient( to bottom, transparent, white)",
-                  },
-                }}
-              >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Corporis, eius eligendi velit distinctio obcaecati molestias cum
-                ipsam odio veniam saepe totam ipsum ipsa reiciendis quae
-                expedita nemo, debitis architecto! Eum?
-              </Text>
-              <Box mt="20px">
-                <Flex justify="space-between">
-                  <Text fontSize="sm" fontWeight="600" color="gray.500">
-                    Progresso
-                  </Text>
-                  <Text
-                    textAlign="right"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color="gray"
-                    mt="5px"
-                  >
-                    23%
-                  </Text>
-                </Flex>
-
-                <Progress
-                  value={23}
-                  size="xs"
-                  colorScheme="gray"
-                  mt="5px"
-                  borderRadius="8px"
-                />
-              </Box>
-
-              <Flex justify="flex-end" mt="20px">
-                <Flex align="center" color="gray.500" gap="5px">
-                  <Text fontSize="sm" className="material-symbols-outlined">
-                    calendar_month
-                  </Text>
-                  <Text fontSize="sm">jul 20</Text>
-                </Flex>
-              </Flex>
-            </Box>
-            <Box
-              maxW={270}
-              bg="#ffffff"
-              position="relative"
-              p="15px"
-              borderRadius="8px"
-              shadow="0 1px 4px 0 #00000013"
-            >
-              <Flex align="center" justify="space-between">
-                <Text
-                  bg="#a361ff83"
-                  fontSize="xs"
-                  p="3px 7px"
-                  borderRadius="8px"
-                  color="#944cf8"
-                >
-                  Em andamento
-                </Text>
-                <Text color="gray.500" className="material-symbols-outlined">
-                  more_horiz
-                </Text>
-              </Flex>
-              <Text fontSize="lg" fontWeight="500" mt="10px">
-                Ignews
-              </Text>
-              <Text
-                noOfLines={3}
-                color="gray.600"
-                fontSize="xs"
-                mt="10px"
-                sx={{
-                  position: "relative",
-                  overflow: "hidden",
-                  _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    width: "100%",
-                    height: "3rem",
-                    bg: "linear-gradient( to bottom, transparent, white)",
-                  },
-                }}
-              >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Corporis, eius eligendi velit distinctio obcaecati molestias cum
-                ipsam odio veniam saepe totam ipsum ipsa reiciendis quae
-                expedita nemo, debitis architecto! Eum?
-              </Text>
-              <Box mt="20px">
-                <Flex justify="space-between">
-                  <Text fontSize="sm" fontWeight="600" color="gray.500">
-                    Progresso
-                  </Text>
-                  <Text
-                    textAlign="right"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color="gray"
-                    mt="5px"
-                  >
-                    23%
-                  </Text>
-                </Flex>
-
-                <Progress
-                  value={23}
-                  size="xs"
-                  colorScheme="gray"
-                  mt="5px"
-                  borderRadius="8px"
-                />
-              </Box>
-
-              <Flex justify="flex-end" mt="20px">
-                <Flex align="center" color="gray.500" gap="5px">
-                  <Text fontSize="sm" className="material-symbols-outlined">
-                    calendar_month
-                  </Text>
-                  <Text fontSize="sm">jul 20</Text>
-                </Flex>
-              </Flex>
-            </Box>
-            <Box
-              maxW={270}
-              bg="#ffffff"
-              position="relative"
-              p="15px"
-              borderRadius="8px"
-              shadow="0 1px 4px 0 #00000013"
-            >
-              <Flex align="center" justify="space-between">
-                <Text
-                  bg="#38cb898f"
-                  fontSize="xs"
-                  p="3px 7px"
-                  borderRadius="8px"
-                  color="#249261"
-                >
-                  Finalizado
-                </Text>
-                <Text color="gray.500" className="material-symbols-outlined">
-                  more_horiz
-                </Text>
-              </Flex>
-              <Text fontSize="lg" fontWeight="500" mt="10px">
-                WaterApp
-              </Text>
-              <Text
-                noOfLines={3}
-                color="gray.600"
-                fontSize="xs"
-                mt="10px"
-                sx={{
-                  position: "relative",
-                  overflow: "hidden",
-                  _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    width: "100%",
-                    height: "3rem",
-                    bg: "linear-gradient( to bottom, transparent, white)",
-                  },
-                }}
-              >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Corporis, eius eligendi velit distinctio obcaecati molestias cum
-                ipsam odio veniam saepe totam ipsum ipsa reiciendis quae
-                expedita nemo, debitis architecto! Eum?
-              </Text>
-              <Box mt="20px">
-                <Flex justify="space-between">
-                  <Text fontSize="sm" fontWeight="600" color="gray.500">
-                    Progresso
-                  </Text>
-                  <Text
-                    textAlign="right"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color="gray"
-                    mt="5px"
-                  >
-                    100%
-                  </Text>
-                </Flex>
-
-                <Progress
-                  value={100}
-                  size="xs"
-                  colorScheme="gray"
-                  mt="5px"
-                  borderRadius="8px"
-                />
-              </Box>
-
-              <Flex justify="flex-end" mt="20px">
-                <Flex align="center" color="gray.500" gap="5px">
-                  <Text fontSize="sm" className="material-symbols-outlined">
-                    calendar_month
-                  </Text>
-                  <Text fontSize="sm">jul 20</Text>
-                </Flex>
-              </Flex>
-            </Box>
+            ))}
           </SimpleGrid>
         </Flex>
       </Flex>
@@ -677,7 +285,7 @@ export default function Dashboard({ projects }: ProjectsProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => { 
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const projects = await getAllProjectsById("rFJ6ijVTQQPSjZshkPAh");
     return {

@@ -25,6 +25,7 @@ import { useState } from "react";
 import { useModal } from "../../contexts/ModalControlProject";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { addNewProject } from "../../services/projectService";
+import { useToast } from "@chakra-ui/react";
 
 interface Inputs {
   name: string;
@@ -36,6 +37,7 @@ interface Inputs {
 export function ModalNewProject() {
   const { isOpen, onClose, onOpen, setModalType, modalType } = useModal();
   const [sliderValue, setSliderValue] = useState(50);
+  const toast = useToast();
 
   const {
     register,
@@ -51,13 +53,23 @@ export function ModalNewProject() {
     };
 
     try {
+
       if (modalType === "add") {
         await addNewProject("rFJ6ijVTQQPSjZshkPAh", projectData);
         onClose();
         reset();
+        toast({
+          title: "Projeto criado!",
+          status: "success",
+        });
+        return
       }
+      throw new Error();
     } catch (error) {
-      console.log("there was one error", error);
+      toast({
+        title: "Houve um ao criar projeto, tente novamente!",
+        status: "error",
+      });
     }
   };
 
