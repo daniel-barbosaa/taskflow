@@ -2,25 +2,25 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
   Button,
   Text,
   Box,
   Flex,
 } from "@chakra-ui/react";
 import { useModal } from "../../contexts/ModalControlProject";
+import {useManagementProject} from '../../contexts/ManagementOfProject'
 
-interface ActionPopoverProps {
-  buttonText: string;
+interface ActionsPopoverProps {
+  projectId: string
 }
 
-export function ActionPopover() {
+
+export function ActionPopover({projectId}: ActionsPopoverProps) {
   const { onOpen, setModalType } = useModal();
+  const {setProjectId} = useManagementProject()
   return (
     <Box sx={{ transform: "none" }}>
       <Popover placement="right">
@@ -55,6 +55,7 @@ export function ActionPopover() {
               <Button bg="none" w="80%" color="gray.600" onClick={() => {
                 onOpen()
                 setModalType('edit')
+                setProjectId(projectId)
               }}>
                 Editar
               </Button>

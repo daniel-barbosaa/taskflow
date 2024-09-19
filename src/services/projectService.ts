@@ -1,12 +1,11 @@
 import { db } from "./firebase";
 import {
   collection,
-  getDocs,
-  doc,
-  getDoc,
-  QuerySnapshot,
+  onSnapshot,
   addDoc,
   serverTimestamp,
+  updateDoc,
+  doc,
 } from "firebase/firestore";
 
 interface Project {
@@ -18,29 +17,42 @@ interface Project {
   createdAt?: any;
   updatedAt?: any;
 }
-export async function getAllProjectsById(userId: string): Promise<Project[]> {
+interface UpdatedProject {
+  name: string;
+  description: string;
+  status: string;
+  progress: number;
+}
+export function getAllProjectsByIdOfUser(
+  userId: string,
+  callback: (projects: Project[]) => void
+) {
   try {
     const projectsCollection = collection(db, `users/${userId}/projects`);
-    const querySnapshot = await getDocs(projectsCollection);
+    const projectsInRealTime = onSnapshot(
+      projectsCollection,
+      (querySnapshot) => {
+        const projects: Project[] = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            name: data.name || "",
+            description: data.description || "",
+            progress: data.progress || "0%",
+            status: data.status || "unknown",
+            createdAt: data.createdAt
+              ? data.createdAt.toDate().toISOString()
+              : new Date().toISOString(),
+            updatedAt: data.updatedAt
+              ? data.updatedAt.toDate().toISOString()
+              : new Date().toISOString(),
+          };
+        });
+        callback(projects);
+      }
+    );
 
-    const projects: Project[] = querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        name: data.name || "",
-        description: data.description || "",
-        progress: data.progress || "0%",
-        status: data.status || "unknown",
-        createdAt: data.createdAt
-          ? data.createdAt.toDate().toISOString()
-          : new Date().toISOString(),
-        updatedAt: data.updatedAt
-          ? data.updatedAt.toDate().toISOString()
-          : new Date().toISOString(),
-      };
-    });
-
-    return projects;
+    return projectsInRealTime;
   } catch (error) {
     console.log(error);
     throw new Error();
@@ -49,9 +61,8 @@ export async function getAllProjectsById(userId: string): Promise<Project[]> {
 
 export async function addNewProject(userId: string, projectData: any) {
   try {
-
-    if(!userId || userId === "" || userId === null){
-        throw new Error();
+    if (!userId || userId === "" || userId === null) {
+      throw new Error();
     }
 
     const projectsCollection = collection(db, `users/${userId}/projects`);
@@ -68,4 +79,24 @@ export async function addNewProject(userId: string, projectData: any) {
     console.log("Error to the add project", error);
     return;
   }
+}
+
+export async function updatedProject(
+  userId: string,
+  projectId: string,
+  projectData: UpdatedProject
+) {
+  try {
+    const projectCollection = doc(db, `users/${userId}/projects`, projectId);
+
+    const project = {
+      name: projectData.name,
+      description: projectData.description,
+      progress: projectData.progress,
+      status: projectData.status,
+      updatedAt: serverTimestamp(),
+    };
+
+    await updateDoc(projectCollection, project);
+  } catch (error) {}
 }

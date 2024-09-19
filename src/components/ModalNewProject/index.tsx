@@ -24,8 +24,9 @@ import { ButtonAddNew } from "../ButtonAddNew";
 import { useState } from "react";
 import { useModal } from "../../contexts/ModalControlProject";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { addNewProject } from "../../services/projectService";
+import { addNewProject, updatedProject } from "../../services/projectService";
 import { useToast } from "@chakra-ui/react";
+import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 
 interface Inputs {
   name: string;
@@ -36,6 +37,7 @@ interface Inputs {
 
 export function ModalNewProject() {
   const { isOpen, onClose, onOpen, setModalType, modalType } = useModal();
+  const {projectId} = useManagementProject()
   const [sliderValue, setSliderValue] = useState(50);
   const toast = useToast();
 
@@ -61,6 +63,15 @@ export function ModalNewProject() {
         toast({
           title: "Projeto criado!",
           status: "success",
+        });
+        return
+      }else if (modalType === "edit") {
+        await updatedProject("rFJ6ijVTQQPSjZshkPAh", projectId,projectData )
+        onClose();
+        reset();
+        toast({
+          title: "Projeto atualizado!",
+          status: "info",
         });
         return
       }

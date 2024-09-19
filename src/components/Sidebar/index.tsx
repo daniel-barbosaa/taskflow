@@ -13,8 +13,6 @@ import { ActiveLink } from "./ActiveLink";
 
 export function Sidebar() {
   const path = usePathname();
-
-  console.log(path);
   return (
     <Flex as="aside" w="64" direction="column" padding="40px 30px" gap="10px">
       <ActiveLink href="/dashboard">

@@ -4,9 +4,9 @@ import Image from "next/image";
 import Time from "../../assets/Time.png";
 import Check from "../../assets/Done.png";
 import FileImg from "../../assets/file.png";
-import moment from 'moment';
-import 'moment/locale/pt-br';
-
+import moment from "moment";
+import "moment/locale/pt-br";
+import { getAllProjectsByIdOfUser } from "@/src/services/projectService";
 import {
   Flex,
   SimpleGrid,
@@ -17,29 +17,49 @@ import {
 } from "@chakra-ui/react";
 import { ActionPopover } from "@/src/components/ActionsPopover";
 import { ModalNewProject } from "@/src/components/ModalNewProject";
-
-import { getAllProjectsById } from "@/src/services/projectService";
-
-import { GetServerSideProps } from "next";
+import { useEffect, useState } from "react";
 
 interface Project {
   id: string;
   name: string;
   description: string;
-  progress: string;
+  progress: number;
   status: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: any;
+  updatedAt?: any;
 }
-interface ProjectsProps {
-  projects: Project[];
-}
+export default function Dashboard() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const userId = "rFJ6ijVTQQPSjZshkPAh";
+  useEffect(() => {
+    getAllProjectsByIdOfUser(userId, (projects) => {
+      setProjects(projects);
+    });
+  }, [userId]);
 
-export default function Dashboard({ projects }: ProjectsProps) {
+  const totalProjects = projects.length;
+
+  let projectInLine = [];
+  let projectInProgress = [];
+  let projectFinished = [];
+
+  projects.forEach((project) => {
+    switch (project.status) {
+      case "na fila":
+        projectInLine.push(project);
+        break;
+      case "em progresso":
+        projectInProgress.push(project);
+        break;
+      case "finalizado":
+        projectFinished.push(project);
+        break;
+    }
+  });
+
   return (
     <Flex direction="column" h="100vh" position="relative">
       <Header />
-
       <ModalNewProject />
       <Flex maxW={1280} mx="left">
         <Sidebar />
@@ -66,7 +86,7 @@ export default function Dashboard({ projects }: ProjectsProps) {
                 color="gray.500"
                 fontWeight="bold"
               >
-                10
+                {totalProjects}
               </Text>
             </Flex>
           </Flex>
@@ -97,8 +117,10 @@ export default function Dashboard({ projects }: ProjectsProps) {
                 borderRadius="3px"
                 color="gray.500"
                 fontWeight="bold"
+                width={5}
+                align="center"
               >
-                10
+                {projectInProgress.length}
               </Text>
             </Flex>
             <Flex
@@ -127,8 +149,10 @@ export default function Dashboard({ projects }: ProjectsProps) {
                 borderRadius="3px"
                 color="gray.500"
                 fontWeight="bold"
+                width={5}
+                align="center"
               >
-                10
+                {projectInLine.length}
               </Text>
             </Flex>
             <Flex
@@ -157,14 +181,17 @@ export default function Dashboard({ projects }: ProjectsProps) {
                 borderRadius="3px"
                 color="gray.500"
                 fontWeight="bold"
+                width={5}
+                align="center"
               >
-                10
+                {projectFinished.length}
               </Text>
             </Flex>
           </SimpleGrid>
           <SimpleGrid minChildWidth="300px" gap="10px">
             {projects.map((project) => (
               <Box
+                key={project.id}
                 maxW={270}
                 bg="#ffffff"
                 position="relative"
@@ -181,7 +208,7 @@ export default function Dashboard({ projects }: ProjectsProps) {
                 //  }}
               >
                 <Box position="absolute" right="4">
-                  <ActionPopover />
+                  <ActionPopover projectId={project.id} />
                 </Box>
 
                 <Flex align="center" justify="space-between">
@@ -273,7 +300,11 @@ export default function Dashboard({ projects }: ProjectsProps) {
                     <Text fontSize="sm" className="material-symbols-outlined">
                       calendar_month
                     </Text>
-                    <Text fontSize="sm">{moment(project.createdAt).locale('pt-br').format('D MMM')}</Text>
+                    <Text fontSize="sm">
+                      {moment(project.createdAt)
+                        .locale("pt-br")
+                        .format("D MMM")}
+                    </Text>
                   </Flex>
                 </Flex>
               </Box>
@@ -284,20 +315,3 @@ export default function Dashboard({ projects }: ProjectsProps) {
     </Flex>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  try {
-    const projects = await getAllProjectsById("rFJ6ijVTQQPSjZshkPAh");
-    return {
-      props: {
-        projects,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        projects: [],
-      },
-    };
-  }
-};
