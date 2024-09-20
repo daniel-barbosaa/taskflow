@@ -12,13 +12,15 @@ import {
 } from "@chakra-ui/react";
 import { useModal } from "../../contexts/ModalControlProject";
 import {useManagementProject} from '../../contexts/ManagementOfProject'
+import {AlertOfDeleteProject} from '../AlertOfDeleteProject'
 
-interface ActionsPopoverProps {
-  projectId: string
+
+interface ActionPopoverProps {
+  projectId: string,
 }
 
 
-export function ActionPopover({projectId}: ActionsPopoverProps) {
+export function ActionPopover({projectId}: ActionPopoverProps) {
   const { onOpen, setModalType } = useModal();
   const {setProjectId} = useManagementProject()
   return (
@@ -69,6 +71,11 @@ export function ActionPopover({projectId}: ActionsPopoverProps) {
                     bg: "red.300",
                     color: "#ffffff",
                   },
+                }}
+                onClick={()=> {
+                  onOpen()
+                  setModalType('delete')
+                  setProjectId(projectId)
                 }}
               >
                 Excluir

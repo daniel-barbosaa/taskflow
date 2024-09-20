@@ -18,6 +18,8 @@ import {
 import { ActionPopover } from "@/src/components/ActionsPopover";
 import { ModalNewProject } from "@/src/components/ModalNewProject";
 import { useEffect, useState } from "react";
+import { useModal } from "@/src/contexts/ModalControlProject";
+import { AlertOfDeleteProject } from "@/src/components/AlertOfDeleteProject";
 
 interface Project {
   id: string;
@@ -29,8 +31,11 @@ interface Project {
   updatedAt?: any;
 }
 export default function Dashboard() {
+  const { modalType } = useModal();
   const [projects, setProjects] = useState<Project[]>([]);
+  // Passar esse id dinamico
   const userId = "rFJ6ijVTQQPSjZshkPAh";
+
   useEffect(() => {
     getAllProjectsByIdOfUser(userId, (projects) => {
       setProjects(projects);
@@ -61,6 +66,7 @@ export default function Dashboard() {
     <Flex direction="column" h="100vh" position="relative">
       <Header />
       <ModalNewProject />
+      {modalType === "delete" && <AlertOfDeleteProject/>}
       <Flex maxW={1280} mx="left">
         <Sidebar />
         <Flex

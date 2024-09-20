@@ -12,12 +12,8 @@ import {
 } from "@chakra-ui/react";
 import { useModal } from "../../contexts/ModalControlProject";
 
-interface ActionPopoverProps {
-  buttonText: string;
-}
-
 export function ActionPopoverTasks() {
-  const {onOpen, setModalType, modalType} = useModal()
+  const {onOpen, setModalType} = useModal()
   return (
     <Box sx={{ transform: "none" }}>
       <Popover placement="right">
@@ -62,7 +58,9 @@ export function ActionPopoverTasks() {
                   bg: 'red.300',
                   color: '#ffffff',
                 }
-              }}>
+              }}
+             
+              >
                   Excluir
               </Button>
             </Flex>

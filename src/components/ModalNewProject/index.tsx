@@ -19,6 +19,7 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import { ButtonAddNew } from "../ButtonAddNew";
 import { useState } from "react";
@@ -35,9 +36,12 @@ interface Inputs {
   progress: number;
 }
 
+// Adicionar função de exluir projeto
+
 export function ModalNewProject() {
+  const [loading, setLoading] = useState(false);
   const { isOpen, onClose, onOpen, setModalType, modalType } = useModal();
-  const {projectId} = useManagementProject()
+  const { projectId } = useManagementProject();
   const [sliderValue, setSliderValue] = useState(50);
   const toast = useToast();
 
@@ -54,34 +58,39 @@ export function ModalNewProject() {
       progress: sliderValue,
     };
 
-    try {
+    setLoading(true);
 
-      if (modalType === "add") {
-        await addNewProject("rFJ6ijVTQQPSjZshkPAh", projectData);
-        onClose();
-        reset();
+    setTimeout(async () => {
+      try {
+        if (modalType === "add") {
+          await addNewProject("rFJ6ijVTQQPSjZshkPAh", projectData);
+          onClose();
+          reset();
+          toast({
+            title: "Projeto criado!",
+            status: "success",
+          });
+          setLoading(false);
+          return;
+        } else if (modalType === "edit") {
+          await updatedProject("rFJ6ijVTQQPSjZshkPAh", projectId, projectData);
+          onClose();
+          reset();
+          toast({
+            title: "Projeto atualizado!",
+            status: "info",
+          });
+          setLoading(false);
+          return;
+        }
+        throw new Error();
+      } catch (error) {
         toast({
-          title: "Projeto criado!",
-          status: "success",
+          title: "Houve um ao criar projeto, tente novamente!",
+          status: "error",
         });
-        return
-      }else if (modalType === "edit") {
-        await updatedProject("rFJ6ijVTQQPSjZshkPAh", projectId,projectData )
-        onClose();
-        reset();
-        toast({
-          title: "Projeto atualizado!",
-          status: "info",
-        });
-        return
       }
-      throw new Error();
-    } catch (error) {
-      toast({
-        title: "Houve um ao criar projeto, tente novamente!",
-        status: "error",
-      });
-    }
+    }, 2000);
   };
 
   const labelStyles = {
@@ -100,109 +109,117 @@ export function ModalNewProject() {
       >
         Novo projeto
       </ButtonAddNew>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color="gray.700">
-            {modalType == "edit" ? "Atualizar Projeto" : "Novo projeto"}
-          </ModalHeader>
-          <ModalCloseButton />
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <ModalBody>
-              <Stack mb="3">
-                <FormLabel mb="0">Nome</FormLabel>
-                <Input
-                  {...register("name", { required: true })}
-                  maxLength={20}
-                  placeholder="Nome do projeto"
-                  sx={{
-                    _focus: {
-                      border: "1px solid #3A84FF",
-                      outline: "none",
-                    },
-                  }}
-                />
-                {errors.name && (
-                  <Text fontSize="sm" color="#FF6B6B">
-                    Seu projeto precisa de um nome
-                  </Text>
-                )}
-              </Stack>
-              <Stack mb="3">
-                <FormLabel mb="0">Descrição</FormLabel>
-                <Textarea
-                  {...register("description", { required: true })}
-                  placeholder="Nome do projeto"
-                  sx={{
-                    _focus: {
-                      border: "1px solid #3A84FF",
-                      outline: "none",
-                    },
-                  }}
-                />
-                {errors.description && (
-                  <Text fontSize="sm" color="#FF6B6B">
-                    Adicione uma descrição
-                  </Text>
-                )}
-              </Stack>
-              <Stack>
-                <FormLabel mb="0">Status</FormLabel>
-                <Select {...register("status", { required: true })}>
-                  <option value="em progresso">Em progresso</option>
-                  <option value="na fila">Na fila</option>
-                  <option value="finalizado">Finalizado</option>
-                </Select>
-                {errors.status && <Text>Error</Text>}
-              </Stack>
+      {modalType !== "delete" && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader color="gray.700">
+              {modalType == "edit" ? "Atualizar Projeto" : "Novo projeto"}
+            </ModalHeader>
+            <ModalCloseButton />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <ModalBody>
+                <Stack mb="3">
+                  <FormLabel mb="0">Nome</FormLabel>
+                  <Input
+                    {...register("name", { required: true })}
+                    maxLength={20}
+                    placeholder="Nome do projeto"
+                    sx={{
+                      _focus: {
+                        border: "1px solid #3A84FF",
+                        outline: "none",
+                      },
+                    }}
+                  />
+                  {errors.name && (
+                    <Text fontSize="sm" color="#FF6B6B">
+                      Seu projeto precisa de um nome
+                    </Text>
+                  )}
+                </Stack>
+                <Stack mb="3">
+                  <FormLabel mb="0">Descrição</FormLabel>
+                  <Textarea
+                    {...register("description", { required: true })}
+                    placeholder="Nome do projeto"
+                    sx={{
+                      _focus: {
+                        border: "1px solid #3A84FF",
+                        outline: "none",
+                      },
+                    }}
+                  />
+                  {errors.description && (
+                    <Text fontSize="sm" color="#FF6B6B">
+                      Adicione uma descrição
+                    </Text>
+                  )}
+                </Stack>
+                <Stack>
+                  <FormLabel mb="0">Status</FormLabel>
+                  <Select {...register("status", { required: true })}>
+                    <option value="em progresso">Em progresso</option>
+                    <option value="na fila">Na fila</option>
+                    <option value="finalizado">Finalizado</option>
+                  </Select>
+                  {errors.status && <Text>Error</Text>}
+                </Stack>
 
-              <Box p={4} pt={6}>
-                <FormLabel mb="8">Porcentagem do projeto</FormLabel>
-                <Slider
-                  aria-label="slider-ex-6"
-                  onChange={(val) => setSliderValue(val)}
-                >
-                  <SliderMark value={25} {...labelStyles}>
-                    25%
-                  </SliderMark>
-                  <SliderMark value={50} {...labelStyles}>
-                    50%
-                  </SliderMark>
-                  <SliderMark value={75} {...labelStyles}>
-                    75%
-                  </SliderMark>
-                  <SliderMark
-                    value={sliderValue}
-                    textAlign="center"
-                    bg="blue.500"
-                    color="white"
-                    mt="-10"
-                    ml="-5"
-                    w="12"
+                <Box p={4} pt={6}>
+                  <FormLabel mb="8">Porcentagem do projeto</FormLabel>
+                  <Slider
+                    aria-label="slider-ex-6"
+                    onChange={(val) => setSliderValue(val)}
                   >
-                    {sliderValue}%
-                  </SliderMark>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <SliderThumb />
-                </Slider>
-              </Box>
-            </ModalBody>
+                    <SliderMark value={25} {...labelStyles}>
+                      25%
+                    </SliderMark>
+                    <SliderMark value={50} {...labelStyles}>
+                      50%
+                    </SliderMark>
+                    <SliderMark value={75} {...labelStyles}>
+                      75%
+                    </SliderMark>
+                    <SliderMark
+                      value={sliderValue}
+                      textAlign="center"
+                      bg="blue.500"
+                      color="white"
+                      mt="-10"
+                      ml="-5"
+                      w="12"
+                    >
+                      {sliderValue}%
+                    </SliderMark>
+                    <SliderTrack>
+                      <SliderFilledTrack />
+                    </SliderTrack>
+                    <SliderThumb />
+                  </Slider>
+                </Box>
+              </ModalBody>
 
-            <ModalFooter>
-              <Button mr={3} onClick={onClose}>
-                Cancelar
-              </Button>
-              <Button type="submit" colorScheme="blue">
-                {modalType === "edit"
-                  ? "Atualizar projeto"
-                  : "Adicionar projeto"}
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
+              <ModalFooter>
+                <Button mr={3} onClick={onClose}>
+                  Cancelar
+                </Button>
+                <Button type="submit" colorScheme="blue" w="50%">
+                  {loading ? (
+                    <Spinner color="white" size="md" />
+                  ) : (
+                    <Text>
+                      {modalType === "edit"
+                        ? "Atualizar projeto"
+                        : "Adicionar projeto"}
+                    </Text>
+                  )}
+                </Button>
+              </ModalFooter>
+            </form>
+          </ModalContent>
+        </Modal>
+      )}
     </>
   );
 }

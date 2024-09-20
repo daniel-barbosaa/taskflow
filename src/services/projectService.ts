@@ -6,6 +6,7 @@ import {
   serverTimestamp,
   updateDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
 
 interface Project {
@@ -98,5 +99,16 @@ export async function updatedProject(
     };
 
     await updateDoc(projectCollection, project);
-  } catch (error) {}
+  } catch (error) {
+    console.log("Erro ao atualizar projeto", error);
+  }
+}
+
+export async function deleteProject(userId: string, projectId: string) {
+  try {
+    const projectCollection = doc(db, `users/${userId}/projects`, projectId);
+    await deleteDoc(projectCollection);
+  } catch (error) {
+    console.log("Erro ao excluir  projeto", error);
+  }
 }
