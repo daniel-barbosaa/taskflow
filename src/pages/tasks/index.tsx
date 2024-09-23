@@ -5,8 +5,13 @@ import { Flex, Box, Text } from "@chakra-ui/react";
 import { ButtonAddNew } from "@/src/components/ButtonAddNew";
 import { TableTasks } from "@/src/components/TableTasks";
 import { ModalNewTask } from "@/src/components/ModalNewTask";
+import { useEffect, useState } from "react";
+import { getAllTasksByIdOfUser } from "@/src/services/projectService";
+
 
 export default function Dashboard() {
+  
+
   return (
     <Flex direction="column" h="100vh" position="relative">
       <Header />

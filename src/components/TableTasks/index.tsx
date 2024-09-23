@@ -8,12 +8,35 @@ import {
   TableContainer,
   Flex,
   Text,
-  Button,
 } from "@chakra-ui/react";
-import { ActionPopover } from "../ActionsPopover";
 import { ActionPopoverTasks } from "../ActionsPopoverTasks";
+import { useEffect, useState } from "react";
+import { getAllTasksByIdOfUser } from "@/src/services/projectService";
+import moment from "moment";
+import "moment/locale/pt-br"; 
+
+moment.locale("pt-br"); 
+
+interface Task {
+  id: string;
+  taskName: string;
+  status: string;
+  projectName: string;
+  projectId: string;
+  createdAt?: any;
+  updatedAt?: any;
+}
 
 export function TableTasks() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const userId = "rFJ6ijVTQQPSjZshkPAh";
+
+  useEffect(() => {
+    getAllTasksByIdOfUser(userId, (projects) => {
+      setTasks(projects);
+    });
+  }, [userId]);
+
   return (
     <TableContainer
       bg="#ffffff"
@@ -34,116 +57,78 @@ export function TableTasks() {
           </Tr>
         </Thead>
         <Tbody color="gray.500">
-          <Tr cursor="pointer">
-            <Td>
-              <Text
-                sx={{
-                  position: "relative",
-                  overflow: "hidden",
-                  _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    width: "100%",
-                    height: "3rem",
-                    bg: "linear-gradient( to right, transparent, white)",
-                  },
-                }}
-              >
-                {`Esta é uma frase longa, mas eu quero mostrar apenas parte dela.`.substring(
-                  0,
-                  35
-                )}
-                ...
-              </Text>
-            </Td>
-            <Td>Ignews</Td>
-            <Td>
-              <Flex align="center" gap="5px">
-                <Flex
-                  bg="#38cb898f"
-                  borderRadius="50%"
-                  p="2px"
-                  align="center"
-                  justify="center"
-                  border="1px solid #38cb892d"
+          {tasks.map((task) => (
+            <Tr cursor="pointer" key={task.id}>
+              <Td>
+                <Text
+                  sx={{
+                    position: "relative",
+                    overflow: "hidden",
+                    _after: {
+                      content: '""',
+                      position: "absolute",
+                      bottom: 0,
+                      right: 0,
+                      width: "100%",
+                      height: "3rem",
+                      bg: "linear-gradient( to right, transparent, white)",
+                    },
+                  }}
                 >
-                  <Text
-                    className="material-symbols-outlined"
-                    fontSize="sm"
-                    color="#38CB89"
+                  {`${task.taskName}`.substring(0, 35)}
+                  ...
+                </Text>
+              </Td>
+              <Td>{task.projectName}</Td>
+              <Td>
+                <Flex align="center" gap="5px">
+                  <Flex
+                    bg={
+                      task.status === "finalizado"
+                        ? "#38cb898f"
+                        : task.status === "na fila"
+                        ? "#ffc75860"
+                        : "#a361ff83"
+                    }
+                    borderRadius="50%"
+                    p="2px"
+                    align="center"
+                    justify="center"
+                    border={
+                      task.status === "finalizado"
+                        ? "1px solid #38cb892d"
+                        : task.status === "na fila"
+                        ? "1px solid #ffc75826"
+                        : "1px solid #a361ff1f"
+                    }
                   >
-                    check
-                  </Text>
+                    <Text
+                      className="material-symbols-outlined"
+                      fontSize="sm"
+                      color={
+                        task.status === "finalizado"
+                          ? "#38CB89"
+                          : task.status === "na fila"
+                          ? "#ffc758"
+                          : "#A461FF"
+                      }
+                    >
+                      check
+                    </Text>
+                  </Flex>
+                  {task.status === "finalizado"
+                    ? "Finalizado"
+                    : task.status === "na fila"
+                    ? "Na fila"
+                    : "Em progresso"}
                 </Flex>
-                Finalizado
-              </Flex>
-            </Td>
-            <Td isNumeric>há 1 minuto</Td>
-            <Td isNumeric>
-              <ActionPopoverTasks />
-            </Td>
-          </Tr>
-          <Tr>
-            <Td>Remover bug</Td>
-            <Td>Dahsgo.</Td>
-            <Td>
-              <Flex align="center" gap="5px">
-                <Flex
-                  bg="#ffc75860"
-                  borderRadius="50%"
-                  p="2px"
-                  align="center"
-                  justify="center"
-                  border="1px solid #ffc75826"
-                >
-                  <Text
-                    className="material-symbols-outlined"
-                    fontSize="sm"
-                    color="#ffc758"
-                  >
-                    draft
-                  </Text>
-                </Flex>
-                Na fila
-              </Flex>
-            </Td>
-            <Td isNumeric>3 horas atrás</Td>
-            <Td isNumeric>
-              <ActionPopoverTasks />
-            </Td>
-          </Tr>
-          <Tr>
-            <Td>Nova tela</Td>
-            <Td>MyFintech</Td>
-            <Td>
-              {" "}
-              <Flex align="center" gap="5px">
-                <Flex
-                  bg="#a361ff83"
-                  borderRadius="50%"
-                  p="2px"
-                  align="center"
-                  justify="center"
-                  border="1px solid #a361ff1f"
-                >
-                  <Text
-                    className="material-symbols-outlined"
-                    fontSize="sm"
-                    color="#A461FF"
-                  >
-                    update
-                  </Text>
-                </Flex>
-                Em andamento
-              </Flex>
-            </Td>
-            <Td isNumeric>ontem</Td>
-            <Td isNumeric>
-              <ActionPopoverTasks />
-            </Td>
-          </Tr>
+              </Td>
+              <Td isNumeric>{moment(task.updatedAt).fromNow()}</Td>
+              <Td isNumeric>
+                <ActionPopoverTasks />
+              </Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

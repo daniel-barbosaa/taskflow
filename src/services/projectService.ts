@@ -24,6 +24,24 @@ interface UpdatedProject {
   status: string;
   progress: number;
 }
+
+interface TaskData {
+  taskName: string;
+  status: string;
+  projectName: string;
+  projectId: string;
+}
+
+interface Task {
+  id: string;
+  taskName: string;
+  status: string;
+  projectName: string;
+  projectId: string;
+  createdAt?: any;
+  updatedAt?: any;
+}
+
 export function getAllProjectsByIdOfUser(
   userId: string,
   callback: (projects: Project[]) => void
@@ -110,5 +128,63 @@ export async function deleteProject(userId: string, projectId: string) {
     await deleteDoc(projectCollection);
   } catch (error) {
     console.log("Erro ao excluir  projeto", error);
+  }
+}
+
+export function getAllTasksByIdOfUser(
+  userId: string,
+  callback: (tasks: Task[]) => void
+) {
+  try {
+    const projectsCollection = collection(db, `users/${userId}/tasks`);
+    const projectsInRealTime = onSnapshot(
+      projectsCollection,
+      (querySnapshot) => {
+        const tasks: Task[] = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            taskName: data.taskName || "",
+            status: data.status || "unknown",
+            projectName: data.projectName || "",
+            projectId: data.projectId || "",
+            createdAt: data.createdAt
+              ? data.createdAt.toDate().toISOString()
+              : new Date().toISOString(),
+            updatedAt: data.updatedAt
+              ? data.updatedAt.toDate().toISOString()
+              : new Date().toISOString(),
+          };
+        });
+        callback(tasks);
+      }
+    );
+    return projectsInRealTime;
+
+  } catch (error) {
+    console.log(error);
+    throw new Error();
+  }
+}
+
+export async function addNewTask(userId: string, taskData: TaskData) {
+  try {
+    if (!userId || userId === "" || userId === null) {
+      throw new Error();
+    }
+    const tasksCollection = collection(db, `users/${userId}/tasks`);
+    const task = {
+      taskName: taskData.taskName,
+      status: taskData.status,
+      projectName: taskData.projectName,
+      projectId: taskData.projectId,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    await addDoc(tasksCollection, task);
+  } catch (error) {
+    console.log("Error to the add task", error);
+    return;
   }
 }
