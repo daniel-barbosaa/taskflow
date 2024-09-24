@@ -134,70 +134,72 @@ export function ModalNewTask() {
       >
         Nova tarefa
       </ButtonAddNew>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color="gray.700">
-            {modalType == "edit" ? "Editar tarefa" : "Nova tarefa"}
-          </ModalHeader>
-          <ModalCloseButton />
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <ModalBody>
-              <Stack mb="3">
-                <FormLabel mb="0">Tarefa</FormLabel>
-                <Textarea
-                  {...register("taskName", { required: true })}
-                  placeholder=""
-                  sx={{
-                    _focus: {
-                      border: "1px solid #3A84FF",
-                      outline: "none",
-                    },
-                  }}
-                />
-              </Stack>
-              <Stack mb="3">
-                <FormLabel mb="0">Status</FormLabel>
-                <Select {...register("status", { required: true })}>
-                  <option value="em progresso">Em progresso</option>
-                  <option value="na fila">Na fila</option>
-                  <option value="finalizado">Finalizado</option>
-                </Select>
-              </Stack>
-              <Stack>
-                <FormLabel mb="0">Projeto</FormLabel>
-                <Select
-                  {...register("projectName", { required: true })}
-                  onChange={handlePrjectSelect}
-                >
-                  {projects.map((project) => (
-                    <option key={project.id} value={project.id}>
-                      {project.name}
-                    </option>
-                  ))}
-                </Select>
-              </Stack>
-            </ModalBody>
+      {modalType !== "delete" && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader color="gray.700">
+              {modalType == "edit" ? "Editar tarefa" : "Nova tarefa"}
+            </ModalHeader>
+            <ModalCloseButton />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <ModalBody>
+                <Stack mb="3">
+                  <FormLabel mb="0">Tarefa</FormLabel>
+                  <Textarea
+                    {...register("taskName", { required: true })}
+                    placeholder=""
+                    sx={{
+                      _focus: {
+                        border: "1px solid #3A84FF",
+                        outline: "none",
+                      },
+                    }}
+                  />
+                </Stack>
+                <Stack mb="3">
+                  <FormLabel mb="0">Status</FormLabel>
+                  <Select {...register("status", { required: true })}>
+                    <option value="em progresso">Em progresso</option>
+                    <option value="na fila">Na fila</option>
+                    <option value="finalizado">Finalizado</option>
+                  </Select>
+                </Stack>
+                <Stack>
+                  <FormLabel mb="0">Projeto</FormLabel>
+                  <Select
+                    {...register("projectName", { required: true })}
+                    onChange={handlePrjectSelect}
+                  >
+                    {projects.map((project) => (
+                      <option key={project.id} value={project.id}>
+                        {project.name}
+                      </option>
+                    ))}
+                  </Select>
+                </Stack>
+              </ModalBody>
 
-            <ModalFooter>
-              <Button mr={3} onClick={onClose}>
-                Cancelar
-              </Button>
-              <Button type="submit" colorScheme="blue" w="50%">
-                {loading ? (
-                  <Spinner color="white" size="md" />
-                ) : (
-                  <Text>
-                    {modalType === "edit"
-                      ? "Atualizar tarefa"
-                      : "Adicionar tarefa"}
-                  </Text>
-                )}
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
+              <ModalFooter>
+                <Button mr={3} onClick={onClose}>
+                  Cancelar
+                </Button>
+                <Button type="submit" colorScheme="blue" w="50%">
+                  {loading ? (
+                    <Spinner color="white" size="md" />
+                  ) : (
+                    <Text>
+                      {modalType === "edit"
+                        ? "Atualizar tarefa"
+                        : "Adicionar tarefa"}
+                    </Text>
+                  )}
+                </Button>
+              </ModalFooter>
+            </form>
+          </ModalContent>
+        </Modal>
+      )}
     </>
   );
 }

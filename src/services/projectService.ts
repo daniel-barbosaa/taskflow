@@ -41,7 +41,7 @@ interface Task {
   createdAt?: any;
   updatedAt?: any;
 }
-
+// Services for projects
 export function getAllProjectsByIdOfUser(
   userId: string,
   callback: (projects: Project[]) => void
@@ -130,7 +130,7 @@ export async function deleteProject(userId: string, projectId: string) {
     console.log("Erro ao excluir  projeto", error);
   }
 }
-
+// Services for tasks
 export function getAllTasksByIdOfUser(
   userId: string,
   callback: (tasks: Task[]) => void
@@ -189,14 +189,13 @@ export async function addNewTask(userId: string, taskData: TaskData) {
   }
 }
 
-
 export async function updatedTask(
   userId: string,
   taskId: string,
   taskData: TaskData
 ) {
   try {
-    const projectCollection = doc(db, `users/${userId}/tasks`, taskId);
+    const taskCollection = doc(db, `users/${userId}/tasks`, taskId);
 
     const task = {
       taskName: taskData.taskName,
@@ -207,8 +206,17 @@ export async function updatedTask(
     };
 
 
-    await updateDoc(projectCollection, task);
+    await updateDoc(taskCollection, task);
   } catch (error) {
     console.log("Erro ao atualizar tarefa", error);
+  }
+}
+
+export async function deleteTask(userId: string, taskId: string) {
+  try {
+    const taskCollection = doc(db, `users/${userId}/tasks`, taskId);
+    await deleteDoc(taskCollection);
+  } catch (error) {
+    console.log("Erro ao excluir tarefa", error);
   }
 }

@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { useModal } from "../../contexts/ModalControlProject";
 import {useManagementProject} from '../../contexts/ManagementOfProject'
-import {AlertOfDeleteProject} from '../AlertOfDeleteProject'
 
 
 interface ActionPopoverProps {

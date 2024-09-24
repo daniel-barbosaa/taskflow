@@ -129,7 +129,7 @@ export function TableTasks() {
               <Td isNumeric onClick={() => {
                 setTaskId(task.id)
               }}>
-                <ActionPopoverTasks />
+                <ActionPopoverTasks taskId={task.id} />
               </Td>
             </Tr>
           ))}

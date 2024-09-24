@@ -11,9 +11,17 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useModal } from "../../contexts/ModalControlProject";
+import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 
-export function ActionPopoverTasks() {
+
+interface ActionPopoverTasksProps {
+  taskId: string,
+}
+
+export function ActionPopoverTasks({taskId}: ActionPopoverTasksProps) {
   const {onOpen, setModalType} = useModal()
+  const {setTaskId} = useManagementTask()
+
   return (
     <Box sx={{ transform: "none" }}>
       <Popover placement="right">
@@ -59,7 +67,11 @@ export function ActionPopoverTasks() {
                   color: '#ffffff',
                 }
               }}
-             
+              onClick={() => {
+                  onOpen()
+                  setModalType('delete')
+                  setTaskId(taskId)
+              }}
               >
                   Excluir
               </Button>

@@ -1,21 +1,21 @@
 import { Header } from "@/src/components/Header";
 import { Sidebar } from "@/src/components/Sidebar";
-
 import { Flex, Box, Text } from "@chakra-ui/react";
-import { ButtonAddNew } from "@/src/components/ButtonAddNew";
 import { TableTasks } from "@/src/components/TableTasks";
 import { ModalNewTask } from "@/src/components/ModalNewTask";
-import { useEffect, useState } from "react";
-import { getAllTasksByIdOfUser } from "@/src/services/projectService";
+import { AlertOfDeleteTask } from "@/src/components/AlertOfDeleteTask";
+import {useModal} from '../../contexts/ModalControlProject'
 
 
 export default function Dashboard() {
+  const {modalType} = useModal()
   
 
   return (
     <Flex direction="column" h="100vh" position="relative">
       <Header />
       <ModalNewTask/>
+      {modalType === "delete" && <AlertOfDeleteTask/>}
       <Flex maxW={1280} mx="left">
         <Sidebar />
         <Flex
