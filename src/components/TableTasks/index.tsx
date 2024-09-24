@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { getAllTasksByIdOfUser } from "@/src/services/projectService";
 import moment from "moment";
 import "moment/locale/pt-br"; 
+import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 
 moment.locale("pt-br"); 
 
@@ -30,6 +31,7 @@ interface Task {
 export function TableTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const userId = "rFJ6ijVTQQPSjZshkPAh";
+  const {setTaskId} = useManagementTask()
 
   useEffect(() => {
     getAllTasksByIdOfUser(userId, (projects) => {
@@ -124,7 +126,9 @@ export function TableTasks() {
                 </Flex>
               </Td>
               <Td isNumeric>{moment(task.updatedAt).fromNow()}</Td>
-              <Td isNumeric>
+              <Td isNumeric onClick={() => {
+                setTaskId(task.id)
+              }}>
                 <ActionPopoverTasks />
               </Td>
             </Tr>

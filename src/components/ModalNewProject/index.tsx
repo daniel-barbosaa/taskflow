@@ -59,7 +59,6 @@ export function ModalNewProject() {
     };
 
     setLoading(true);
-
     setTimeout(async () => {
       try {
         if (modalType === "add") {
@@ -83,7 +82,6 @@ export function ModalNewProject() {
           setLoading(false);
           return;
         }
-        throw new Error();
       } catch (error) {
         toast({
           title: "Houve um ao criar projeto, tente novamente!",

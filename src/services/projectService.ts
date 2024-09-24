@@ -188,3 +188,27 @@ export async function addNewTask(userId: string, taskData: TaskData) {
     return;
   }
 }
+
+
+export async function updatedTask(
+  userId: string,
+  taskId: string,
+  taskData: TaskData
+) {
+  try {
+    const projectCollection = doc(db, `users/${userId}/tasks`, taskId);
+
+    const task = {
+      taskName: taskData.taskName,
+      status: taskData.status,
+      projectName: taskData.projectName,
+      projectId: taskData.projectId,
+      updatedAt: serverTimestamp(),
+    };
+
+
+    await updateDoc(projectCollection, task);
+  } catch (error) {
+    console.log("Erro ao atualizar tarefa", error);
+  }
+}
