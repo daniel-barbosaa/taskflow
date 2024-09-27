@@ -7,6 +7,8 @@ interface ModalContextType  {
   onClose: () => void;
   modalType: string;
   setModalType: (type: string) => void;
+  modalOfInfo: boolean 
+  setModalOfInfo: (type: boolean) => void;
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -16,10 +18,11 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState<string>("");
+  const [modalOfInfo, setModalOfInfo] = useState<boolean>(false) 
 
   return (
     <ModalContext.Provider
-      value={{ isOpen, onOpen, onClose, modalType, setModalType }}
+      value={{ isOpen, onOpen, onClose, modalType, setModalType, modalOfInfo, setModalOfInfo}}
     >
       {children}
     </ModalContext.Provider>

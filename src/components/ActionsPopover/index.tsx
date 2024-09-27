@@ -20,7 +20,7 @@ interface ActionPopoverProps {
 
 
 export function ActionPopover({projectId}: ActionPopoverProps) {
-  const { onOpen, setModalType } = useModal();
+  const { onOpen, setModalType, setModalOfInfo} = useModal();
   const {setProjectId} = useManagementProject()
   return (
     <Box sx={{ transform: "none" }}>
@@ -75,9 +75,28 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
                   onOpen()
                   setModalType('delete')
                   setProjectId(projectId)
+                  setModalOfInfo(false)
                 }}
               >
                 Excluir
+              </Button>
+              <Box h="1px" bg="gray.200" w="80%"></Box>
+              <Button
+                bg="none"
+                w="80%"
+                color="gray.600"
+                sx={{
+                  _hover: {
+                    bg: "red.300",
+                    color: "#ffffff",
+                  },
+                }}
+                onClick={()=> {
+                  onOpen()
+                  setModalType('info')
+                }}
+              >
+                Exibir
               </Button>
             </Flex>
           </PopoverBody>

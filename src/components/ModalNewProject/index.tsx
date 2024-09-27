@@ -40,7 +40,7 @@ interface Inputs {
 
 export function ModalNewProject() {
   const [loading, setLoading] = useState(false);
-  const { isOpen, onClose, onOpen, setModalType, modalType } = useModal();
+  const { isOpen, onClose, onOpen, setModalType, modalType, modalOfInfo, setModalOfInfo} = useModal();
   const { projectId } = useManagementProject();
   const [sliderValue, setSliderValue] = useState(50);
   const toast = useToast();
@@ -103,11 +103,12 @@ export function ModalNewProject() {
         onOpen={() => {
           onOpen();
           setModalType("add");
+          setModalOfInfo(true)
         }}
       >
         Novo projeto
       </ButtonAddNew>
-      {modalType !== "delete" && (
+      {modalOfInfo && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
