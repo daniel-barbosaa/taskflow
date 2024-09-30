@@ -4,18 +4,40 @@ import { Flex, Box, Text } from "@chakra-ui/react";
 import { TableTasks } from "@/src/components/TableTasks";
 import { ModalNewTask } from "@/src/components/ModalNewTask";
 import { AlertOfDeleteTask } from "@/src/components/AlertOfDeleteTask";
-import {useModal} from '../../contexts/ModalControlProject'
+import { useModal } from "../../contexts/ModalControlProject";
+import { useManagementTask } from "@/src/contexts/ManagementOfTask";
+
 
 
 export default function Dashboard() {
-  const {modalType} = useModal()
+  const { modalType } = useModal();
+  const { tasks } = useManagementTask();
+
+  let taskInLine = [];
+  let taskInProgress = [];
+  let taskFinished = [];
+
   
+
+  tasks.forEach((task) => {
+    switch (task.status) {
+      case "na fila":
+        taskInLine.push(task);
+        break;
+      case "em progresso":
+        taskInProgress.push(task);
+        break;
+      case "finalizado":
+        taskFinished.push(task);
+        break;
+    }
+  });
 
   return (
     <Flex direction="column" h="100vh" position="relative">
       <Header />
-      <ModalNewTask/>
-      {modalType === "delete" && <AlertOfDeleteTask/>}
+      <ModalNewTask />
+      {modalType === "delete" && <AlertOfDeleteTask />}
       <Flex maxW={1280} mx="left">
         <Sidebar />
         <Flex
@@ -53,7 +75,7 @@ export default function Dashboard() {
               </Flex>
               <Text color="gray.500">Finalizado</Text>
               <Text color="gray.500" fontWeight="bold">
-                10
+                {taskFinished.length}
               </Text>
             </Flex>
             <Flex direction="column" gap="10px">
@@ -77,7 +99,7 @@ export default function Dashboard() {
               </Flex>
               <Text color="gray.500"> Em andamento</Text>
               <Text color="gray.500" fontWeight="bold">
-                10
+                {taskInProgress.length}
               </Text>
             </Flex>
             <Flex direction="column" gap="10px">
@@ -101,7 +123,7 @@ export default function Dashboard() {
               </Flex>
               <Text color="gray.500">Na fila</Text>
               <Text color="gray.500" fontWeight="bold">
-                10
+               {taskInLine.length}
               </Text>
             </Flex>
           </Flex>

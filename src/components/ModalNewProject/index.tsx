@@ -57,7 +57,6 @@ export function ModalNewProject() {
       ...data,
       progress: sliderValue,
     };
-
     setLoading(true);
     setTimeout(async () => {
       try {
@@ -113,7 +112,7 @@ export function ModalNewProject() {
           <ModalOverlay />
           <ModalContent>
             <ModalHeader color="gray.700">
-              {modalType == "edit" ? "Atualizar Projeto" : "Novo projeto"}
+              {modalType == "editproject" ? "Atualizar Projeto" : "Novo projeto"}
             </ModalHeader>
             <ModalCloseButton />
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -208,7 +207,7 @@ export function ModalNewProject() {
                     <Spinner color="white" size="md" />
                   ) : (
                     <Text>
-                      {modalType === "edit"
+                      {modalType === "editproject"
                         ? "Atualizar projeto"
                         : "Adicionar projeto"}
                     </Text>

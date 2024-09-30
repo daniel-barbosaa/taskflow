@@ -55,8 +55,9 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
             <Flex direction="column" gap="5px">
               <Button bg="none" w="80%" color="gray.600" onClick={() => {
                 onOpen()
-                setModalType('edit')
+                setModalType('editproject')
                 setProjectId(projectId)
+                setModalOfInfo(true)
               }}>
                 Editar
               </Button>
@@ -94,6 +95,7 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
                 onClick={()=> {
                   onOpen()
                   setModalType('info')
+                  setModalOfInfo(false)
                 }}
               >
                 Exibir

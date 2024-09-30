@@ -36,13 +36,12 @@ interface Task {
 }
 
 export function TableTasks() {
-  const [tasks, setTasks] = useState<Task[]>([]);
   const userId = "rFJ6ijVTQQPSjZshkPAh";
-  const { setTaskId } = useManagementTask();
+  const { setTaskId, setTasks, tasks} = useManagementTask();
 
   useEffect(() => {
-    getAllTasksByIdOfUser(userId, (projects) => {
-      setTasks(projects);
+    getAllTasksByIdOfUser(userId, (tasks) => {
+      setTasks(tasks)
     });
   }, [userId]);
 
@@ -69,7 +68,7 @@ export function TableTasks() {
           {tasks.map((task) => (
             <Tr cursor="pointer" key={task.id}>
               <Td>
-                <Accordion defaultIndex={[0]} allowMultiple>
+                <Accordion allowMultiple>
                   <AccordionItem border="none" maxW={270}>
                     <h2>
                       <AccordionButton
@@ -103,7 +102,7 @@ export function TableTasks() {
                         </Flex>
                       </AccordionButton>
                     </h2>
-                    <AccordionPanel m="0">
+                    <AccordionPanel m="0" pb={4}>
                       <Text whiteSpace="balance" textTransform="lowercase">
                         {task.taskName}
                       </Text>

@@ -56,7 +56,7 @@ export function ActionPopoverTasks({taskId}: ActionPopoverTasksProps) {
             <Flex direction="column" gap="5px">
               <Button bg="none" w="80%" color="gray.600" onClick={() => {
                 onOpen()
-                setModalType('edit')
+                setModalType('edittask')
               }}>
                   Editar
               </Button>
