@@ -8,15 +8,22 @@ import {
   TableContainer,
   Flex,
   Text,
+  Accordion,
+  AccordionItem,
+  Heading,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Box,
 } from "@chakra-ui/react";
 import { ActionPopoverTasks } from "../ActionsPopoverTasks";
 import { useEffect, useState } from "react";
 import { getAllTasksByIdOfUser } from "@/src/services/projectService";
 import moment from "moment";
-import "moment/locale/pt-br"; 
+import "moment/locale/pt-br";
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 
-moment.locale("pt-br"); 
+moment.locale("pt-br");
 
 interface Task {
   id: string;
@@ -31,7 +38,7 @@ interface Task {
 export function TableTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const userId = "rFJ6ijVTQQPSjZshkPAh";
-  const {setTaskId} = useManagementTask()
+  const { setTaskId } = useManagementTask();
 
   useEffect(() => {
     getAllTasksByIdOfUser(userId, (projects) => {
@@ -62,24 +69,47 @@ export function TableTasks() {
           {tasks.map((task) => (
             <Tr cursor="pointer" key={task.id}>
               <Td>
-                <Text
-                  sx={{
-                    position: "relative",
-                    overflow: "hidden",
-                    _after: {
-                      content: '""',
-                      position: "absolute",
-                      bottom: 0,
-                      right: 0,
-                      width: "100%",
-                      height: "3rem",
-                      bg: "linear-gradient( to right, transparent, white)",
-                    },
-                  }}
-                >
-                  {`${task.taskName}`.substring(0, 35)}
-                  ...
-                </Text>
+                <Accordion defaultIndex={[0]} allowMultiple>
+                  <AccordionItem border="none" maxW={270}>
+                    <h2>
+                      <AccordionButton
+                      p="4px"
+                        sx={{
+                          _hover: {
+                            bg: "none",
+                          },
+                        }}
+                      >
+                        <Flex gap="5px">
+                          <AccordionIcon  />
+                          <Text
+                            sx={{
+                              position: "relative",
+                              overflow: "hidden",
+                              _after: {
+                                content: '""',
+                                position: "absolute",
+                                bottom: 0,
+                                right: 0,
+                                width: "100%",
+                                height: "3rem",
+                                bg: "linear-gradient( to right, transparent, white)",
+                              },
+                            }}
+                          >
+                            {`${task.taskName}`.substring(0, 35)}
+                            ...
+                          </Text>
+                        </Flex>
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel m="0">
+                      <Text whiteSpace="balance" textTransform="lowercase">
+                        {task.taskName}
+                      </Text>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
               </Td>
               <Td>{task.projectName}</Td>
               <Td>
@@ -126,9 +156,12 @@ export function TableTasks() {
                 </Flex>
               </Td>
               <Td isNumeric>{moment(task.updatedAt).fromNow()}</Td>
-              <Td isNumeric onClick={() => {
-                setTaskId(task.id)
-              }}>
+              <Td
+                isNumeric
+                onClick={() => {
+                  setTaskId(task.id);
+                }}
+              >
                 <ActionPopoverTasks taskId={task.id} />
               </Td>
             </Tr>

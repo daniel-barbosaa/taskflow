@@ -87,7 +87,7 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
                 color="gray.600"
                 sx={{
                   _hover: {
-                    bg: "red.300",
+                    bg: "#3A84FF",
                     color: "#ffffff",
                   },
                 }}
