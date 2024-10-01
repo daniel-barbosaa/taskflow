@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import {getAllTaskForProject} from "../services/projectService"
+import { useManagementProject } from "./ManagementOfProject";
 
 interface Task {
   id: string;
@@ -14,21 +16,41 @@ interface ManagementTaskType {
   taskId: string;
   setTaskId: (type: string) => void;
   tasks: Task[];
-  setTasks: (type: Task[]) => void
+  setTasks: (type: Task[]) => void;
+  tasksForProject: Task[];
+  setTasksForProjects: (type: Task[]) => void;
 }
 
 const ManagementProjectContext = createContext<ManagementTaskType | undefined>(
   undefined
 );
 
-export const TaskProvider: React.FC<{ children: ReactNode }> = ({
+export const TaskProvider: React.FC<{ children: ReactNode }> =   ({
   children,
 }) => {
+  const {projectId} = useManagementProject()
   const [taskId, setTaskId] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasksForProject, setTasksForProjects] = useState<Task[]>([])
+
+
+      useEffect(() => {
+        if(projectId){
+          const queryTask = async () => {
+            try {
+              const taskProject = await getAllTaskForProject("rFJ6ijVTQQPSjZshkPAh", projectId)
+              setTasksForProjects(taskProject)
+            }catch(error){
+              console.log(error)
+            }
+          }
+          queryTask()
+        }
+      }, [projectId])
+ 
 
   return (
-    <ManagementProjectContext.Provider value={{ tasks, setTasks, taskId, setTaskId }}>
+    <ManagementProjectContext.Provider value={{ tasks, setTasks, taskId, setTaskId, tasksForProject, setTasksForProjects }}>
       {children}
     </ManagementProjectContext.Provider>
   );

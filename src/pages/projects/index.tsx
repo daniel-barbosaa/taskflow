@@ -33,10 +33,10 @@ interface Project {
   updatedAt?: any;
 }
 export default function Dashboard() {
-  const {setProjectInfo} = useManagementProject()
-  const { modalType, } = useModal();
+  const { setProjectInfo } = useManagementProject();
+  const { modalType } = useModal();
   const [projects, setProjects] = useState<Project[]>([]);
-  
+
   // Passar esse id dinamico
   const userId = "rFJ6ijVTQQPSjZshkPAh";
 
@@ -70,7 +70,7 @@ export default function Dashboard() {
     <Flex direction="column" h="100vh" position="relative">
       <Header />
       <ModalNewProject />
-      <ProjectInfoModal  />
+      <ProjectInfoModal />
       {modalType === "delete" && <AlertOfDeleteProject />}
       <Flex maxW={1280} mx="left">
         <Sidebar />
@@ -201,129 +201,131 @@ export default function Dashboard() {
           </SimpleGrid>
           <SimpleGrid minChildWidth="300px" gap="10px">
             {projects.map((project) => (
-              <>
+              <Box
+                cursor="pointer"
+                key={project.id}
+                maxW={270}
+                bg="#ffffff"
+                position="relative"
+                p="15px"
+                borderRadius="8px"
+                shadow="0 1px 4px 0 #00000013"
+                overflow="visible"
+                //   sx={{
+                //     transition: "transform 0.3s ease-in-out",
+                //    _hover: {
+                //       cursor: 'pointer',
+                //       transform: "scale(1.02)",
+                //    }
+                //  }}
+              >
                 <Box
-                  cursor="pointer"
-                  key={project.id}
-                  maxW={270}
-                  bg="#ffffff"
-                  position="relative"
-                  p="15px"
-                  borderRadius="8px"
-                  shadow="0 1px 4px 0 #00000013"
-                  overflow="visible"
-                  //   sx={{
-                  //     transition: "transform 0.3s ease-in-out",
-                  //    _hover: {
-                  //       cursor: 'pointer',
-                  //       transform: "scale(1.02)",
-                  //    }
-                  //  }}
+                  position="absolute"
+                  right="4"
+                  onClick={() => {
+                    setProjectInfo({ ...project });
+                  }}
                 >
-                  <Box position="absolute" right="4" onClick={() =>  {
-                    setProjectInfo({...project})
-                  }}>
-                    <ActionPopover projectId={project.id}/>
-                  </Box>
-
-                  <Flex align="center" justify="space-between">
-                    {project.status === "finalizado" && (
-                      <Text
-                        bg="#38cb898f"
-                        fontSize="xs"
-                        p="3px 7px"
-                        borderRadius="8px"
-                        color="#249261"
-                      >
-                        Finalizado
-                      </Text>
-                    )}
-                    {project.status === "na fila" && (
-                      <Text
-                        bg="#ffc75860"
-                        fontSize="xs"
-                        p="3px 7px"
-                        borderRadius="8px"
-                        color="#fab833"
-                      >
-                        Na fila
-                      </Text>
-                    )}
-                    {project.status === "em progresso" && (
-                      <Text
-                        bg="#a361ff83"
-                        fontSize="xs"
-                        p="3px 7px"
-                        borderRadius="8px"
-                        color="#944cf8"
-                      >
-                        Em andamento
-                      </Text>
-                    )}
-                  </Flex>
-                  <Text fontSize="lg" fontWeight="500" mt="10px">
-                    {project.name}
-                  </Text>
-                  <Text
-                    noOfLines={3}
-                    color="gray.600"
-                    fontSize="xs"
-                    mt="10px"
-                    sx={{
-                      position: "relative",
-                      overflow: "hidden",
-                      _after: {
-                        content: '""',
-                        position: "absolute",
-                        bottom: 0,
-                        right: 0,
-                        width: "100%",
-                        height: "3rem",
-                        bg: "linear-gradient( to bottom, transparent, white)",
-                      },
-                    }}
-                  >
-                    {project.description}
-                  </Text>
-                  <Box mt="20px">
-                    <Flex justify="space-between">
-                      <Text fontSize="sm" fontWeight="600" color="gray.500">
-                        Progresso
-                      </Text>
-                      <Text
-                        textAlign="right"
-                        fontSize="sm"
-                        fontWeight="bold"
-                        color="gray"
-                        mt="5px"
-                      >
-                        {`${project.progress}%`}
-                      </Text>
-                    </Flex>
-
-                    <Progress
-                      value={Number(project.progress)}
-                      size="xs"
-                      colorScheme="gray"
-                      mt="5px"
-                      borderRadius="8px"
-                    />
-                  </Box>
-
-                  <Flex justify="flex-end" mt="20px">
-                    <Flex align="center" color="gray.500" gap="5px">
-                      <Text fontSize="sm" className="material-symbols-outlined">
-                        calendar_month
-                      </Text>
-                      <Text fontSize="sm">
-                        {moment(project.createdAt)
-                          .locale("pt-br")
-                          .format("D MMM")}
-                      </Text>
-                    </Flex>
-                  </Flex>
+                  <ActionPopover projectId={project.id} />
                 </Box>
-              </>
+
+                <Flex align="center" justify="space-between">
+                  {project.status === "finalizado" && (
+                    <Text
+                      bg="#38cb898f"
+                      fontSize="xs"
+                      p="3px 7px"
+                      borderRadius="8px"
+                      color="#249261"
+                    >
+                      Finalizado
+                    </Text>
+                  )}
+                  {project.status === "na fila" && (
+                    <Text
+                      bg="#ffc75860"
+                      fontSize="xs"
+                      p="3px 7px"
+                      borderRadius="8px"
+                      color="#fab833"
+                    >
+                      Na fila
+                    </Text>
+                  )}
+                  {project.status === "em progresso" && (
+                    <Text
+                      bg="#a361ff83"
+                      fontSize="xs"
+                      p="3px 7px"
+                      borderRadius="8px"
+                      color="#944cf8"
+                    >
+                      Em andamento
+                    </Text>
+                  )}
+                </Flex>
+                <Text fontSize="lg" fontWeight="500" mt="10px">
+                  {project.name}
+                </Text>
+                <Text
+                  noOfLines={3}
+                  color="gray.600"
+                  fontSize="xs"
+                  mt="10px"
+                  sx={{
+                    position: "relative",
+                    overflow: "hidden",
+                    _after: {
+                      content: '""',
+                      position: "absolute",
+                      bottom: 0,
+                      right: 0,
+                      width: "100%",
+                      height: "3rem",
+                      bg: "linear-gradient( to bottom, transparent, white)",
+                    },
+                  }}
+                >
+                  {project.description}
+                </Text>
+                <Box mt="20px">
+                  <Flex justify="space-between">
+                    <Text fontSize="sm" fontWeight="600" color="gray.500">
+                      Progresso
+                    </Text>
+                    <Text
+                      textAlign="right"
+                      fontSize="sm"
+                      fontWeight="bold"
+                      color="gray"
+                      mt="5px"
+                    >
+                      {`${project.progress}%`}
+                    </Text>
+                  </Flex>
+
+                  <Progress
+                    value={Number(project.progress)}
+                    size="xs"
+                    colorScheme="gray"
+                    mt="5px"
+                    borderRadius="8px"
+                  />
+                </Box>
+
+                <Flex justify="flex-end" mt="20px">
+                  <Flex align="center" color="gray.500" gap="5px">
+                    <Text fontSize="sm" className="material-symbols-outlined">
+                      calendar_month
+                    </Text>
+                    <Text fontSize="sm">
+                      {moment(project.createdAt)
+                        .locale("pt-br")
+                        .format("D MMM")}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Box>
             ))}
           </SimpleGrid>
         </Flex>

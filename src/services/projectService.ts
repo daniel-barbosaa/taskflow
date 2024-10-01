@@ -1,4 +1,4 @@
-import { db } from "./firebase";
+import { db, } from "./firebase";
 import {
   collection,
   onSnapshot,
@@ -7,6 +7,10 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  query,
+  where,
+  getDocs,
+  Timestamp
 } from "firebase/firestore";
 
 interface Project {
@@ -218,5 +222,32 @@ export async function deleteTask(userId: string, taskId: string) {
     await deleteDoc(taskCollection);
   } catch (error) {
     console.log("Erro ao excluir tarefa", error);
+  }
+}
+
+export async function getAllTaskForProject(userId: string, projectId: string): Promise<Task[]> {
+  try {
+    const taskCollectioRef = collection(db, `users/${userId}/tasks`);
+
+    const q = query(taskCollectioRef, where("projectId", "==" , projectId))
+    
+    const querySnapshot = await getDocs(q)
+
+    const tasksList: Task[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      taskName: doc.data().taskName,
+      status: doc.data().status,
+      projectName: doc.data().projectName,
+      projectId: doc.data().projectId,
+      createdAt: doc.data().createdAt instanceof Timestamp ? doc.data().createdAt.toDate() : undefined,
+      updatedAt: doc.data().updatedAt instanceof Timestamp ? doc.data().updatedAt.toDate() : undefined,
+    }));
+
+
+    return tasksList
+
+  } catch (error) {
+    console.log("Erro ao buscar tarefas por projetos!", error);
+    return []
   }
 }

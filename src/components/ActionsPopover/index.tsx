@@ -96,6 +96,7 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
                   onOpen()
                   setModalType('info')
                   setModalOfInfo(false)
+                  setProjectId(projectId)
                 }}
               >
                 Exibir

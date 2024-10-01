@@ -17,12 +17,14 @@ import _ from "lodash";
 import { useModal } from "../../contexts/ModalControlProject";
 import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 import moment from "moment";
+import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 
 // Adicionar função de exluir projeto
 
 export function ProjectInfoModal() {
   const { projectInfo } = useManagementProject();
-  const { isOpen, onClose, modalOfInfo, modalType } = useModal();
+  const {tasksForProject} = useManagementTask()
+  const { isOpen, onClose, modalType } = useModal();
 
   return (
     <>
@@ -68,7 +70,7 @@ export function ProjectInfoModal() {
                     color="gray.500"
                     fontWeight="bold"
                   >
-                    {3}
+                    {tasksForProject.length}
                   </Text>
                 </Flex>
                 <Flex direction="row" maxW={200} justify="space-between">
