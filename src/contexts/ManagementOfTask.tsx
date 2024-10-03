@@ -1,5 +1,14 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import {getAllTaskForProject} from "../services/projectService"
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import {
+  getAllTaskForProject,
+  getAllTasksByIdOfUser,
+} from "../services/projectService";
 import { useManagementProject } from "./ManagementOfProject";
 
 interface Task {
@@ -25,32 +34,47 @@ const ManagementProjectContext = createContext<ManagementTaskType | undefined>(
   undefined
 );
 
-export const TaskProvider: React.FC<{ children: ReactNode }> =   ({
+export const TaskProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const {projectId} = useManagementProject()
+  const userId = "rFJ6ijVTQQPSjZshkPAh";
+  const { projectId } = useManagementProject();
   const [taskId, setTaskId] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [tasksForProject, setTasksForProjects] = useState<Task[]>([])
+  const [tasksForProject, setTasksForProjects] = useState<Task[]>([]);
 
+  useEffect(() => {
+    getAllTasksByIdOfUser(userId, (tasks) => {
+      setTasks(tasks);
+    });
 
-      useEffect(() => {
-        if(projectId){
-          const queryTask = async () => {
-            try {
-              const taskProject = await getAllTaskForProject("rFJ6ijVTQQPSjZshkPAh", projectId)
-              setTasksForProjects(taskProject)
-            }catch(error){
-              console.log(error)
-            }
-          }
-          queryTask()
+    if (projectId) {
+      const queryTask = async () => {
+        try {
+          const taskProject = await getAllTaskForProject(
+            "rFJ6ijVTQQPSjZshkPAh",
+            projectId
+          );
+          setTasksForProjects(taskProject);
+        } catch (error) {
+          console.log(error);
         }
-      }, [projectId])
- 
+      };
+      queryTask();
+    }
+  }, [projectId]);
 
   return (
-    <ManagementProjectContext.Provider value={{ tasks, setTasks, taskId, setTaskId, tasksForProject, setTasksForProjects }}>
+    <ManagementProjectContext.Provider
+      value={{
+        tasks,
+        setTasks,
+        taskId,
+        setTaskId,
+        tasksForProject,
+        setTasksForProjects,
+      }}
+    >
       {children}
     </ManagementProjectContext.Provider>
   );

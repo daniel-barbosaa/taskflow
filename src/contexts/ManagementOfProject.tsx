@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { getAllProjectsByIdOfUser } from "../services/projectService";
 
 interface Project {
   id: string;
@@ -14,7 +15,9 @@ interface ManagementProjectType  {
   projectId: string;
   setProjectId: (type: string) => void;
   projectInfo: Project | null;
-  setProjectInfo: (type: Project) => void
+  setProjectInfo: (type: Project) => void;
+  projects: Project[];
+  setProjects: (type: Project[]) => void;
 }
 
 const ManagementProjectContext = createContext<ManagementProjectType | undefined>(undefined);
@@ -24,10 +27,20 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [projectId, setProjectId] = useState<string>("");
   const [projectInfo, setProjectInfo] = useState<Project | null>(null)
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  // Passar esse id dinamico
+  const userId = "rFJ6ijVTQQPSjZshkPAh";
+
+  useEffect(() => {
+    getAllProjectsByIdOfUser(userId, (projects) => {
+      setProjects(projects);
+    });
+  }, [userId,]);
 
   return (
     <ManagementProjectContext.Provider
-      value={{  projectId, setProjectId, projectInfo, setProjectInfo }}
+      value={{projects,setProjects,  projectId, setProjectId, projectInfo, setProjectInfo }}
     >
       {children}
     </ManagementProjectContext.Provider>

@@ -17,34 +17,17 @@ import {
 } from "@chakra-ui/react";
 import { ActionPopover } from "@/src/components/ActionsPopover";
 import { ModalNewProject } from "@/src/components/ModalNewProject";
-import { useEffect, useState } from "react";
 import { useModal } from "@/src/contexts/ModalControlProject";
 import { AlertOfDeleteProject } from "@/src/components/AlertOfDeleteProject";
 import { ProjectInfoModal } from "@/src/components/ProjectInfoModal";
 import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  progress: number;
-  status: string;
-  createdAt?: any;
-  updatedAt?: any;
-}
+
+
 export default function Dashboard() {
-  const { setProjectInfo } = useManagementProject();
+  const { setProjectInfo, projects } = useManagementProject();
   const { modalType } = useModal();
-  const [projects, setProjects] = useState<Project[]>([]);
 
-  // Passar esse id dinamico
-  const userId = "rFJ6ijVTQQPSjZshkPAh";
-
-  useEffect(() => {
-    getAllProjectsByIdOfUser(userId, (projects) => {
-      setProjects(projects);
-    });
-  }, [userId]);
 
   const totalProjects = projects.length;
 

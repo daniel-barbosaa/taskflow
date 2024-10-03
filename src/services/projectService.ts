@@ -10,7 +10,7 @@ import {
   query,
   where,
   getDocs,
-  Timestamp
+  Timestamp,
 } from "firebase/firestore";
 
 interface Project {
@@ -52,7 +52,7 @@ export function getAllProjectsByIdOfUser(
 ) {
   try {
     const projectsCollection = collection(db, `users/${userId}/projects`);
-    const projectsInRealTime = onSnapshot(
+    const projectsInRealTimeList = onSnapshot(
       projectsCollection,
       (querySnapshot) => {
         const projects: Project[] = querySnapshot.docs.map((doc) => {
@@ -64,18 +64,23 @@ export function getAllProjectsByIdOfUser(
             progress: data.progress || "0%",
             status: data.status || "unknown",
             createdAt: data.createdAt
-              ? data.createdAt.toDate().toISOString()
-              : new Date().toISOString(),
+              ? data.createdAt.toDate() : new Date(),
             updatedAt: data.updatedAt
-              ? data.updatedAt.toDate().toISOString()
-              : new Date().toISOString(),
+              ? data.updatedAt.toDate()
+              : new Date()
           };
         });
-        callback(projects);
+      
+        const sortedProjects = projects.sort((a, b) => {
+          return b.createdAt - a.createdAt 
+        });
+        
+        callback(sortedProjects);
+        
       }
     );
 
-    return projectsInRealTime;
+    return projectsInRealTimeList;
   } catch (error) {
     console.log(error);
     throw new Error();
@@ -243,9 +248,7 @@ export async function getAllTaskForProject(userId: string, projectId: string): P
       updatedAt: doc.data().updatedAt instanceof Timestamp ? doc.data().updatedAt.toDate() : undefined,
     }));
 
-
     return tasksList
-
   } catch (error) {
     console.log("Erro ao buscar tarefas por projetos!", error);
     return []

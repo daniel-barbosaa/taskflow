@@ -36,14 +36,7 @@ interface Task {
 }
 
 export function TableTasks() {
-  const userId = "rFJ6ijVTQQPSjZshkPAh";
-  const { setTaskId, setTasks, tasks} = useManagementTask();
-
-  useEffect(() => {
-    getAllTasksByIdOfUser(userId, (tasks) => {
-      setTasks(tasks)
-    });
-  }, [userId]);
+  const { setTaskId, tasks} = useManagementTask();
 
   return (
     <TableContainer
