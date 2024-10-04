@@ -7,6 +7,7 @@ import { ProjectProvider } from "../contexts/ManagementOfProject";
 import { TaskProvider } from "../contexts/ManagementOfTask";
 import "../services/firebase";
 
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>

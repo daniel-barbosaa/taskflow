@@ -14,16 +14,11 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Box,
 } from "@chakra-ui/react";
 import { ActionPopoverTasks } from "../ActionsPopoverTasks";
-import { useEffect, useState } from "react";
-import { getAllTasksByIdOfUser } from "@/src/services/projectService";
 import moment from "moment";
 import "moment/locale/pt-br";
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
-
-moment.locale("pt-br");
 
 interface Task {
   id: string;

@@ -71,6 +71,7 @@ export function ModalNewTask() {
     setLoading(true);
     if (!projectId) {
       console.log("Nenhum projeto selecionado!");
+      setLoading(false);
       return;
     }
     setTimeout(async () => {
@@ -171,6 +172,9 @@ export function ModalNewTask() {
                     {...register("projectName", { required: true })}
                     onChange={handlePrjectSelect}
                   >
+                    <option value="" disabled>
+                      Selecione um projeto
+                    </option>
                     {projects.map((project) => (
                       <option key={project.id} value={project.id}>
                         {project.name}

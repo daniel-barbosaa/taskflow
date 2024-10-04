@@ -4,6 +4,7 @@ import {
   collection,
   onSnapshot,
   addDoc,
+  getDoc,
   serverTimestamp,
   updateDoc,
   doc,
@@ -67,7 +68,7 @@ export function getAllProjectsByIdOfUser(
             status: data.status || "unknown",
             createdAt: data.createdAt ? data.createdAt.toDate() : new Date(),
             updatedAt: data.updatedAt ? data.updatedAt.toDate() : new Date(),
-            taskCount: data.taskCount || 0
+            taskCount: data.taskCount || 0,
           };
         });
 
@@ -100,6 +101,7 @@ export async function addNewProject(userId: string, projectData: any) {
       status: projectData.status,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
+      taskCount: 0,
     };
     await addDoc(projectsCollection, project);
   } catch (error) {
@@ -240,9 +242,17 @@ export async function deleteTask(
     await deleteDoc(taskCollection);
 
     const projectRef = doc(db, `users/${userId}/projects`, projectId);
-    await updateDoc(projectRef, {
-      taskCount: increment(-1),
-    });
+
+    const projectDoc = await getDoc(projectRef);
+    const currentTaskCount = projectDoc.exists()
+      ? projectDoc.data().taskCount
+      : 0;
+
+    if (currentTaskCount > 0) {
+      await updateDoc(projectRef, {
+        taskCount: increment(-1),
+      });
+    }
   } catch (error) {
     console.log("Erro ao excluir tarefa", error);
   }

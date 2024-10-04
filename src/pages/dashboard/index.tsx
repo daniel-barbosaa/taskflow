@@ -3,17 +3,28 @@ import { ProjectChart } from "@/src/components/ProjectChart";
 import { Sidebar } from "@/src/components/Sidebar";
 import { TableProjects } from "@/src/components/TableProjects";
 import { TasksCharts } from "@/src/components/TasksCharts";
+import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 import {
   Flex,
   SimpleGrid,
   Box,
   Heading,
   Text,
-  Button,
   Progress,
 } from "@chakra-ui/react";
+import _ from "lodash";
+import moment from "moment";
+import 'moment/locale/pt-br';
 
 export default function Dashboard() {
+  const { projects } = useManagementProject();
+
+  const sortedProjects = projects
+    .sort((a, b) => (a.taskCount ? -b.progress : 0))
+    .slice(0, 2);
+
+  console.log(sortedProjects);
+
   return (
     <Flex direction="column" h="100vh">
       <Header />
@@ -82,7 +93,64 @@ export default function Dashboard() {
                   </Text>
                 </Flex>
               </Box>
-              <Box
+              {sortedProjects.map((project) => (
+                <Box
+                  maxW={200}
+                  bg="#ffffff"
+                  p="15px"
+                  borderRadius="8px"
+                  shadow="0 2px 8px #00000014"
+                >
+                  <Text color="gray.500" fontSize="sm">
+                    {moment(project.createdAt).format("DD [de] MMM, YYYY")}
+                  </Text>
+                  <Text
+                    fontSize="2xl"
+                    color="gray.700"
+                    fontWeight="bold"
+                    textAlign="center"
+                    mt="25px"
+                  >
+                    {_.capitalize(project.name)}
+                  </Text>
+                  <Text
+                    fontSize="sm"
+                    color="gray.500"
+                    textAlign="center"
+                    mt="5px"
+                  >
+                    App
+                  </Text>
+                  <Box mt="60px">
+                    <Text fontSize="sm" fontWeight="500" color="gray.500">
+                      Tarefas: {project.taskCount}
+                    </Text>
+                  </Box>
+                  <Box mt="10px">
+                    <Text fontSize="sm" fontWeight="600" color="gray.700">
+                      Progresso
+                    </Text>
+                    <Progress
+                      value={20}
+                      size="xs"
+                      colorScheme="blue"
+                      mt="5px"
+                      borderRadius="8px"
+                    />
+                    <Text
+                      textAlign="right"
+                      fontSize="sm"
+                      fontWeight="bold"
+                      color="gray.700"
+                      mt="5px"
+                    >
+                      {project.progress}%
+                    </Text>
+                  </Box>
+                </Box>
+              ))}
+
+              {/* <Box
                 maxW={200}
                 bg="#ffffff"
                 p="15px"
@@ -179,56 +247,7 @@ export default function Dashboard() {
                     50%
                   </Text>
                 </Box>
-              </Box>
-              <Box
-                maxW={200}
-                bg="#ffffff"
-                p="15px"
-                borderRadius="8px"
-                shadow="0 2px 8px #00000014"
-              >
-                <Text color="gray.500" fontSize="sm">
-                  20 de jul, 2024
-                </Text>
-                <Text
-                  fontSize="2xl"
-                  color="gray.700"
-                  fontWeight="bold"
-                  textAlign="center"
-                  mt="25px"
-                >
-                  Ignews
-                </Text>
-                <Text
-                  fontSize="sm"
-                  color="gray.500"
-                  textAlign="center"
-                  mt="5px"
-                >
-                  Blog
-                </Text>
-                <Box mt="60px">
-                  <Text fontSize="sm" fontWeight="600" color="gray.700">
-                    Progresso
-                  </Text>
-                  <Progress
-                    value={20}
-                    size="xs"
-                    colorScheme="blue"
-                    mt="5px"
-                    borderRadius="8px"
-                  />
-                  <Text
-                    textAlign="right"
-                    fontSize="sm"
-                    fontWeight="bold"
-                    color="gray.700"
-                    mt="5px"
-                  >
-                    50%
-                  </Text>
-                </Box>
-              </Box>
+              </Box> */}
             </SimpleGrid>
           </Flex>
 
