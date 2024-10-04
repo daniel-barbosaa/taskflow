@@ -13,7 +13,7 @@ interface Task {
   updatedAt?: any;
 }
 
-const COLORS = ["#A461FF", "#38CB89", "#FFC658"];
+const COLORS = ["#38CB89", "#A461FF","#FFC658"];
 
 export function TasksCharts() {
   const [isClient, setIsClient] = useState(false);
@@ -44,6 +44,7 @@ export function TasksCharts() {
   ];
 
   let totalTasks = tasks.length;
+  
 
   const percentForTask = [
     {

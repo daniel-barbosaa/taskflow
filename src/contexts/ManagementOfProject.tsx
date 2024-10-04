@@ -9,6 +9,7 @@ interface Project {
   status: string;
   createdAt?: any;
   updatedAt?: any;
+  taskCount?: number
 }
 
 interface ManagementProjectType  {

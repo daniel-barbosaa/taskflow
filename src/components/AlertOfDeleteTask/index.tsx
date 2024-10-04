@@ -13,12 +13,14 @@ import {useModal} from '../../contexts/ModalControlProject'
 import React, { useRef } from "react";
 import {deleteTask} from '../../services/projectService'
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
+import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 
 
 export function AlertOfDeleteTask() {
     const { isOpen, onClose, setModalType} = useModal()
     const cancelRef = useRef()
     const {taskId} = useManagementTask()
+    const {projectId} = useManagementProject()
 
     // Passar esse id dinamico
     const userId = "rFJ6ijVTQQPSjZshkPAh";
@@ -46,7 +48,7 @@ export function AlertOfDeleteTask() {
                 Não
               </Button>
               <Button colorScheme='red' ml={3} onClick={() => {
-                deleteTask(userId, taskId)
+                deleteTask(userId, taskId, projectId)
                 onClose()
                 setModalType('deleted')
                 toast({

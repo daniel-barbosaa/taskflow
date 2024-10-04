@@ -1,4 +1,5 @@
-import { db, } from "./firebase";
+import { number } from "prop-types";
+import { db } from "./firebase";
 import {
   collection,
   onSnapshot,
@@ -11,6 +12,7 @@ import {
   where,
   getDocs,
   Timestamp,
+  increment,
 } from "firebase/firestore";
 
 interface Project {
@@ -63,20 +65,17 @@ export function getAllProjectsByIdOfUser(
             description: data.description || "",
             progress: data.progress || "0%",
             status: data.status || "unknown",
-            createdAt: data.createdAt
-              ? data.createdAt.toDate() : new Date(),
-            updatedAt: data.updatedAt
-              ? data.updatedAt.toDate()
-              : new Date()
+            createdAt: data.createdAt ? data.createdAt.toDate() : new Date(),
+            updatedAt: data.updatedAt ? data.updatedAt.toDate() : new Date(),
+            taskCount: data.taskCount || 0
           };
         });
-      
+
         const sortedProjects = projects.sort((a, b) => {
-          return b.createdAt - a.createdAt 
+          return b.createdAt - a.createdAt;
         });
-        
+
         callback(sortedProjects);
-        
       }
     );
 
@@ -169,7 +168,6 @@ export function getAllTasksByIdOfUser(
       }
     );
     return projectsInRealTime;
-
   } catch (error) {
     console.log(error);
     throw new Error();
@@ -182,6 +180,7 @@ export async function addNewTask(userId: string, taskData: TaskData) {
       throw new Error();
     }
     const tasksCollection = collection(db, `users/${userId}/tasks`);
+
     const task = {
       taskName: taskData.taskName,
       status: taskData.status,
@@ -192,6 +191,17 @@ export async function addNewTask(userId: string, taskData: TaskData) {
     };
 
     await addDoc(tasksCollection, task);
+
+    if (taskData.status !== "finalizado") {
+      const projectRef = doc(
+        db,
+        `users/${userId}/projects`,
+        taskData.projectId
+      );
+      await updateDoc(projectRef, {
+        taskCount: increment(1),
+      });
+    }
   } catch (error) {
     console.log("Error to the add task", error);
     return;
@@ -214,29 +224,38 @@ export async function updatedTask(
       updatedAt: serverTimestamp(),
     };
 
-
     await updateDoc(taskCollection, task);
   } catch (error) {
     console.log("Erro ao atualizar tarefa", error);
   }
 }
 
-export async function deleteTask(userId: string, taskId: string) {
+export async function deleteTask(
+  userId: string,
+  taskId: string,
+  projectId: string
+) {
   try {
     const taskCollection = doc(db, `users/${userId}/tasks`, taskId);
     await deleteDoc(taskCollection);
+
+    const projectRef = doc(db, `users/${userId}/projects`, projectId);
+    await updateDoc(projectRef, {
+      taskCount: increment(-1),
+    });
   } catch (error) {
     console.log("Erro ao excluir tarefa", error);
   }
 }
 
-export async function getAllTaskForProject(userId: string, projectId: string): Promise<Task[]> {
+export async function getAllTaskForProject(
+  userId: string,
+  projectId: string
+): Promise<Task[]> {
   try {
     const taskCollectioRef = collection(db, `users/${userId}/tasks`);
-
-    const q = query(taskCollectioRef, where("projectId", "==" , projectId))
-    
-    const querySnapshot = await getDocs(q)
+    const q = query(taskCollectioRef, where("projectId", "==", projectId));
+    const querySnapshot = await getDocs(q);
 
     const tasksList: Task[] = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -244,13 +263,19 @@ export async function getAllTaskForProject(userId: string, projectId: string): P
       status: doc.data().status,
       projectName: doc.data().projectName,
       projectId: doc.data().projectId,
-      createdAt: doc.data().createdAt instanceof Timestamp ? doc.data().createdAt.toDate() : undefined,
-      updatedAt: doc.data().updatedAt instanceof Timestamp ? doc.data().updatedAt.toDate() : undefined,
+      createdAt:
+        doc.data().createdAt instanceof Timestamp
+          ? doc.data().createdAt.toDate()
+          : undefined,
+      updatedAt:
+        doc.data().updatedAt instanceof Timestamp
+          ? doc.data().updatedAt.toDate()
+          : undefined,
     }));
 
-    return tasksList
+    return tasksList;
   } catch (error) {
     console.log("Erro ao buscar tarefas por projetos!", error);
-    return []
+    return [];
   }
 }

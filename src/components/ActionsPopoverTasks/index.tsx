@@ -12,15 +12,18 @@ import {
 } from "@chakra-ui/react";
 import { useModal } from "../../contexts/ModalControlProject";
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
+import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 
 
 interface ActionPopoverTasksProps {
   taskId: string,
+  projectId: string
 }
 
-export function ActionPopoverTasks({taskId}: ActionPopoverTasksProps) {
+export function ActionPopoverTasks({taskId, projectId}: ActionPopoverTasksProps) {
   const {onOpen, setModalType} = useModal()
   const {setTaskId} = useManagementTask()
+  const {setProjectId} = useManagementProject()
 
   return (
     <Box sx={{ transform: "none" }}>
@@ -71,6 +74,7 @@ export function ActionPopoverTasks({taskId}: ActionPopoverTasksProps) {
                   onOpen()
                   setModalType('delete')
                   setTaskId(taskId)
+                  setProjectId(projectId)
               }}
               >
                   Excluir

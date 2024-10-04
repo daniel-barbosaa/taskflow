@@ -36,7 +36,7 @@ interface Task {
 }
 
 export function TableTasks() {
-  const { setTaskId, tasks} = useManagementTask();
+  const { setTaskId, tasks } = useManagementTask();
 
   return (
     <TableContainer
@@ -65,7 +65,7 @@ export function TableTasks() {
                   <AccordionItem border="none" maxW={270}>
                     <h2>
                       <AccordionButton
-                      p="4px"
+                        p="4px"
                         sx={{
                           _hover: {
                             bg: "none",
@@ -73,7 +73,7 @@ export function TableTasks() {
                         }}
                       >
                         <Flex gap="5px">
-                          <AccordionIcon  />
+                          <AccordionIcon />
                           <Text
                             sx={{
                               position: "relative",
@@ -137,7 +137,11 @@ export function TableTasks() {
                           : "#A461FF"
                       }
                     >
-                      check
+                      {task.status === "finalizado"
+                        ? "check"
+                        : task.status === "na fila"
+                        ? "draft"
+                        : "update"}
                     </Text>
                   </Flex>
                   {task.status === "finalizado"
@@ -154,7 +158,10 @@ export function TableTasks() {
                   setTaskId(task.id);
                 }}
               >
-                <ActionPopoverTasks taskId={task.id} />
+                <ActionPopoverTasks
+                  taskId={task.id}
+                  projectId={task.projectId}
+                />
               </Td>
             </Tr>
           ))}
