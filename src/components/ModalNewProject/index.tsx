@@ -41,8 +41,8 @@ interface Inputs {
 export function ModalNewProject() {
   const [loading, setLoading] = useState(false);
   const { isOpen, onClose, onOpen, setModalType, modalType, modalOfInfo, setModalOfInfo} = useModal();
-  const { projectId } = useManagementProject();
-  const [sliderValue, setSliderValue] = useState(50);
+  const { projectId,projects } = useManagementProject();
+  const [sliderValue, setSliderValue] = useState<number>(50);
   const toast = useToast();
 
   const {
@@ -58,8 +58,19 @@ export function ModalNewProject() {
       progress: sliderValue,
     };
     setLoading(true);
+
     setTimeout(async () => {
       try {
+        const  projectExists = projects.some(project => project.name === projectData.name);
+        if(projectExists){
+          toast({
+            title: "Existe um projeto com mesmo nome. Por favor,escolha outro nome!",
+            status: "warning",
+          });
+          setLoading(false);
+          return
+        }
+
         if (modalType === "add") {
           await addNewProject("rFJ6ijVTQQPSjZshkPAh", projectData);
           onClose();
@@ -86,6 +97,7 @@ export function ModalNewProject() {
           title: "Houve um ao criar projeto, tente novamente!",
           status: "error",
         });
+        setLoading(false);
       }
     }, 2000);
   };

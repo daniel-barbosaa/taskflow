@@ -64,7 +64,7 @@ export function getAllProjectsByIdOfUser(
             id: doc.id,
             name: data.name || "",
             description: data.description || "",
-            progress: data.progress || "0%",
+            progress: data.progress || 0,
             status: data.status || "unknown",
             createdAt: data.createdAt ? data.createdAt.toDate() : new Date(),
             updatedAt: data.updatedAt ? data.updatedAt.toDate() : new Date(),
@@ -93,11 +93,13 @@ export async function addNewProject(userId: string, projectData: any) {
       throw new Error();
     }
 
+
+
     const projectsCollection = collection(db, `users/${userId}/projects`);
     const project = {
       name: projectData.name,
       description: projectData.description,
-      progress: projectData.progress,
+      progress: projectData.progress === 0 ? 0 : projectData.progress,
       status: projectData.status,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),

@@ -49,7 +49,7 @@ export function TableProjects() {
         </Thead>
         <Tbody color="gray.500">
           {justThreeRecent.map((project) => (
-            <Tr>
+            <Tr key={project.id}>
             <Td>{project.name}</Td>
             <Td>
               <Flex align="center" gap="5px">
@@ -87,82 +87,7 @@ export function TableProjects() {
             <Td isNumeric>{moment(project.updatedAt).fromNow()}</Td>
           </Tr>
           ))}
-          {/* <Tr>
-            <Td>Ignews</Td>
-            <Td>
-              <Flex align="center" gap="5px">
-                <Flex
-                  bg="#38cb898f"
-                  borderRadius="50%"
-                  p="2px"
-                  align="center"
-                  justify="center"
-                  border="1px solid #38cb892d"
-                >
-                  <Text
-                    className="material-symbols-outlined"
-                    fontSize="sm"
-                    color="#38CB89"
-                  >
-                    check
-                  </Text>
-                </Flex>
-                Finalizado
-              </Flex>
-            </Td>
-            <Td isNumeric>há 1 minuto</Td>
-          </Tr>
-          <Tr>
-            <Td>Dahsgo.</Td>
-            <Td>
-              <Flex align="center" gap="5px">
-                <Flex
-                  bg="#ffc75860"
-                  borderRadius="50%"
-                  p="2px"
-                  align="center"
-                  justify="center"
-                  border="1px solid #ffc75826"
-                >
-                  <Text
-                    className="material-symbols-outlined"
-                    fontSize="sm"
-                    color="#ffc758"
-                  >
-                    draft
-                  </Text>
-                </Flex>
-                Na fila
-              </Flex>
-            </Td>
-            <Td isNumeric>3 horas atrás</Td>
-          </Tr>
-          <Tr>
-            <Td>MyFintech</Td>
-            <Td>
-              {" "}
-              <Flex align="center" gap="5px">
-                <Flex
-                  bg="#a361ff83"
-                  borderRadius="50%"
-                  p="2px"
-                  align="center"
-                  justify="center"
-                  border="1px solid #a361ff1f"
-                >
-                  <Text
-                    className="material-symbols-outlined"
-                    fontSize="sm"
-                    color="#A461FF"
-                  >
-                    update
-                  </Text>
-                </Flex>
-                Em progresso
-              </Flex>
-            </Td>
-            <Td isNumeric>ontem</Td>
-          </Tr> */}
+         
         </Tbody>
       </Table>
     </TableContainer>

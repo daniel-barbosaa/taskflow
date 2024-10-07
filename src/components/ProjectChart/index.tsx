@@ -1,5 +1,5 @@
 import { useManagementProject } from "@/src/contexts/ManagementOfProject";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import _ from 'lodash';
 import {
@@ -52,13 +52,17 @@ import {
 //   },
 // ];
 
+
 export function ProjectChart({ prop = 'default value' }) {
   const [isClient, setIsClient] = useState(false)
   const {projects} = useManagementProject()
 
+  const chartWidth = useBreakpointValue({ base: 300, md: 600, lg: 1000 });
+  const chartHeight = Math.max(500, projects.length * 50);
+
   const data = projects.map((project) => {
     return {
-      name: _.capitalize(project.name),
+      name: project.name,
       tarefas: project.taskCount || 0  
     }
   })
@@ -85,12 +89,11 @@ export function ProjectChart({ prop = 'default value' }) {
           }}
           barSize={20}
         >
-          <XAxis dataKey={"name"} scale="point" padding={{ left: 10, right: 10 }}  />
+          <XAxis dataKey={"name"} scale="point" padding={{ left: 10, right: 10 }} name="name"/>
           <YAxis />
           <Tooltip />
-          <Bar dataKey="tarefas" fill="#3A84FF" background={{ fill: '#eee' }} />
+          <Bar dataKey="tarefas" fill="#3A84FF" background={{ fill: '#eee' }} name="tarefas" />
         </BarChart>}
-      
       </Flex>
     </Box>
   );
