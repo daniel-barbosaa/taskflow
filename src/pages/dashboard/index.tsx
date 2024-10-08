@@ -18,6 +18,8 @@ import moment from "moment";
 import "moment/locale/pt-br";
 import { useModal } from "@/src/contexts/ModalControlProject";
 
+// Adicinar autenticalçao
+
 export default function Dashboard() {
   const {onOpen,setModalOfInfo} = useModal()
   const { projects } = useManagementProject();

@@ -1,6 +1,34 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup, } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup, User } from "firebase/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { db } from "../services/firebase";
+import {
+    getDoc,
+    setDoc,
+    serverTimestamp,
+    doc,
+   
+} from "firebase/firestore";
+
+const createUserIfNotExists = async (user: User) => {
+    const userRef = doc(db, "users", user.uid);
+    const userSnapshot = await getDoc(userRef);
+
+    if(!userSnapshot.exists()){
+        await setDoc(userRef, {
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+            createdAt: serverTimestamp(),
+            lastLogin: serverTimestamp(),
+          });
+    }else{
+        await setDoc(userRef, {
+            lastLogin: serverTimestamp(),
+        }, {merge: true})
+    }
+}
+
 
 export const useGoogleLoggin = () => {
     const navigate = useRouter()
@@ -14,17 +42,20 @@ export const useGoogleLoggin = () => {
         try {
             const result = await signInWithPopup(auth, provider)
             const credential = GoogleAuthProvider.credentialFromResult(result)
-            const token = credential?.accessToken
             const user = result.user
-            setLoading(false)
-            console.log(user)
-            navigate.push("/dashboard")
+
+            if(!user){
+                console.log("Houver algum erro")
+                return
+            }else{
+                await createUserIfNotExists(user)
+                setLoading(false)
+            }
             return user
         }catch(error) {
           setLoading(false)
           throw error
         }
     }
-
     return {logginWithGoogle, loading}
 }

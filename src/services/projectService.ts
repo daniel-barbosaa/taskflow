@@ -49,6 +49,9 @@ interface Task {
   updatedAt?: any;
 }
 // Services for projects
+
+
+
 export function getAllProjectsByIdOfUser(
   userId: string,
   callback: (projects: Project[]) => void

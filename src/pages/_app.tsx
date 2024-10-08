@@ -5,20 +5,22 @@ import { ChakraProvider, theme } from "@chakra-ui/react";
 import { ModalProvider } from "../contexts/ModalControlProject";
 import { ProjectProvider } from "../contexts/ManagementOfProject";
 import { TaskProvider } from "../contexts/ManagementOfTask";
+import { AuthProvider } from "../contexts/Auth/AuthContext";
 import "../services/firebase";
-
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <ChakraProvider theme={theme}>
-        <ModalProvider>
-          <ProjectProvider>
-            <TaskProvider>
-              <Component {...pageProps} />
-            </TaskProvider>
-          </ProjectProvider>
-        </ModalProvider>
+        <AuthProvider>
+          <ModalProvider>
+            <ProjectProvider>
+              <TaskProvider>
+                <Component {...pageProps} />
+              </TaskProvider>
+            </ProjectProvider>
+          </ModalProvider>
+        </AuthProvider>
       </ChakraProvider>
     </>
   );

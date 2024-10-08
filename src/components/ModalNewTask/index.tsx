@@ -71,6 +71,10 @@ export function ModalNewTask() {
     setLoading(true);
     if (!projectId) {
       console.log("Nenhum projeto selecionado!");
+      toast({
+        title: "Selecione um projeto!",
+        status: "warning",
+      });
       setLoading(false);
       return;
     }

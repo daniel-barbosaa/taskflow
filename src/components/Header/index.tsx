@@ -1,7 +1,21 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import Avatar from 'react-avatar';
 
+import { useAuth } from "@/src/contexts/Auth/AuthContext"; 
+
 export function Header() {
+  const {signOutUser} = useAuth()
+  
+  async function handleLogOut() {
+    try{
+      await signOutUser()
+      console.log("Usuario deslogado")
+    }catch(error){
+      console.log("houve algum erro, tente novamente!")
+    }
+    
+  }
+
   return (
     <Flex w="100%"  as="header" padding="20px 30px" justify="space-between" >
       <Flex>
@@ -24,6 +38,7 @@ export function Header() {
         {/* <Avatar name="Daniel barbosa" size="30px" round></Avatar> */}
         <Text color="#4F4F4F" opacity="80%">danimendes9728@gmail.com</Text>
       </Flex>
+      <Button onClick={handleLogOut}>Sair</Button>
     </Flex>
   );
 }
