@@ -6,7 +6,6 @@ import Check from "../../assets/Done.png";
 import FileImg from "../../assets/file.png";
 import moment from "moment";
 import "moment/locale/pt-br";
-import { getAllProjectsByIdOfUser } from "@/src/services/projectService";
 import {
   Flex,
   SimpleGrid,

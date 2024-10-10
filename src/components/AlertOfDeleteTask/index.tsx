@@ -14,6 +14,7 @@ import React, { useRef } from "react";
 import {deleteTask} from '../../services/projectService'
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 import { useManagementProject } from "@/src/contexts/ManagementOfProject";
+import { useAuth } from "@/src/contexts/Auth/AuthContext";
 
 
 export function AlertOfDeleteTask() {
@@ -21,10 +22,26 @@ export function AlertOfDeleteTask() {
     const cancelRef = useRef()
     const {taskId} = useManagementTask()
     const {projectId} = useManagementProject()
-
-    // Passar esse id dinamico
-    const userId = "rFJ6ijVTQQPSjZshkPAh";
+    const {user} = useAuth()
+    const userId = user?.uid;
     const toast = useToast();
+
+    async function handleDeleTask (){
+      try {
+        await deleteTask(userId, taskId, projectId)
+                onClose()
+                setModalType('deleted')
+                toast({
+                    title: "Excluido com sucesso!",
+                    status: "success",
+                });
+      }catch(error){
+        toast({
+          title: "Houve algum erro ao exluir tarefa, tente novamente!",
+          status: "error",
+      });
+      }
+    }
 
   
     return (
@@ -47,15 +64,7 @@ export function AlertOfDeleteTask() {
               <Button ref={cancelRef} onClick={onClose}>
                 Não
               </Button>
-              <Button colorScheme='red' ml={3} onClick={() => {
-                deleteTask(userId, taskId, projectId)
-                onClose()
-                setModalType('deleted')
-                toast({
-                    title: "Excluido com sucesso!",
-                    status: "success",
-                });
-              }}>
+              <Button colorScheme='red' ml={3} onClick={handleDeleTask}>
                 Sim
               </Button>
             </AlertDialogFooter>

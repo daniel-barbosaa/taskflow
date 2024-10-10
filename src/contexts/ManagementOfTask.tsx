@@ -10,6 +10,7 @@ import {
   getAllTasksByIdOfUser,
 } from "../services/projectService";
 import { useManagementProject } from "./ManagementOfProject";
+import { useAuth } from "./Auth/AuthContext";
 
 interface Task {
   id: string;
@@ -37,32 +38,36 @@ const ManagementProjectContext = createContext<ManagementTaskType | undefined>(
 export const TaskProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const userId = "rFJ6ijVTQQPSjZshkPAh";
+  const { user } = useAuth();
+  const userId = user?.uid;
   const { projectId } = useManagementProject();
   const [taskId, setTaskId] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [tasksForProject, setTasksForProjects] = useState<Task[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    getAllTasksByIdOfUser(userId, (tasks) => {
-      setTasks(tasks);
-    });
-
-    if (projectId) {
-      const queryTask = async () => {
+    const queryTask = async () => {
+      if (userId) {
+        setLoading(true)
         try {
-          const taskProject = await getAllTaskForProject(
-            "rFJ6ijVTQQPSjZshkPAh",
-            projectId
-          );
-          setTasksForProjects(taskProject);
+          await getAllTasksByIdOfUser(userId, (tasks) => {
+            setTasks(tasks);
+          });
+
+          if (projectId) {
+            const taskProject = await getAllTaskForProject(userId, projectId);
+            setTasksForProjects(taskProject);
+          }
         } catch (error) {
-          console.log(error);
+
+        }finally{
+          setLoading(false)
         }
-      };
-      queryTask();
-    }
-  }, [projectId]);
+      }
+    };
+     queryTask()
+  }, [projectId, userId]);
 
   return (
     <ManagementProjectContext.Provider

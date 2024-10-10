@@ -23,7 +23,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log(currentUser)
     });
 
     if(user){

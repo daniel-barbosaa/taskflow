@@ -18,10 +18,10 @@ interface ActionPopoverProps {
   projectId: string,
 }
 
-
 export function ActionPopover({projectId}: ActionPopoverProps) {
   const { onOpen, setModalType, setModalOfInfo} = useModal();
   const {setProjectId} = useManagementProject()
+
   return (
     <Box sx={{ transform: "none" }}>
       <Popover placement="right">
@@ -55,7 +55,7 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
             <Flex direction="column" gap="5px">
               <Button bg="none" w="80%" color="gray.600" onClick={() => {
                 onOpen()
-                setModalType('editproject')
+                setModalType('edit')
                 setProjectId(projectId)
                 setModalOfInfo(true)
               }}>

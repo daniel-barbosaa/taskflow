@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { getAllProjectsByIdOfUser } from "../services/projectService";
+import { useAuth } from "./Auth/AuthContext";
 
 interface Project {
   id: string;
@@ -29,15 +30,13 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({
   const [projectId, setProjectId] = useState<string>("");
   const [projectInfo, setProjectInfo] = useState<Project | null>(null)
   const [projects, setProjects] = useState<Project[]>([]);
-
-  // Passar esse id dinamico
-  const userId = "rFJ6ijVTQQPSjZshkPAh";
-
+  const {user} = useAuth()
+  const userId = user?.uid
   useEffect(() => {
     getAllProjectsByIdOfUser(userId, (projects) => {
       setProjects(projects);
     });
-  }, [userId,]);
+  }, [userId]);
 
   return (
     <ManagementProjectContext.Provider

@@ -21,7 +21,7 @@ import { useModal } from "@/src/contexts/ModalControlProject";
 // Adicinar autenticalçao
 
 export default function Dashboard() {
-  const {onOpen,setModalOfInfo} = useModal()
+  const {onOpen,setModalOfInfo,setModalType} = useModal()
   const { projects } = useManagementProject();
 
   const sortedProjects = projects
@@ -48,6 +48,7 @@ export default function Dashboard() {
               onClick={() => {
                 onOpen()
                 setModalOfInfo(true)
+                setModalType("add")
               }}
                 maxW={200}
                 sx={{

@@ -37,8 +37,8 @@ export function Header() {
       <Flex align="center" gap="10px">
         {/* <Avatar name="Daniel barbosa" size="30px" round></Avatar> */}
         <Text color="#4F4F4F" opacity="80%">danimendes9728@gmail.com</Text>
+        
       </Flex>
-      <Button onClick={handleLogOut}>Sair</Button>
     </Flex>
   );
 }

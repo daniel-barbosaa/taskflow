@@ -25,6 +25,8 @@ import {
 } from "../../services/projectService";
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 import { useToast } from "@chakra-ui/react";
+import { useAuth } from "@/src/contexts/Auth/AuthContext";
+import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 
 interface Inputs {
   taskName: string;
@@ -32,33 +34,18 @@ interface Inputs {
   projectName: string;
 }
 
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  progress: number;
-  status: string;
-  createdAt?: any;
-  updatedAt?: any;
-}
-
-// Adicionar validação de campos do formulário com mensagem de campo vazios
-
 export function ModalNewTask() {
-  const [projectId, setProjectId] = useState<string>("");
   const { isOpen, onClose, onOpen, setModalType, modalType } = useModal();
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [projectName, setProjectName] = useState<string>("");
-  const userId = "rFJ6ijVTQQPSjZshkPAh";
   const { taskId } = useManagementTask();
+  const {projects} = useManagementProject()
+  const {user} = useAuth()
+ 
+  const [projectName, setProjectName] = useState<string>("");
+  const [projectId, setProjectId] = useState<string>("");
+  const userId = user?.uid;
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    getAllProjectsByIdOfUser(userId, (projects) => {
-      setProjects(projects);
-    });
-  }, [userId]);
 
   const {
     register,

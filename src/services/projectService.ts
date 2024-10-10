@@ -49,11 +49,8 @@ interface Task {
   updatedAt?: any;
 }
 // Services for projects
-
-
-
 export function getAllProjectsByIdOfUser(
-  userId: string,
+  userId: string | undefined,
   callback: (projects: Project[]) => void
 ) {
   try {
@@ -90,13 +87,11 @@ export function getAllProjectsByIdOfUser(
   }
 }
 
-export async function addNewProject(userId: string, projectData: any) {
+export async function addNewProject(userId: string | undefined, projectData: any) {
   try {
-    if (!userId || userId === "" || userId === null) {
+    if (!userId || userId === "" || userId === null || userId === undefined) {
       throw new Error();
     }
-
-
 
     const projectsCollection = collection(db, `users/${userId}/projects`);
     const project = {
@@ -116,7 +111,7 @@ export async function addNewProject(userId: string, projectData: any) {
 }
 
 export async function updatedProject(
-  userId: string,
+  userId: string | undefined,
   projectId: string,
   projectData: UpdatedProject
 ) {
@@ -137,7 +132,7 @@ export async function updatedProject(
   }
 }
 
-export async function deleteProject(userId: string, projectId: string) {
+export async function deleteProject(userId: string | undefined, projectId: string) {
   try {
     const projectCollection = doc(db, `users/${userId}/projects`, projectId);
     await deleteDoc(projectCollection);
@@ -145,9 +140,10 @@ export async function deleteProject(userId: string, projectId: string) {
     console.log("Erro ao excluir  projeto", error);
   }
 }
+
 // Services for tasks
 export function getAllTasksByIdOfUser(
-  userId: string,
+  userId: string | undefined,
   callback: (tasks: Task[]) => void
 ) {
   try {
@@ -181,7 +177,7 @@ export function getAllTasksByIdOfUser(
   }
 }
 
-export async function addNewTask(userId: string, taskData: TaskData) {
+export async function addNewTask(userId: string | undefined, taskData: TaskData) {
   try {
     if (!userId || userId === "" || userId === null) {
       throw new Error();
@@ -216,7 +212,7 @@ export async function addNewTask(userId: string, taskData: TaskData) {
 }
 
 export async function updatedTask(
-  userId: string,
+  userId: string | undefined,
   taskId: string,
   taskData: TaskData
 ) {
@@ -238,16 +234,15 @@ export async function updatedTask(
 }
 
 export async function deleteTask(
-  userId: string,
+  userId: string | undefined,
   taskId: string,
   projectId: string
 ) {
-  try {
+  try { 
+
     const taskCollection = doc(db, `users/${userId}/tasks`, taskId);
     await deleteDoc(taskCollection);
-
     const projectRef = doc(db, `users/${userId}/projects`, projectId);
-
     const projectDoc = await getDoc(projectRef);
     const currentTaskCount = projectDoc.exists()
       ? projectDoc.data().taskCount
@@ -264,7 +259,7 @@ export async function deleteTask(
 }
 
 export async function getAllTaskForProject(
-  userId: string,
+  userId: string | undefined,
   projectId: string
 ): Promise<Task[]> {
   try {

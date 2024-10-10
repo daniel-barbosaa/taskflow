@@ -28,6 +28,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { addNewProject, updatedProject } from "../../services/projectService";
 import { useToast } from "@chakra-ui/react";
 import { useManagementProject } from "@/src/contexts/ManagementOfProject";
+import { useAuth } from "@/src/contexts/Auth/AuthContext";
 
 interface Inputs {
   name: string;
@@ -44,6 +45,8 @@ export function ModalNewProject() {
   const { projectId,projects } = useManagementProject();
   const [sliderValue, setSliderValue] = useState<number>(50);
   const toast = useToast();
+  const {user} = useAuth()
+  const userId = user?.uid
 
   const {
     register,
@@ -72,7 +75,7 @@ export function ModalNewProject() {
         }
 
         if (modalType === "add") {
-          await addNewProject("rFJ6ijVTQQPSjZshkPAh", projectData);
+          await addNewProject(userId, projectData);
           onClose();
           reset();
           toast({
@@ -82,7 +85,7 @@ export function ModalNewProject() {
           setLoading(false);
           return;
         } else if (modalType === "edit") {
-          await updatedProject("rFJ6ijVTQQPSjZshkPAh", projectId, projectData);
+          await updatedProject(userId, projectId, projectData);
           onClose();
           reset();
           toast({
