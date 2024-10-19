@@ -3,7 +3,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 import Image from "next/image";
-import addTask from '../../assets/addfilepng.png'
+import addTask from "../../assets/addfilepng.png";
 import Link from "next/link";
 
 interface Task {
@@ -21,7 +21,6 @@ const COLORS = ["#38CB89", "#A461FF", "#FFC658"];
 export function TasksCharts() {
   const [isClient, setIsClient] = useState(false);
   const { tasks } = useManagementTask();
-
   let taskInLine: Task[] = [];
   let taskInProgress: Task[] = [];
   let taskFinished: Task[] = [];
@@ -46,7 +45,7 @@ export function TasksCharts() {
     { name: "na fila", value: taskInLine.length },
   ];
 
-  let totalTasks = tasks.length
+  let totalTasks = tasks.length;
 
   const percentForTask = [
     {
@@ -81,9 +80,30 @@ export function TasksCharts() {
       <Flex align="center">
         {totalTasks <= 0 ? (
           <Flex justify="center" align="center" direction="column" mt={5}>
-              <Text fontSize="md" color="gray.500" fontWeight="normal">Sem tarefas no momento. Comece a organizar seu projeto adicionando algumas<Link href="/tasks" ><Text color="#3A84FF" fontWeight="600">tarefas.</Text></Link></Text>
-              <Image src={addTask} alt="add tarefas" width={150}></Image>
-
+            <Flex direction="row">
+              <Text
+                fontSize="md"
+                color="gray.500"
+                fontWeight="normal"
+                display="inline"
+              >
+                Sem tarefas no momento. Comece a organizar seu projeto
+                adicionando algumas
+                <Link
+                  href="/projects"
+                  style={{
+                    color: "#3A84FF",
+                    marginLeft: "4px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  tarefas.
+                </Link>
+              </Text>
+            </Flex>
+            <Link href="/tasks">
+              <Image src={addTask} alt="add tarefas" width={150} ></Image>
+            </Link>
           </Flex>
         ) : (
           <>

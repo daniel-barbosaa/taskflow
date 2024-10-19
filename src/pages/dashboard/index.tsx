@@ -17,12 +17,16 @@ import _ from "lodash";
 import moment from "moment";
 import "moment/locale/pt-br";
 import { useModal } from "@/src/contexts/ModalControlProject";
+import { useAuth } from "@/src/contexts/Auth/AuthContext";
 
 // Adicinar autenticalçao
 
 export default function Dashboard() {
   const {onOpen,setModalOfInfo,setModalType} = useModal()
   const { projects } = useManagementProject();
+  const {user} = useAuth()
+
+  console.log(projects, user)
 
   const sortedProjects = projects
     .sort((a, b) => (a.taskCount ? -b.progress : 0))
@@ -162,7 +166,7 @@ export default function Dashboard() {
 
           <Box>
             <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="10px">
-              Projetos recentes
+             {projects.length != 0 ? 'Projetos recentes' : ''}
             </Text>
             <TableProjects />
           </Box>

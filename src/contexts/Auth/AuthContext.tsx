@@ -20,7 +20,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const auth = getAuth();
 
   useEffect(() => {
-    
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
