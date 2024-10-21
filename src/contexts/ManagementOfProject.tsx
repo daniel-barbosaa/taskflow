@@ -48,7 +48,7 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({
       setProjects(projects);
     });
 
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setLoaded(true);
     },1000);
 

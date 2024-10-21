@@ -12,20 +12,20 @@ import {
   Heading,
   Text,
   Progress,
+  Skeleton,
+  SkeletonText,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import moment from "moment";
 import "moment/locale/pt-br";
 import { useModal } from "@/src/contexts/ModalControlProject";
 import { useAuth } from "@/src/contexts/Auth/AuthContext";
-import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
-
-// Adicinar autenticalçao
 
 export default function Dashboard() {
   const { onOpen, setModalOfInfo, setModalType } = useModal();
   const { projects, loaded } = useManagementProject();
   const { user } = useAuth();
+  
 
   console.log(projects, user);
 
@@ -170,14 +170,16 @@ export default function Dashboard() {
                         Progresso
                       </Text>
                     </SkeletonText>
+                    <Skeleton isLoaded={loaded}>
+                      <Progress
+                        value={project.progress}
+                        size="xs"
+                        colorScheme="blue"
+                        mt="5px"
+                        borderRadius="8px"
+                      />
+                    </Skeleton>
 
-                    <Progress
-                      value={project.progress}
-                      size="xs"
-                      colorScheme="blue"
-                      mt="5px"
-                      borderRadius="8px"
-                    />
                     <SkeletonText
                       noOfLines={1}
                       skeletonHeight={2}

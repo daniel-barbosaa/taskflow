@@ -13,6 +13,9 @@ import {
   Heading,
   Text,
   Progress,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
 } from "@chakra-ui/react";
 import { ActionPopover } from "@/src/components/ActionsPopover";
 import { ModalNewProject } from "@/src/components/ModalNewProject";
@@ -21,12 +24,9 @@ import { AlertOfDeleteProject } from "@/src/components/AlertOfDeleteProject";
 import { ProjectInfoModal } from "@/src/components/ProjectInfoModal";
 import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 
-
-
 export default function Dashboard() {
-  const { setProjectInfo, projects } = useManagementProject();
+  const { setProjectInfo, projects, loaded } = useManagementProject();
   const { modalType } = useModal();
-
 
   const totalProjects = projects.length;
 
@@ -213,99 +213,131 @@ export default function Dashboard() {
 
                 <Flex align="center" justify="space-between">
                   {project.status === "finalizado" && (
-                    <Text
-                      bg="#38cb898f"
-                      fontSize="xs"
-                      p="3px 7px"
-                      borderRadius="8px"
-                      color="#249261"
+                    <SkeletonText
+                      noOfLines={1}
+                      skeletonHeight={4}
+                      isLoaded={loaded}
                     >
-                      Finalizado
-                    </Text>
+                      <Text
+                        bg="#38cb898f"
+                        fontSize="xs"
+                        p="3px 7px"
+                        borderRadius="8px"
+                        color="#249261"
+                      >
+                        Finalizado
+                      </Text>
+                    </SkeletonText>
                   )}
                   {project.status === "na fila" && (
-                    <Text
-                      bg="#ffc75860"
-                      fontSize="xs"
-                      p="3px 7px"
-                      borderRadius="8px"
-                      color="#fab833"
+                    <SkeletonText
+                      noOfLines={1}
+                      skeletonHeight={4}
+                      isLoaded={loaded}
                     >
-                      Na fila
-                    </Text>
+                      <Text
+                        bg="#ffc75860"
+                        fontSize="xs"
+                        p="3px 7px"
+                        borderRadius="8px"
+                        color="#fab833"
+                      >
+                        Na fila
+                      </Text>
+                    </SkeletonText>
                   )}
                   {project.status === "em progresso" && (
-                    <Text
-                      bg="#a361ff83"
-                      fontSize="xs"
-                      p="3px 7px"
-                      borderRadius="8px"
-                      color="#944cf8"
+                    <SkeletonText
+                      noOfLines={1}
+                      skeletonHeight={4}
+                      isLoaded={loaded}
                     >
-                      Em andamento
-                    </Text>
+                      <Text
+                        bg="#a361ff83"
+                        fontSize="xs"
+                        p="3px 7px"
+                        borderRadius="8px"
+                        color="#944cf8"
+                      >
+                        Em andamento
+                      </Text>
+                    </SkeletonText>
                   )}
                 </Flex>
-                <Text fontSize="lg" fontWeight="500" mt="10px">
-                  {project.name}
-                </Text>
-                <Text
-                  noOfLines={3}
-                  color="gray.600"
-                  fontSize="xs"
-                  mt="10px"
-                  sx={{
-                    position: "relative",
-                    overflow: "hidden",
-                    _after: {
-                      content: '""',
-                      position: "absolute",
-                      bottom: 0,
-                      right: 0,
-                      width: "100%",
-                      height: "3rem",
-                      bg: "linear-gradient( to bottom, transparent, white)",
-                    },
-                  }}
-                >
-                  {project.description}
-                </Text>
+                <SkeletonText noOfLines={1} w={100} isLoaded={loaded}>
+                  <Text fontSize="lg" fontWeight="500" mt="10px">
+                    {project.name}
+                  </Text>
+                </SkeletonText>
+
+                <SkeletonText noOfLines={3} isLoaded={loaded}>
+                  <Text
+                    noOfLines={3}
+                    color="gray.600"
+                    fontSize="xs"
+                    mt="10px"
+                    sx={{
+                      position: "relative",
+                      overflow: "hidden",
+                      _after: {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        right: 0,
+                        width: "100%",
+                        height: "3rem",
+                        bg: "linear-gradient( to bottom, transparent, white)",
+                      },
+                    }}
+                  >
+                    {project.description}
+                  </Text>
+                </SkeletonText>
+
                 <Box mt="20px">
                   <Flex justify="space-between">
-                    <Text fontSize="sm" fontWeight="600" color="gray.500">
-                      Progresso
-                    </Text>
-                    <Text
-                      textAlign="right"
-                      fontSize="sm"
-                      fontWeight="bold"
-                      color="gray"
-                      mt="5px"
-                    >
-                      {`${project.progress}%`}
-                    </Text>
-                  </Flex>
+                    <SkeletonText noOfLines={1} isLoaded={loaded}>
+                      <Text fontSize="sm" fontWeight="600" color="gray.500">
+                        Progresso
+                      </Text>
+                    </SkeletonText>
 
-                  <Progress
-                    value={Number(project.progress)}
-                    size="xs"
-                    colorScheme="gray"
-                    mt="5px"
-                    borderRadius="8px"
-                  />
+                    <SkeletonText noOfLines={1} isLoaded={loaded}>
+                      <Text
+                        textAlign="right"
+                        fontSize="sm"
+                        fontWeight="bold"
+                        color="gray"
+                        mt="5px"
+                      >
+                        {`${project.progress}%`}
+                      </Text>
+                    </SkeletonText>
+                  </Flex>
+                  <Skeleton isLoaded={loaded}>
+                    <Progress
+                      value={Number(project.progress)}
+                      size="xs"
+                      colorScheme="gray"
+                      mt="5px"
+                      borderRadius="8px"
+                    />
+                  </Skeleton>
                 </Box>
 
                 <Flex justify="flex-end" mt="20px">
-                  <Flex align="center" color="gray.500" gap="5px">
-                    <Text fontSize="sm" className="material-symbols-outlined">
-                      calendar_month
-                    </Text>
-                    <Text fontSize="sm">
-                      {moment(project.createdAt)
-                        .locale("pt-br")
-                        .format("D MMM")}
-                    </Text>
-                  </Flex>
+                  <SkeletonText noOfLines={1} isLoaded={loaded}>
+                    <Flex align="center" color="gray.500" gap="5px">
+                      <Text fontSize="sm" className="material-symbols-outlined">
+                        calendar_month
+                      </Text>
+                      <Text fontSize="sm">
+                        {moment(project.createdAt)
+                          .locale("pt-br")
+                          .format("D MMM")}
+                      </Text>
+                    </Flex>
+                  </SkeletonText>
                 </Flex>
               </Box>
             ))}

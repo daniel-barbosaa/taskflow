@@ -29,6 +29,7 @@ interface ManagementTaskType {
   setTasks: (type: Task[]) => void;
   tasksForProject: Task[];
   setTasksForProjects: (type: Task[]) => void;
+  loaded: boolean;
 }
 
 const ManagementProjectContext = createContext<ManagementTaskType | undefined>(
@@ -45,28 +46,32 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({
   const [tasks, setTasks] = useState<Task[]>([]);
   const [tasksForProject, setTasksForProjects] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const queryTask = async () => {
       if (userId) {
-        setLoading(true)
+        setLoading(true);
+        setLoaded(false)
         try {
           await getAllTasksByIdOfUser(userId, (tasks) => {
             setTasks(tasks);
           });
+          setTimeout(() => {
+            setLoaded(true);
+          }, 2000);
 
           if (projectId) {
             const taskProject = await getAllTaskForProject(userId, projectId);
             setTasksForProjects(taskProject);
           }
         } catch (error) {
-
-        }finally{
-          setLoading(false)
+        } finally {
+          setLoading(false);
         }
       }
     };
-     queryTask()
+    queryTask();
   }, [projectId, userId]);
 
   return (
@@ -78,6 +83,7 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({
         setTaskId,
         tasksForProject,
         setTasksForProjects,
+        loaded,
       }}
     >
       {children}
