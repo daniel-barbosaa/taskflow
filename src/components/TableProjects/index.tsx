@@ -15,6 +15,7 @@ import moment from "moment";
 import Image from "next/image";
 import AddProject from "../../assets/addDraw.png";
 
+
 interface Project {
   id: string;
   name: string;
@@ -27,20 +28,21 @@ interface Project {
 
 export function TableProjects() {
   moment.locale("pt-br");
-  const { projects } = useManagementProject();
+  const { projects, loaded } = useManagementProject();
 
   const justThreeRecent = projects.slice(0, 3);
 
   if (projects.length === 0) {
     return (
-      <Flex direction="row">
-        <Text fontSize="xl" maxW={200}  color="gray.500" fontWeight="normal">
+      <Flex direction="row" justify="center">
+        <Text fontSize="xl" maxW={200} color="gray.500" fontWeight="normal">
           Nenhum projeto foi criado ainda. Crie seu primeiro projeto agora!
         </Text>
         <Image src={AddProject} alt="add project" width={300}></Image>
       </Flex>
     );
   }
+  let loadingi = false;
 
   return (
     <TableContainer
@@ -60,9 +62,11 @@ export function TableProjects() {
         <Tbody color="gray.500">
           {justThreeRecent.map((project) => (
             <Tr key={project.id}>
-              <Td>{project.name}</Td>
+                <Td border="none">{project.name}</Td>
               <Td>
                 <Flex align="center" gap="5px">
+                  <Flex align="center" gap="5px"></Flex>
+
                   <Flex
                     bg={
                       project.status === "finalizado"
@@ -101,6 +105,7 @@ export function TableProjects() {
                         : "update"}
                     </Text>
                   </Flex>
+
                   {project.status === "finalizado"
                     ? "Finalizado"
                     : project.status === "na fila"

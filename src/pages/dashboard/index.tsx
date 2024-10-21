@@ -18,15 +18,16 @@ import moment from "moment";
 import "moment/locale/pt-br";
 import { useModal } from "@/src/contexts/ModalControlProject";
 import { useAuth } from "@/src/contexts/Auth/AuthContext";
+import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 
 // Adicinar autenticalçao
 
 export default function Dashboard() {
-  const {onOpen,setModalOfInfo,setModalType} = useModal()
-  const { projects } = useManagementProject();
-  const {user} = useAuth()
+  const { onOpen, setModalOfInfo, setModalType } = useModal();
+  const { projects, loaded } = useManagementProject();
+  const { user } = useAuth();
 
-  console.log(projects, user)
+  console.log(projects, user);
 
   const sortedProjects = projects
     .sort((a, b) => (a.taskCount ? -b.progress : 0))
@@ -35,7 +36,7 @@ export default function Dashboard() {
   return (
     <Flex direction="column" h="100vh">
       <Header />
-      <ModalNewProject/>
+      <ModalNewProject />
       <Flex maxW={1280} mx="left">
         <Sidebar />
         <Flex
@@ -49,16 +50,17 @@ export default function Dashboard() {
             {" "}
             <SimpleGrid flex="1" minChildWidth="200px" gap="10px">
               <Box
-              onClick={() => {
-                onOpen()
-                setModalOfInfo(true)
-                setModalType("add")
-              }}
+                onClick={() => {
+                  onOpen();
+                  setModalOfInfo(true);
+                  setModalType("add");
+                }}
                 maxW={200}
                 sx={{
-                  transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.3s ease-in-out",
+                  transition:
+                    "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.3s ease-in-out",
                   cursor: "pointer",
-                  background:" rgba(255, 255, 255, 0.1)",
+                  background: " rgba(255, 255, 255, 0.1)",
                   backdropFilter: "blur(10px)",
                   padding: "20px",
                   borderRadius: "12px",
@@ -66,7 +68,7 @@ export default function Dashboard() {
                   _hover: {
                     transform: "scale(1.02)",
                     border: "1px solid rgba(255, 255, 255, 0.4)",
-                    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)"
+                    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
                   },
                 }}
               >
@@ -96,10 +98,7 @@ export default function Dashboard() {
                       +
                     </Text>
                   </Box>
-                  <Text
-                    color="#3A84FF"
-                    fontWeight="bold"
-                  >
+                  <Text color="#3A84FF" fontWeight="bold">
                     Criar novo projeto
                   </Text>
                 </Flex>
@@ -113,35 +112,65 @@ export default function Dashboard() {
                   shadow="0 2px 8px #00000014"
                   key={project.name}
                 >
-                  <Text color="gray.500" fontSize="sm">
-                    {moment(project.createdAt).format("DD [de] MMM, YYYY")}
-                  </Text>
-                  <Text
-                    fontSize="2xl"
-                    color="gray.700"
-                    fontWeight="bold"
-                    textAlign="center"
-                    mt="25px"
-                  >
-                    {_.capitalize(project.name)}
-                  </Text>
-                  <Text
-                    fontSize="sm"
-                    color="gray.500"
-                    textAlign="center"
-                    mt="5px"
-                  >
-                    App
-                  </Text>
-                  <Box mt="60px">
-                    <Text fontSize="sm" fontWeight="500" color="gray.500">
-                      Tarefas: {project.taskCount}
+                  <SkeletonText noOfLines={1} isLoaded={loaded}>
+                    <Text color="gray.500" fontSize="sm">
+                      {moment(project.createdAt).format("DD [de] MMM, YYYY")}
                     </Text>
+                  </SkeletonText>
+                  <SkeletonText
+                    noOfLines={1}
+                    skeletonHeight={4}
+                    isLoaded={loaded}
+                  >
+                    <Text
+                      fontSize="2xl"
+                      color="gray.700"
+                      fontWeight="bold"
+                      textAlign="center"
+                      mt="25px"
+                    >
+                      {_.capitalize(project.name)}
+                    </Text>
+                  </SkeletonText>
+                  <SkeletonText
+                    noOfLines={1}
+                    skeletonHeight={2}
+                    isLoaded={loaded}
+                  >
+                    <Text
+                      fontSize="sm"
+                      color="gray.500"
+                      textAlign="center"
+                      mt="5px"
+                    >
+                      App
+                    </Text>
+                  </SkeletonText>
+
+                  <Box mt="60px">
+                    <SkeletonText
+                      noOfLines={1}
+                      skeletonHeight={2}
+                      isLoaded={loaded}
+                      w={70}
+                    >
+                      <Text fontSize="sm" fontWeight="500" color="gray.500">
+                        Tarefas: {project.taskCount}
+                      </Text>
+                    </SkeletonText>
                   </Box>
                   <Box mt="10px">
-                    <Text fontSize="sm" fontWeight="600" color="gray.700">
-                      Progresso
-                    </Text>
+                    <SkeletonText
+                      noOfLines={1}
+                      skeletonHeight={2}
+                      isLoaded={loaded}
+                      w={70}
+                    >
+                      <Text fontSize="sm" fontWeight="600" color="gray.700">
+                        Progresso
+                      </Text>
+                    </SkeletonText>
+
                     <Progress
                       value={project.progress}
                       size="xs"
@@ -149,15 +178,21 @@ export default function Dashboard() {
                       mt="5px"
                       borderRadius="8px"
                     />
-                    <Text
-                      textAlign="right"
-                      fontSize="sm"
-                      fontWeight="bold"
-                      color="gray.700"
-                      mt="5px"
+                    <SkeletonText
+                      noOfLines={1}
+                      skeletonHeight={2}
+                      isLoaded={loaded}
                     >
-                      {project.progress}%
-                    </Text>
+                      <Text
+                        textAlign="right"
+                        fontSize="sm"
+                        fontWeight="bold"
+                        color="gray.700"
+                        mt="5px"
+                      >
+                        {project.progress}%
+                      </Text>
+                    </SkeletonText>
                   </Box>
                 </Box>
               ))}
@@ -166,7 +201,7 @@ export default function Dashboard() {
 
           <Box>
             <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="10px">
-             {projects.length != 0 ? 'Projetos recentes' : ''}
+              {projects.length != 0 ? "Projetos recentes" : ""}
             </Text>
             <TableProjects />
           </Box>
