@@ -85,7 +85,7 @@ export function ProjectInfoModal() {
                   <Text color="gray.500">Progresso</Text>
                   <Flex direction="column" gap={0.5}>
                     <Text fontSize="sm" color="gray.600" textAlign="end">
-                      20%
+                      {projectInfo?.progress}%
                     </Text>
                     <Progress
                       value={projectInfo?.progress}

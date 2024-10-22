@@ -25,9 +25,6 @@ export default function Dashboard() {
   const { onOpen, setModalOfInfo, setModalType } = useModal();
   const { projects, loaded } = useManagementProject();
   const { user } = useAuth();
-  
-
-  console.log(projects, user);
 
   const sortedProjects = projects
     .sort((a, b) => (a.taskCount ? -b.progress : 0))

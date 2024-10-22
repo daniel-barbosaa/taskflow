@@ -1,23 +1,23 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import Avatar from 'react-avatar';
-
-import { useAuth } from "@/src/contexts/Auth/AuthContext"; 
+import { Box, Button, Flex, Image, Text, Avatar } from "@chakra-ui/react";
+import { useAuth } from "@/src/contexts/Auth/AuthContext";
+import _ from "lodash";
 
 export function Header() {
-  const {signOutUser} = useAuth()
-  
+  const { signOutUser, user } = useAuth();
+
+  console.log(user);
+
   async function handleLogOut() {
-    try{
-      await signOutUser()
-      console.log("Usuario deslogado")
-    }catch(error){
-      console.log("houve algum erro, tente novamente!")
+    try {
+      await signOutUser();
+      console.log("Usuario deslogado");
+    } catch (error) {
+      console.log("houve algum erro, tente novamente!");
     }
-    
   }
 
   return (
-    <Flex w="100%"  as="header" padding="20px 30px" justify="space-between" >
+    <Flex w="100%" as="header" padding="20px 30px" justify="space-between">
       <Flex>
         <Text fontSize="2xl" fontWeight="bold">
           task
@@ -35,9 +35,30 @@ export function Header() {
         </Flex>
       </Flex>
       <Flex align="center" gap="10px">
-        {/* <Avatar name="Daniel barbosa" size="30px" round></Avatar> */}
-        <Text color="#4F4F4F" opacity="80%">danimendes9728@gmail.com</Text>
-        
+        <Avatar
+          src={user?.photoURL ?? undefined}
+          name={user?.displayName ?? undefined}
+          size="sm"
+        />
+        <Text color="#161616" opacity="80%">
+          {_.startCase(_.toLower(user?.displayName ?? undefined))}
+        </Text>
+        <Button onClick={handleLogOut} padding="0" sx={{
+          bg: "none",
+          _hover: {
+            bg: 'none',
+          }
+        }}>
+          {" "}
+          <Text
+          
+            className="material-symbols-outlined"
+            color="gray.600"
+            fontSize="xl"
+          >
+            move_item
+          </Text>
+        </Button>
       </Flex>
     </Flex>
   );
