@@ -14,6 +14,7 @@ import {
   Progress,
   Skeleton,
   SkeletonText,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import moment from "moment";
@@ -24,14 +25,17 @@ import { useAuth } from "@/src/contexts/Auth/AuthContext";
 export default function Dashboard() {
   const { onOpen, setModalOfInfo, setModalType } = useModal();
   const { projects, loaded } = useManagementProject();
-  const { user } = useAuth();
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
 
   const sortedProjects = projects
     .sort((a, b) => (a.taskCount ? -b.progress : 0))
     .slice(0, 3);
 
   return (
-    <Flex direction="column" h="100vh">
+    <Flex direction="column" h="100vh" position="relative">
       <Header />
       <ModalNewProject />
       <Flex maxW={1280} mx="left">
@@ -100,101 +104,107 @@ export default function Dashboard() {
                   </Text>
                 </Flex>
               </Box>
-              {sortedProjects.map((project) => (
-                <Box
-                  maxW={200}
-                  bg="#ffffff"
-                  p="15px"
-                  borderRadius="8px"
-                  shadow="0 2px 8px #00000014"
-                  key={project.name}
-                >
-                  <SkeletonText noOfLines={1} isLoaded={loaded}>
-                    <Text color="gray.500" fontSize="sm">
-                      {moment(project.createdAt).format("DD [de] MMM, YYYY")}
-                    </Text>
-                  </SkeletonText>
-                  <SkeletonText
-                    noOfLines={1}
-                    skeletonHeight={4}
-                    isLoaded={loaded}
-                  >
-                    <Text
-                      fontSize="2xl"
-                      color="gray.700"
-                      fontWeight="bold"
-                      textAlign="center"
-                      mt="25px"
+              {isWideVersion && (
+                <>
+                  {sortedProjects.map((project) => (
+                    <Box
+                      maxW={200}
+                      bg="#ffffff"
+                      p="15px"
+                      borderRadius="8px"
+                      shadow="0 2px 8px #00000014"
+                      key={project.name}
                     >
-                      {_.capitalize(project.name)}
-                    </Text>
-                  </SkeletonText>
-                  <SkeletonText
-                    noOfLines={1}
-                    skeletonHeight={2}
-                    isLoaded={loaded}
-                  >
-                    <Text
-                      fontSize="sm"
-                      color="gray.500"
-                      textAlign="center"
-                      mt="5px"
-                    >
-                      App
-                    </Text>
-                  </SkeletonText>
-
-                  <Box mt="60px">
-                    <SkeletonText
-                      noOfLines={1}
-                      skeletonHeight={2}
-                      isLoaded={loaded}
-                      w={70}
-                    >
-                      <Text fontSize="sm" fontWeight="500" color="gray.500">
-                        Tarefas: {project.taskCount}
-                      </Text>
-                    </SkeletonText>
-                  </Box>
-                  <Box mt="10px">
-                    <SkeletonText
-                      noOfLines={1}
-                      skeletonHeight={2}
-                      isLoaded={loaded}
-                      w={70}
-                    >
-                      <Text fontSize="sm" fontWeight="600" color="gray.700">
-                        Progresso
-                      </Text>
-                    </SkeletonText>
-                    <Skeleton isLoaded={loaded}>
-                      <Progress
-                        value={project.progress}
-                        size="xs"
-                        colorScheme="blue"
-                        mt="5px"
-                        borderRadius="8px"
-                      />
-                    </Skeleton>
-
-                    <SkeletonText
-                      noOfLines={1}
-                      skeletonHeight={2}
-                      isLoaded={loaded}
-                    >
-                      <Text
-                        textAlign="right"
-                        fontSize="sm"
-                        fontWeight="bold"
-                        color="gray.700"
-                        mt="5px"
+                      <SkeletonText noOfLines={1} isLoaded={loaded}>
+                        <Text color="gray.500" fontSize="sm">
+                          {moment(project.createdAt).format(
+                            "DD [de] MMM, YYYY"
+                          )}
+                        </Text>
+                      </SkeletonText>
+                      <SkeletonText
+                        noOfLines={1}
+                        skeletonHeight={4}
+                        isLoaded={loaded}
                       >
-                        {project.progress}%
-                      </Text>
-                    </SkeletonText>
-                  </Box>
-                </Box>
-              ))}
+                        <Text
+                          fontSize="2xl"
+                          color="gray.700"
+                          fontWeight="bold"
+                          textAlign="center"
+                          mt="25px"
+                        >
+                          {_.capitalize(project.name)}
+                        </Text>
+                      </SkeletonText>
+                      <SkeletonText
+                        noOfLines={1}
+                        skeletonHeight={2}
+                        isLoaded={loaded}
+                      >
+                        <Text
+                          fontSize="sm"
+                          color="gray.500"
+                          textAlign="center"
+                          mt="5px"
+                        >
+                          App
+                        </Text>
+                      </SkeletonText>
+
+                      <Box mt="60px">
+                        <SkeletonText
+                          noOfLines={1}
+                          skeletonHeight={2}
+                          isLoaded={loaded}
+                          w={70}
+                        >
+                          <Text fontSize="sm" fontWeight="500" color="gray.500">
+                            Tarefas: {project.taskCount}
+                          </Text>
+                        </SkeletonText>
+                      </Box>
+                      <Box mt="10px">
+                        <SkeletonText
+                          noOfLines={1}
+                          skeletonHeight={2}
+                          isLoaded={loaded}
+                          w={70}
+                        >
+                          <Text fontSize="sm" fontWeight="600" color="gray.700">
+                            Progresso
+                          </Text>
+                        </SkeletonText>
+                        <Skeleton isLoaded={loaded}>
+                          <Progress
+                            value={project.progress}
+                            size="xs"
+                            colorScheme="blue"
+                            mt="5px"
+                            borderRadius="8px"
+                          />
+                        </Skeleton>
+
+                        <SkeletonText
+                          noOfLines={1}
+                          skeletonHeight={2}
+                          isLoaded={loaded}
+                        >
+                          <Text
+                            textAlign="right"
+                            fontSize="sm"
+                            fontWeight="bold"
+                            color="gray.700"
+                            mt="5px"
+                          >
+                            {project.progress}%
+                          </Text>
+                        </SkeletonText>
+                      </Box>
+                    </Box>
+                  ))}
+                </>
+              )}
             </SimpleGrid>
           </Flex>
 
@@ -206,7 +216,7 @@ export default function Dashboard() {
           </Box>
           <SimpleGrid minChildWidth="400px" gap="2rem">
             <TasksCharts />
-            <ProjectChart />
+            {/* <ProjectChart /> */}
           </SimpleGrid>
         </Flex>
       </Flex>

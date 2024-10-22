@@ -1,5 +1,5 @@
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 import Image from "next/image";
@@ -24,6 +24,10 @@ export function TasksCharts() {
   let taskInLine: Task[] = [];
   let taskInProgress: Task[] = [];
   let taskFinished: Task[] = [];
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
 
   tasks.forEach((task) => {
     switch (task.status) {
@@ -73,7 +77,7 @@ export function TasksCharts() {
   });
 
   return (
-    <Box>
+    <Box maxW={!isWideVersion ? 200 : "100%"} >
       <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="10px">
         Status das tarefas
       </Text>
@@ -102,7 +106,7 @@ export function TasksCharts() {
               </Text>
             </Flex>
             <Link href="/tasks">
-              <Image src={addTask} alt="add tarefas" width={150} ></Image>
+              <Image src={addTask} alt="add tarefas" width={150}></Image>
             </Link>
           </Flex>
         ) : (
@@ -128,48 +132,48 @@ export function TasksCharts() {
                 </Pie>
               </PieChart>
             )}
-
-            <Flex direction="column">
-              <Flex align="center" justify="space-between">
-                <Flex align="center" gap="5px">
-                  <Text color="#38cb898f" fontSize="30px">
-                    •
-                  </Text>
-                  <Text fontSize="sm" color="gray.500">
-                    Finalizado
-                  </Text>
-                </Flex>
-                <Text fontSize="sm" color="gray.500" ml="3rem">
-                  {`${percentForTask[0].value}%`}
-                </Text>
-              </Flex>
-              <Flex align="center" justify="space-between">
-                <Flex align="center" gap="5px">
-                  <Text color="#ffc75860" fontSize="30px">
-                    •
-                  </Text>
-                  <Text fontSize="sm" color="gray.500">
-                    Na fila
+           
+              <Flex direction="column">
+                <Flex align="center" justify="space-between">
+                  <Flex align="center" gap="5px">
+                    <Text color="#38cb898f" fontSize="30px">
+                      •
+                    </Text>
+                    <Text fontSize="sm" color="gray.500">
+                      Finalizado
+                    </Text>
+                  </Flex>
+                  <Text fontSize="sm" color="gray.500" ml="3rem">
+                    {`${percentForTask[0].value}%`}
                   </Text>
                 </Flex>
-                <Text color="gray.500" ml="3rem" fontSize="sm">
-                  {`${percentForTask[2].value}%`}
-                </Text>
-              </Flex>
-              <Flex align="center" justify="space-between">
-                <Flex align="center" gap="5px">
-                  <Text color="#a361ff83" fontSize="30px">
-                    •
-                  </Text>
-                  <Text fontSize="sm" color="gray.500">
-                    Em progresso
+                <Flex align="center" justify="space-between">
+                  <Flex align="center" gap="5px">
+                    <Text color="#ffc75860" fontSize="30px">
+                      •
+                    </Text>
+                    <Text fontSize="sm" color="gray.500">
+                      Na fila
+                    </Text>
+                  </Flex>
+                  <Text color="gray.500" ml="3rem" fontSize="sm">
+                    {`${percentForTask[2].value}%`}
                   </Text>
                 </Flex>
-                <Text color="gray.500" ml="3rem" fontSize="sm">
-                  {`${percentForTask[1].value}%`}
-                </Text>
+                <Flex align="center" justify="space-between">
+                  <Flex align="center" gap="5px">
+                    <Text color="#a361ff83" fontSize="30px">
+                      •
+                    </Text>
+                    <Text fontSize="sm" color="gray.500">
+                      Em progresso
+                    </Text>
+                  </Flex>
+                  <Text color="gray.500" ml="3rem" fontSize="sm">
+                    {`${percentForTask[1].value}%`}
+                  </Text>
+                </Flex>
               </Flex>
-            </Flex>
           </>
         )}
       </Flex>

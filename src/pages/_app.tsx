@@ -7,20 +7,23 @@ import { ProjectProvider } from "../contexts/ManagementOfProject";
 import { TaskProvider } from "../contexts/ManagementOfTask";
 import { AuthProvider } from "../contexts/Auth/AuthContext";
 import "../services/firebase";
+import { SidebarDrawerPorvider } from "../contexts/SidebarDrawerContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <ChakraProvider theme={theme}>
-        <AuthProvider>
-          <ModalProvider>
-            <ProjectProvider>
-              <TaskProvider>
-                <Component {...pageProps} />
-              </TaskProvider>
-            </ProjectProvider>
-          </ModalProvider>
-        </AuthProvider>
+        <SidebarDrawerPorvider>
+          <AuthProvider>
+            <ModalProvider>
+              <ProjectProvider>
+                <TaskProvider>
+                  <Component {...pageProps} />
+                </TaskProvider>
+              </ProjectProvider>
+            </ModalProvider>
+          </AuthProvider>
+        </SidebarDrawerPorvider>
       </ChakraProvider>
     </>
   );

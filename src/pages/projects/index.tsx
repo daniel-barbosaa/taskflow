@@ -193,13 +193,6 @@ export default function Dashboard() {
                 borderRadius="8px"
                 shadow="0 1px 4px 0 #00000013"
                 overflow="visible"
-                //   sx={{
-                //     transition: "transform 0.3s ease-in-out",
-                //    _hover: {
-                //       cursor: 'pointer',
-                //       transform: "scale(1.02)",
-                //    }
-                //  }}
               >
                 <Box
                   position="absolute"

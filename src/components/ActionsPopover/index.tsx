@@ -48,7 +48,7 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
             </Text>
           </Button>
         </PopoverTrigger>
-        <PopoverContent position="relative" zIndex="tooltip" w="200px">
+        <PopoverContent position="relative" zIndex="tooltip" w={150}>
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
