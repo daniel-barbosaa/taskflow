@@ -1,10 +1,6 @@
 import Dashboard from "@/src/pages/dashboard";
 import {
   Flex,
-  Text,
-  Link as ChakraLink,
-  LinkProps,
-  Box,
   useBreakpointValue,
   Drawer,
   DrawerOverlay,
@@ -21,6 +17,7 @@ export function Sidebar() {
   const {onClose, isOpen} = useSidebarDrawer()
   const isDrawerSidebar = useBreakpointValue({
     base: true,
+    md: false,
     lg: false,
   });
 

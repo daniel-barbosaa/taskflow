@@ -11,6 +11,7 @@ import {
   Progress,
   Spinner,
   Divider,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import _ from "lodash";
 
@@ -25,13 +26,18 @@ export function ProjectInfoModal() {
   const { projectInfo } = useManagementProject();
   const {tasksForProject} = useManagementTask()
   const { isOpen, onClose, modalType } = useModal();
+  const andBigScreen = useBreakpointValue({
+    base: false,
+    md: true,
+    lg: true,
+  });
 
   return (
     <>
       {modalType === "info" && (
         <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
+          <ModalOverlay w="100%" h="100%" />
+          <ModalContent w={andBigScreen ? 'lg' : "xs"}>
             <ModalHeader color="gray.700">{projectInfo?.name}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

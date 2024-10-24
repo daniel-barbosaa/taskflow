@@ -20,6 +20,7 @@ import {
   SliderThumb,
   Text,
   Spinner,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { ButtonAddNew } from "../ButtonAddNew";
 import { useState } from "react";
@@ -47,6 +48,10 @@ export function ModalNewProject() {
   const toast = useToast();
   const {user} = useAuth()
   const userId = user?.uid
+  const andSmallScreen = useBreakpointValue({
+    base: true,
+    lg: false
+  })
 
   const {
     register,
@@ -111,6 +116,7 @@ export function ModalNewProject() {
     fontSize: "sm",
   };
 
+
   return (
     <>
       <ButtonAddNew
@@ -124,14 +130,14 @@ export function ModalNewProject() {
       </ButtonAddNew>
       {modalOfInfo && (
         <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
+          <ModalOverlay w="100%" h="100%"/>
+          <ModalContent w={andSmallScreen ? "xs" : "full"}>
             <ModalHeader color="gray.700">
               {modalType == "editproject" ? "Atualizar Projeto" : "Novo projeto"}
             </ModalHeader>
             <ModalCloseButton />
             <form onSubmit={handleSubmit(onSubmit)}>
-              <ModalBody>
+              <ModalBody >
                 <Stack mb="3">
                   <FormLabel mb="0">Nome</FormLabel>
                   <Input

@@ -13,6 +13,7 @@ import {
   FormLabel,
   Text,
   Spinner,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { ButtonAddNew } from "../ButtonAddNew";
 import { useEffect, useState } from "react";
@@ -39,12 +40,16 @@ export function ModalNewTask() {
   const { taskId } = useManagementTask();
   const {projects} = useManagementProject()
   const {user} = useAuth()
- 
   const [projectName, setProjectName] = useState<string>("");
   const [projectId, setProjectId] = useState<string>("");
   const userId = user?.uid;
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  
+  const andSmallScreen = useBreakpointValue({
+    base: true,
+    lg: false
+  })
 
 
   const {
@@ -103,6 +108,7 @@ export function ModalNewTask() {
     }, 2000);
   };
 
+
   function handlePrjectSelect(event: React.ChangeEvent<HTMLSelectElement>) {
     const projectId = event.target.value;
 
@@ -129,7 +135,7 @@ export function ModalNewTask() {
       {modalType !== "delete" && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent w={andSmallScreen ? "xs" : "full"}>
             <ModalHeader color="gray.700">
               {modalType == "edit" ? "Editar tarefa" : "Nova tarefa"}
             </ModalHeader>

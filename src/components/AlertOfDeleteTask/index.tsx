@@ -8,6 +8,7 @@ import {
   AlertDialogCloseButton,
   Button,
   useToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import {useModal} from '../../contexts/ModalControlProject'
 import React, { useRef } from "react";
@@ -25,6 +26,11 @@ export function AlertOfDeleteTask() {
     const {user} = useAuth()
     const userId = user?.uid;
     const toast = useToast();
+    const andBigScreen = useBreakpointValue({
+      base: false,
+      md: true,
+      lg: true,
+    });
 
     async function handleDeleTask (){
       try {
@@ -54,7 +60,7 @@ export function AlertOfDeleteTask() {
           isCentered
         >
           <AlertDialogOverlay />
-          <AlertDialogContent w={350}>
+          <AlertDialogContent w={andBigScreen ? "lg" : "xs"}>
             <AlertDialogHeader>Excluir projeto?</AlertDialogHeader>
             <AlertDialogCloseButton />
             <AlertDialogBody>

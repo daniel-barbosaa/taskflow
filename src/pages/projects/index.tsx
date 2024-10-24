@@ -83,7 +83,7 @@ export default function Dashboard() {
               </Text>
             </Flex>
           </Flex>
-          <SimpleGrid minChildWidth="300px" gap="10px">
+          <SimpleGrid minChildWidth="200px" gap="10px">
             <Flex
               align="center"
               justify="space-between"
@@ -181,7 +181,7 @@ export default function Dashboard() {
               </Text>
             </Flex>
           </SimpleGrid>
-          <SimpleGrid minChildWidth="300px" gap="10px">
+          <SimpleGrid minChildWidth="200px" gap="10px">
             {projects.map((project) => (
               <Box
                 cursor="pointer"
