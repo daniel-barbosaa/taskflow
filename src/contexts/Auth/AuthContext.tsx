@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import {getAuth, User, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from 'next/navigation'
+import { useGoogleLoggin } from "@/src/hooks/useGoogleLoggin";
+import Cookies from 'js-cookie';
 
 
 
@@ -19,6 +21,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const router = useRouter()
   const auth = getAuth();
 
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -26,8 +29,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
     if(user){
       router.push('/dashboard')
-    }else if(!user){
-      router.push('/')
     }
     return () => unsubscribe();
   }, [user]);
@@ -35,6 +36,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const signOutUser  = async () =>  {
     await signOut(auth)
     setUser(null)
+    Cookies.remove('token')
+    router.push('/')
   }
 
 
