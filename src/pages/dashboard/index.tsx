@@ -28,7 +28,10 @@ export default function Dashboard() {
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
+    md: true,
   });
+  
+  const existProjects = projects.length > 0;
 
   const sortedProjects = projects
     .sort((a, b) => (a.taskCount ? -b.progress : 0))
@@ -214,10 +217,15 @@ export default function Dashboard() {
             </Text>
             <TableProjects />
           </Box>
-          <SimpleGrid minChildWidth="400px" gap="2rem">
-            <TasksCharts />
-            {/* <ProjectChart /> */}
-          </SimpleGrid>
+          {existProjects && (
+            <Flex
+              direction={isWideVersion ? "row" : "column"}
+              gap={isWideVersion ? "2rem" : "20px"}
+            >
+              <TasksCharts />
+              <ProjectChart />
+            </Flex>
+          )}
         </Flex>
       </Flex>
     </Flex>

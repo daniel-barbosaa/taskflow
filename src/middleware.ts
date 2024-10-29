@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import admin from "./services/firebaseAdmin";
+
 
 export async function middleware(req: NextRequest) {
   const tokenCookie = req.cookies.get("token");
@@ -18,6 +18,7 @@ export async function middleware(req: NextRequest) {
       },
     });
     const data = await response.json();
+    
     if (data.uid) {
       return NextResponse.next();
     }

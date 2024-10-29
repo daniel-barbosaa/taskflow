@@ -12,6 +12,7 @@ import {
   Skeleton,
   SkeletonCircle,
   SkeletonText,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useManagementProject } from "../../contexts/ManagementOfProject";
 import moment from "moment";
@@ -31,20 +32,27 @@ interface Project {
 export function TableProjects() {
   moment.locale("pt-br");
   const { projects, loaded } = useManagementProject();
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+    md: true,
+  });
 
   const justThreeRecent = projects.slice(0, 3);
 
   if (projects.length === 0) {
     return (
-      <Flex direction="row" justify="center">
-        <Text fontSize="xl" maxW={200} color="gray.500" fontWeight="normal">
-          Nenhum projeto foi criado ainda. Crie seu primeiro projeto agora!
-        </Text>
+      <Flex direction={["column", "row"]} justify="center">
+        {isWideVersion && (
+          <Text fontSize="xl" maxW={200} color="gray.500" fontWeight="normal">
+            Nenhum projeto foi criado ainda. Crie seu primeiro projeto agora!
+          </Text>
+        )}
+
         <Image src={AddProject} alt="add project" width={300}></Image>
       </Flex>
     );
   }
-  let loadingi = false;
 
   return (
     <TableContainer

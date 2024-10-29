@@ -38,19 +38,18 @@ interface Inputs {
 export function ModalNewTask() {
   const { isOpen, onClose, onOpen, setModalType, modalType } = useModal();
   const { taskId } = useManagementTask();
-  const {projects} = useManagementProject()
-  const {user} = useAuth()
+  const { projects } = useManagementProject();
+  const { user } = useAuth();
   const [projectName, setProjectName] = useState<string>("");
   const [projectId, setProjectId] = useState<string>("");
   const userId = user?.uid;
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  
+
   const andSmallScreen = useBreakpointValue({
     base: true,
-    lg: false
-  })
-
+    lg: false,
+  });
 
   const {
     register,
@@ -58,6 +57,14 @@ export function ModalNewTask() {
     formState: { errors },
     reset,
   } = useForm<Inputs>();
+
+  useEffect(() => {
+    if (projects.length === 1) {
+      const singleProject = projects[0];
+      setProjectName(singleProject.name);
+      setProjectId(singleProject.id);
+    }
+  }, [projects]);
 
   const onSubmit: SubmitHandler<Inputs> = async (task) => {
     setLoading(true);
@@ -108,8 +115,7 @@ export function ModalNewTask() {
     }, 2000);
   };
 
-
-  function handlePrjectSelect(event: React.ChangeEvent<HTMLSelectElement>) {
+  function handleProjectSelect(event: React.ChangeEvent<HTMLSelectElement>) {
     const projectId = event.target.value;
 
     const selectedProject = projects.find(
@@ -167,11 +173,8 @@ export function ModalNewTask() {
                   <FormLabel mb="0">Projeto</FormLabel>
                   <Select
                     {...register("projectName", { required: true })}
-                    onChange={handlePrjectSelect}
+                    onChange={handleProjectSelect}
                   >
-                    <option value="" disabled>
-                      Selecione um projeto
-                    </option>
                     {projects.map((project) => (
                       <option key={project.id} value={project.id}>
                         {project.name}

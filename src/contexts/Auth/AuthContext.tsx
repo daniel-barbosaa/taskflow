@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import {getAuth, User, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from 'next/navigation'
-import { useGoogleLoggin } from "@/src/hooks/useGoogleLoggin";
 import Cookies from 'js-cookie';
 
 

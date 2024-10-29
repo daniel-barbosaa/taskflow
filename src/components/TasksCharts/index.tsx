@@ -77,7 +77,7 @@ export function TasksCharts() {
   });
 
   return (
-    <Box maxW={!isWideVersion ? 200 : "100%"} >
+    <Box maxW={!isWideVersion ? 300 : "100%"} >
       <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="10px">
         Status das tarefas
       </Text>
