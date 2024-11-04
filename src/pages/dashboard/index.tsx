@@ -20,7 +20,6 @@ import _ from "lodash";
 import moment from "moment";
 import "moment/locale/pt-br";
 import { useModal } from "@/src/contexts/ModalControlProject";
-import { useAuth } from "@/src/contexts/Auth/AuthContext";
 
 export default function Dashboard() {
   const { onOpen, setModalOfInfo, setModalType } = useModal();
@@ -30,7 +29,7 @@ export default function Dashboard() {
     lg: true,
     md: true,
   });
-  
+
   const existProjects = projects.length > 0;
 
   const sortedProjects = projects

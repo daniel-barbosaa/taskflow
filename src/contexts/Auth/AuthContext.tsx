@@ -38,9 +38,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     Cookies.remove('token')
     router.push('/')
   }
-
-
-
   return (
     <AuthContext.Provider
       value={{ user, setUser, signOutUser}}

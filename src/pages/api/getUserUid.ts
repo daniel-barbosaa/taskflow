@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import admin from '@/src/services/firebaseAdmin';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
     const token = req.cookies.token; 
 
     if (!token) {

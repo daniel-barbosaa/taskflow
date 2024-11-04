@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-
 export async function middleware(req: NextRequest) {
   const tokenCookie = req.cookies.get("token");
   const token = tokenCookie ? tokenCookie.value : null;
@@ -14,11 +13,10 @@ export async function middleware(req: NextRequest) {
   try {
     const response = await fetch(`${req.nextUrl.origin}/api/getUserUid`, {
       headers: {
-        Cookie: `token=${token}`, // Envia o cookie de autenticação.
+        Cookie: `token=${token}`,
       },
     });
     const data = await response.json();
-    
     if (data.uid) {
       return NextResponse.next();
     }

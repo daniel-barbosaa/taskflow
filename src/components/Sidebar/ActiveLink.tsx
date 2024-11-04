@@ -1,28 +1,28 @@
-import Link, {LinkProps} from "next/link";
+import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 import { cloneElement, ReactElement } from "react";
 
 interface ActiveLinkProps extends LinkProps {
-    children: ReactElement
+  children: ReactElement;
 }
 
-export function ActiveLink({children, ...rest}: ActiveLinkProps) {
-    const { asPath } = useRouter()
-    let isActive = false
+export function ActiveLink({ children, ...rest }: ActiveLinkProps) {
+  const { asPath } = useRouter();
+  let isActive = false;
 
-    if(asPath === rest.href || asPath === rest.as){
-        isActive = true
-    }
-    
-        
+  if (asPath === rest.href || asPath === rest.as) {
+    isActive = true;
+  }
 
-    return (
-        <Link {...rest}>
-            {cloneElement(children, {
-                color: isActive ? '#3A84FF' : "#718096",
-                background: isActive ? "white" : 'transparent',
-                
-            })}
-        </Link>
-    )
+  return (
+    <Link {...rest}>
+      {cloneElement(children, {
+        "data-testid": "active-link",
+        style: {
+          color: isActive ? "rgb(58, 132, 255)" : "#718096",
+          background: isActive ? "white" : "transparent",
+        },
+      })}
+    </Link>
+  );
 }
