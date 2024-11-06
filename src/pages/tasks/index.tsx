@@ -7,17 +7,14 @@ import { AlertOfDeleteTask } from "@/src/components/AlertOfDeleteTask";
 import { useModal } from "../../contexts/ModalControlProject";
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 
-
-
 export default function Dashboard() {
   const { modalType } = useModal();
   const { tasks } = useManagementTask();
+  const existsTasks = tasks.length >= 1;
 
   let taskInLine = [];
   let taskInProgress = [];
   let taskFinished = [];
-
-  
 
   tasks.forEach((task) => {
     switch (task.status) {
@@ -123,16 +120,49 @@ export default function Dashboard() {
               </Flex>
               <Text color="gray.500">Na fila</Text>
               <Text color="gray.500" fontWeight="bold">
-               {taskInLine.length}
+                {taskInLine.length}
               </Text>
             </Flex>
           </Flex>
 
           <Box as="section">
-            <Text fontSize="sm" color="gray.500" fontWeight="normal" mb="10px">
-              Tarefas
-            </Text>
-            <TableTasks />
+            {existsTasks ? (
+              <>
+                <Text
+                  fontSize="sm"
+                  color="gray.500"
+                  fontWeight="normal"
+                  mb="10px"
+                >
+                  Tarefas
+                </Text>
+                <TableTasks />
+              </>
+            ) : (
+              <Flex
+                flexDirection="column"
+                align="center"
+                justify="center"
+                as="section"
+                mt="30px"
+                gap="10px"
+              >
+                <Text fontSize="xl" fontWeight="400" color="gray.600">
+                  Nenhuma tarefa por enquanto. Que tal começar com a primeira?
+                </Text>
+                <Text fontWeight="400" color="gray.500" mt="10px">
+                  Crie suas tarefas com apenas um clique!
+                </Text>
+
+                <Text
+                  className="material-symbols-outlined"
+                  fontSize="7xl"
+                  color="#9f9fa47b"
+                >
+                  add_task
+                </Text>
+              </Flex>
+            )}
           </Box>
         </Flex>
       </Flex>

@@ -1,4 +1,3 @@
-import Dashboard from "@/src/pages/dashboard";
 import {
   Flex,
   useBreakpointValue,

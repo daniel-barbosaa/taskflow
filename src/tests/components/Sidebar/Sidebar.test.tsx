@@ -1,13 +1,23 @@
 import "@testing-library/jest-dom";
-import { getByRole, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ActiveLink } from "../../../components/Sidebar/ActiveLink";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { SidebarNav } from "@/src/components/Sidebar/SidebarNav";
+import { debug } from "console";
+import {useBreakpointValue} from "@chakra-ui/react";
+import { Sidebar } from "@/src/components/Sidebar";
+
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
-describe("ActiveLink Component", () => {
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  useBreakpointValue: jest.fn(),
+}));
+
+describe("ActiveLink", () => {
   (useRouter as jest.Mock).mockImplementation(() => ({
     asPath: "/",
   }));
@@ -34,7 +44,7 @@ describe("ActiveLink Component", () => {
     );
 
     const linkElement = screen.getByTestId("active-link");
-   
+
     expect(linkElement).toHaveStyle({
       color: "rgb(58, 132, 255)",
       background: "white",
@@ -42,28 +52,44 @@ describe("ActiveLink Component", () => {
   });
 
   it("Apply style correctly when is not active", () => {
-      (useRouter as jest.Mock).mockImplementation(() => ({
-          asPath: '/about',
-      }))
+    (useRouter as jest.Mock).mockImplementation(() => ({
+      asPath: "/about",
+    }));
 
-      const {debug}= render(
-          <ActiveLink href="/dashboard">
-              <p>Dashboard</p>
-          </ActiveLink>
-      )
-      debug()
-      const linkElement = screen.getByTestId("active-link");
+    const { debug } = render(
+      <ActiveLink href="/dashboard">
+        <p>Dashboard</p>
+      </ActiveLink>
+    );
+    debug();
+    const linkElement = screen.getByTestId("active-link");
     expect(linkElement).toHaveStyle({
       color: "#718096",
       background: "transparent",
     });
-  })
+  });
 });
 
-//Aplicar os testes do Sidebar
-describe("SidebarNav Component", () => {
+describe("SidebarNav", () => {
+  it("renders correctly", () => {
+    render(<SidebarNav />);
 
-})
+    expect(screen.getByText("Dashboard")).toBeInTheDocument();
+    expect(screen.getByText("Projetos")).toBeInTheDocument();
+    expect(screen.getByText("Tarefas")).toBeInTheDocument();
+  });
+});
 
+describe("Sidebar component", () => {
+  it("renders correctly", () => {
+    // (useBreakpointValue as jest.Mock).mockReturnValue(true);
 
+    render(<Sidebar />);
 
+    expect(screen.getByText("Dashboard")).toBeInTheDocument();
+    expect(screen.getByText("Projetos")).toBeInTheDocument();
+    expect(screen.getByText("Tarefas")).toBeInTheDocument();
+    
+  });
+  
+});
