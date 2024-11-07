@@ -17,6 +17,7 @@ import { useSidebarDrawer } from "@/src/contexts/SidebarDrawerContext";
 export function Header() {
   const { onOpen } = useSidebarDrawer();
   const { signOutUser, user } = useAuth();
+  
   async function handleLogOut() {
     try {
       await signOutUser();
@@ -42,6 +43,7 @@ export function Header() {
             variant="unstyled"
             onClick={onOpen}
             mr="3"
+            value="menu"
           ></IconButton>
         )}
         <Text fontSize="2xl" fontWeight="bold">

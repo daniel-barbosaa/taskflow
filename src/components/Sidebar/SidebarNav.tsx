@@ -1,12 +1,12 @@
 import {
   Text,
-  Link as
   Box,
   Stack,
 } from "@chakra-ui/react";
 
 import { ActiveLink } from "./ActiveLink";
 
+// Se houver erro de navegação atraves dos links, é porque inves de usar um link estou usando uma div(Box) como elemento.
 export function SidebarNav() {
   return (
     <Stack>

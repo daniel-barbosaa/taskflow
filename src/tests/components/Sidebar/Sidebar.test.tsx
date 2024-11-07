@@ -6,6 +6,7 @@ import { SidebarNav } from "@/src/components/Sidebar/SidebarNav";
 import { debug } from "console";
 import {useBreakpointValue} from "@chakra-ui/react";
 import { Sidebar } from "@/src/components/Sidebar";
+import { useSidebarDrawer } from "../../../contexts/SidebarDrawerContext";
 
 
 jest.mock("next/router", () => ({
@@ -17,6 +18,12 @@ jest.mock("@chakra-ui/react", () => ({
   useBreakpointValue: jest.fn(),
 }));
 
+jest.mock("../../../contexts/SidebarDrawerContext", () => ({
+  ...jest.requireActual("../../../contexts/SidebarDrawerContext"),
+  useSidebarDrawer: jest.fn(),
+}));
+
+
 describe("ActiveLink", () => {
   (useRouter as jest.Mock).mockImplementation(() => ({
     asPath: "/",
@@ -25,7 +32,7 @@ describe("ActiveLink", () => {
   it("renders correctly", () => {
     render(
       <ActiveLink href="/dashoard">
-        <p>Dashboard</p>
+        <div>Dashboard</div>
       </ActiveLink>
     );
 
@@ -39,7 +46,7 @@ describe("ActiveLink", () => {
 
     render(
       <ActiveLink href="/dashboard">
-        <p>Dashboard</p>
+        <div>Dashboard</div>
       </ActiveLink>
     );
 
@@ -55,13 +62,11 @@ describe("ActiveLink", () => {
     (useRouter as jest.Mock).mockImplementation(() => ({
       asPath: "/about",
     }));
-
-    const { debug } = render(
+     render(
       <ActiveLink href="/dashboard">
-        <p>Dashboard</p>
+        <div>Dashboard</div>
       </ActiveLink>
     );
-    debug();
     const linkElement = screen.getByTestId("active-link");
     expect(linkElement).toHaveStyle({
       color: "#718096",
@@ -82,7 +87,11 @@ describe("SidebarNav", () => {
 
 describe("Sidebar component", () => {
   it("renders correctly", () => {
-    // (useBreakpointValue as jest.Mock).mockReturnValue(true);
+
+    (useSidebarDrawer as jest.Mock).mockReturnValueOnce({
+      isOpen: false,
+      onClose: jest.fn()
+    })
 
     render(<Sidebar />);
 
@@ -91,5 +100,20 @@ describe("Sidebar component", () => {
     expect(screen.getByText("Tarefas")).toBeInTheDocument();
     
   });
-  
+
+  it("is Drawer menu", () => {
+    (useBreakpointValue as jest.Mock).mockReturnValue(true);
+    (useSidebarDrawer as jest.Mock).mockReturnValue({
+      isOpen: true,
+      onClose: jest.fn()
+    })
+
+    render(<Sidebar />);
+
+    expect(screen.getByText("Navegação")).toBeInTheDocument();
+    expect(screen.getByText("Dashboard")).toBeInTheDocument();
+    expect(screen.getByText("Projetos")).toBeInTheDocument();
+    expect(screen.getByText("Tarefas")).toBeInTheDocument();
+    
+  });
 });
