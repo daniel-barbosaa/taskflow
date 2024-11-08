@@ -11,14 +11,15 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useModal } from "../../contexts/ModalControlProject";
-import React, { useRef } from "react";
+
 import { useManagementProject } from "../../contexts/ManagementOfProject";
 import { deleteProject } from "../../services/projectService";
 import { useAuth } from "@/src/contexts/Auth/AuthContext";
+import { useRef } from "react";
 
 export function AlertOfDeleteProject() {
   const { isOpen, onClose, setModalType } = useModal();
-  const cancelRef = useRef();
+  const cancelRef = useRef<HTMLButtonElement>(null);
   const { projectId } = useManagementProject();
   const toast = useToast();
   const { user } = useAuth();
@@ -37,6 +38,7 @@ export function AlertOfDeleteProject() {
       status: "success",
     });
   }
+ 
 
   return (
     <>

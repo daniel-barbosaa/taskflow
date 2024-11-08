@@ -53,7 +53,7 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
           <PopoverCloseButton />
           <PopoverBody>
             <Flex direction="column" gap="5px">
-              <Button bg="none" w="80%" color="gray.600" onClick={() => {
+              <Button data-testid="editar" bg="none" w="80%" color="gray.600" onClick={() => {
                 onOpen()
                 setModalType('edit')
                 setProjectId(projectId)
@@ -63,6 +63,7 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
               </Button>
               <Box h="1px" bg="gray.200" w="80%"></Box>
               <Button
+              data-testid="excluir"
                 bg="none"
                 w="80%"
                 color="gray.600"
@@ -83,6 +84,7 @@ export function ActionPopover({projectId}: ActionPopoverProps) {
               </Button>
               <Box h="1px" bg="gray.200" w="80%"></Box>
               <Button
+              data-testid="exibir"
                 bg="none"
                 w="80%"
                 color="gray.600"

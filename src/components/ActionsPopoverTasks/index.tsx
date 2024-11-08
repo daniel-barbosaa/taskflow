@@ -21,7 +21,7 @@ interface ActionPopoverTasksProps {
 }
 
 export function ActionPopoverTasks({taskId, projectId}: ActionPopoverTasksProps) {
-  const {onOpen, setModalType} = useModal()
+  const {onOpen, setModalType,} = useModal()
   const {setTaskId} = useManagementTask()
   const {setProjectId} = useManagementProject()
 
@@ -57,14 +57,14 @@ export function ActionPopoverTasks({taskId, projectId}: ActionPopoverTasksProps)
           <PopoverCloseButton />
           <PopoverBody>
             <Flex direction="column" gap="5px">
-              <Button bg="none" w="80%" color="gray.600" onClick={() => {
+              <Button data-testid="editar" bg="none" w="80%" color="gray.600" onClick={() => {
                 onOpen()
                 setModalType('edit')
               }}>
                   Editar
               </Button>
               <Box h="1px" bg="gray.200" w="80%"></Box>
-              <Button bg="none" w="80%" color="gray.600"  sx={{
+              <Button data-testid="excluir" bg="none" w="80%" color="gray.600"  sx={{
                 _hover: {
                   bg: 'red.300',
                   color: '#ffffff',
