@@ -9,9 +9,9 @@ import {
   Button,
   useToast,
   useBreakpointValue,
+  Box,
 } from "@chakra-ui/react";
 import { useModal } from "../../contexts/ModalControlProject";
-
 import { useManagementProject } from "../../contexts/ManagementOfProject";
 import { deleteProject } from "../../services/projectService";
 import { useAuth } from "@/src/contexts/Auth/AuthContext";
@@ -38,10 +38,9 @@ export function AlertOfDeleteProject() {
       status: "success",
     });
   }
- 
 
   return (
-    <>
+    <Box>
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}
@@ -50,7 +49,7 @@ export function AlertOfDeleteProject() {
         isCentered
       >
         <AlertDialogOverlay w="100%" h="100%" />
-        <AlertDialogContent w={andBigScreen ? "lg" : "xs" }>
+        <AlertDialogContent w={andBigScreen ? "lg" : "xs"}>
           <AlertDialogHeader>Excluir projeto?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
@@ -67,6 +66,6 @@ export function AlertOfDeleteProject() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </Box>
   );
 }

@@ -74,7 +74,7 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({
 export const useManagementProject = (): ManagementProjectType => {
   const context = useContext(ManagementProjectContext);
   if (!context) {
-    throw new Error("useModal deve ser usado dentro do ModalProvider");
+    throw new Error("useManagementProject deve ser usado dentro do ProjectProvider");
   }
   return context;
 };
