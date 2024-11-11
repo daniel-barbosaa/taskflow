@@ -20,7 +20,7 @@ import { useAuth } from "@/src/contexts/Auth/AuthContext";
 
 export function AlertOfDeleteTask() {
     const { isOpen, onClose, setModalType} = useModal()
-    const cancelRef = useRef()
+    const cancelRef = useRef<HTMLButtonElement>(null);
     const {taskId} = useManagementTask()
     const {projectId} = useManagementProject()
     const {user} = useAuth()
@@ -32,7 +32,7 @@ export function AlertOfDeleteTask() {
       lg: true,
     });
 
-    async function handleDeleTask (){
+    async function handleDeleTask () {
       try {
         await deleteTask(userId, taskId, projectId)
                 onClose()
@@ -41,7 +41,7 @@ export function AlertOfDeleteTask() {
                     title: "Excluido com sucesso!",
                     status: "success",
                 });
-      }catch(error){
+      } catch(error){
         toast({
           title: "Houve algum erro ao exluir tarefa, tente novamente!",
           status: "error",
@@ -61,7 +61,7 @@ export function AlertOfDeleteTask() {
         >
           <AlertDialogOverlay />
           <AlertDialogContent w={andBigScreen ? "lg" : "xs"}>
-            <AlertDialogHeader>Excluir projeto?</AlertDialogHeader>
+            <AlertDialogHeader>Excluir Tarefa?</AlertDialogHeader>
             <AlertDialogCloseButton />
             <AlertDialogBody>
               Sua tarefa será excluída e não poderá recuperar, tem certeza?
