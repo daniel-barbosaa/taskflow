@@ -8,11 +8,10 @@ import { useManagementProject } from "../../../contexts/ManagementOfProject";
 import { useManagementTask } from "../../../contexts/ManagementOfTask";
 import { AlertOfDeleteTask } from "@/src/components/AlertOfDeleteTask";
 
-jest.mock("../../../services/projectService", () => ({
-  deleteTask: jest.fn(),
-}));
+
 jest.mock("../../../services/projectService", () => ({
   deleteProject: jest.fn(),
+  deleteTask: jest.fn(),
 }));
 
 jest.mock("../../../contexts/ModalControlProject", () => ({
@@ -35,7 +34,6 @@ jest.mock("@chakra-ui/react", () => ({
   }));
   
 describe("AlertOfDeleteTask", () => {
-
   it("renders correctly", () => {
     (useModal as jest.Mock).mockReturnValue({
         isOpen: true,
@@ -58,13 +56,10 @@ describe("AlertOfDeleteTask", () => {
       </Flex>
     );
     expect(screen.getByText("Excluir Tarefa?")).toBeInTheDocument()
-  
 
   });
 
-
-  // Resolver o teste da função asyncrona
-  it("delete task correctly", async () => {
+  it("delete task succes", async () => {
     const mockOnClose = jest.fn(() => jest.fn());
     const mockSetModalType = jest.fn();
     const mockToast = jest.fn();
@@ -84,63 +79,86 @@ describe("AlertOfDeleteTask", () => {
     (useAuth as jest.Mock).mockReturnValueOnce({
         user: {uid: "useruid"}
     });
-    // (deleteTask as jest.Mock).mockResolvedValueOnce(undefined);
+    (deleteTask as jest.Mock).mockReturnValueOnce(Promise.resolve());
     (useToast as jest.Mock).mockReturnValueOnce(mockToast);
-
 
     render(
       <Flex>
-        <AlertOfDeleteProject />
+        <AlertOfDeleteTask />
       </Flex>
     );
-
     const buttonDeleteTask = screen.getByRole("button", { name: "Sim" })
     expect(buttonDeleteTask).toBeInTheDocument()
 
     fireEvent.click(buttonDeleteTask)
     await waitFor(() => {
-      expect(mockSetModalType).toHaveBeenCalledWith("deleted");
-
+      expect(deleteTask).toHaveBeenCalledTimes(1);
+      expect(mockOnClose).toHaveBeenCalledTimes(1);
+      expect(mockToast).toHaveBeenCalledWith({
+        title: "Excluido com sucesso!",
+        status: "success",
+      });
+      
     })
-
-
-    expect(mockOnClose).toHaveBeenCalledTimes(1)
-    // expect(deleteTask).toHaveBeenCalledTimes(1)
-   
-    // expect(mockToast).toHaveBeenCalledWith({
-    //   title: "Excluido com sucesso!",
-    //   status: "success",
-    // });
   });
 
-  // it("Is button closing the modal", async () => {
-  //   const mockOnClose = jest.fn(() => jest.fn());
-  //   const mockSetModalType = jest.fn();
-  //   const mockToast = jest.fn();
-  //   (useModal as jest.Mock).mockReturnValueOnce({
-  //       isOpen: true,
-  //       onOpen: jest.fn(),
-  //       setModalType: mockSetModalType,
-  //       setModalOfInfo: jest.fn(),
-  //       onClose: mockOnClose
-  //   });
-   
+  it("delete task error", async () => {
+    const mockOnClose = jest.fn(() => jest.fn());
+    const mockSetModalType = jest.fn();
+    const mockToast = jest.fn();
+    (useModal as jest.Mock).mockReturnValueOnce({
+        isOpen: true,
+        onOpen: jest.fn(),
+        setModalType: mockSetModalType,
+        setModalOfInfo: jest.fn(),
+        onClose: mockOnClose
+    });
+    (useManagementProject as jest.Mock).mockReturnValueOnce({
+        projectId: "projectId"
+    });
+    (useManagementTask as jest.Mock).mockReturnValueOnce({
+      taskId: "taskId"
+    });
+    (useAuth as jest.Mock).mockReturnValueOnce({
+        user: {uid: "useruid"}
+    });
+    (deleteTask as jest.Mock).mockRejectedValueOnce(new Error("Delete task failed!"));
+    (useToast as jest.Mock).mockReturnValueOnce(mockToast);
 
+    render(
+      <Flex>
+        <AlertOfDeleteTask />
+      </Flex>
+    );
+    const buttonDeleteTask = screen.getByRole("button", { name: "Sim" })
+    expect(buttonDeleteTask).toBeInTheDocument()
 
-  //   render(
-  //     <Flex>
-  //       <AlertOfDeleteProject />
-  //     </Flex>
-  //   );
+    fireEvent.click(buttonDeleteTask)
+    await waitFor(() => {
+      expect(mockToast).toHaveBeenCalledWith({
+        title: "Houve algum erro ao exluir tarefa, tente novamente!",
+        status: "error",
+      });
+      
+    })
+  });
 
-  //   const buttonNo = screen.getByRole("button", { name: "Não" })
-  //   expect(buttonNo).toBeInTheDocument()
+  it("Is button closing the modal", async () => {
+    const mockOnClose = jest.fn(() => jest.fn());
+    (useModal as jest.Mock).mockReturnValueOnce({
+        isOpen: true,
+        onClose: mockOnClose
+    });
 
-    
-  //   fireEvent.click(buttonNo)
-  //   expect(mockOnClose).toHaveBeenCalledTimes(1)
-    
-    
-    
-  // });
+    render(
+      <Flex>
+        <AlertOfDeleteTask />
+      </Flex>
+    );
+
+    const buttonNo = screen.getByRole("button", { name: "Não" })
+    expect(buttonNo).toBeInTheDocument()
+    fireEvent.click(buttonNo)
+    expect(mockOnClose).toHaveBeenCalledTimes(1)    
+  });
 });

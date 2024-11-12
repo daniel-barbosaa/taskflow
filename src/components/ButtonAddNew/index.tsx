@@ -19,6 +19,7 @@ export function ButtonAddNew({ onOpen, children }: ButtonAddNewProps) {
 
   return (
     <Button
+      data-testid="add-new"
       position="fixed"
       bottom="30px"
       right="30px"
