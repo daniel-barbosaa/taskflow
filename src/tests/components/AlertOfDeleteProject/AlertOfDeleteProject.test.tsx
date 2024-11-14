@@ -25,7 +25,7 @@ jest.mock("@chakra-ui/react", () => ({
     ...jest.requireActual("@chakra-ui/react"),
     useBreakpointValue: jest.fn(),
     useToast: jest.fn(),
-  }));
+}));
   
 describe("AlertOfDeleteProject", () => {
 

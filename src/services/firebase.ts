@@ -15,6 +15,5 @@ const firebaseConfig = {
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 
-// Exporte a instância de autenticação
 export const auth = getAuth(app);
 export const db = getFirestore(app)

@@ -30,6 +30,7 @@ import { addNewProject, updatedProject } from "../../services/projectService";
 import { useToast } from "@chakra-ui/react";
 import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 import { useAuth } from "@/src/contexts/Auth/AuthContext";
+import { ButtonAction } from "./ButtonAction";
 
 interface Inputs {
   name: string;
@@ -38,21 +39,26 @@ interface Inputs {
   progress: number;
 }
 
-// Adicionar função de exluir projeto
-
 export function ModalNewProject() {
   const [loading, setLoading] = useState(false);
-  const { isOpen, onClose, onOpen, setModalType, modalType, modalOfInfo, setModalOfInfo} = useModal();
-  const { projectId,projects } = useManagementProject();
+  const {
+    isOpen,
+    onClose,
+    onOpen,
+    setModalType,
+    modalType,
+    modalOfInfo,
+    setModalOfInfo,
+  } = useModal();
+  const { projectId, projects } = useManagementProject();
   const [sliderValue, setSliderValue] = useState<number>(50);
   const toast = useToast();
-  const {user} = useAuth()
-  const userId = user?.uid
+  const { user } = useAuth();
+  const userId = user?.uid;
   const andSmallScreen = useBreakpointValue({
     base: true,
-    lg: false
-  })
-
+    lg: false,
+  });
   const {
     register,
     handleSubmit,
@@ -69,15 +75,9 @@ export function ModalNewProject() {
 
     setTimeout(async () => {
       try {
-        const  projectExists = projects.some(project => project.name === projectData.name);
-        if(projectExists){
-          toast({
-            title: "Existe um projeto com mesmo nome. Por favor,escolha outro nome!",
-            status: "warning",
-          });
-          setLoading(false);
-          return
-        }
+        const projectExists = projects.some(
+          (project) => project.name === projectData.name
+        );
 
         if (modalType === "add") {
           await addNewProject(userId, projectData);
@@ -116,31 +116,35 @@ export function ModalNewProject() {
     fontSize: "sm",
   };
 
-
   return (
     <>
       <ButtonAddNew
         onOpen={() => {
           onOpen();
           setModalType("add");
-          setModalOfInfo(true)
+          setModalOfInfo(true);
         }}
       >
         Novo projeto
       </ButtonAddNew>
       {modalOfInfo && (
         <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay w="100%" h="100%"/>
+          <ModalOverlay w="100%" h="100%" />
           <ModalContent w={andSmallScreen ? "xs" : "full"}>
             <ModalHeader color="gray.700">
-              {modalType == "editproject" ? "Atualizar Projeto" : "Novo projeto"}
+              {modalType == "editproject"
+                ? "Atualizar Projeto"
+                : "Novo projeto"}
             </ModalHeader>
-            <ModalCloseButton />
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <ModalBody >
+            <ModalCloseButton data-testid="close-modal" />
+            <form data-testid="form-element" onSubmit={handleSubmit(onSubmit)}>
+              <ModalBody>
                 <Stack mb="3">
-                  <FormLabel mb="0">Nome</FormLabel>
+                  <FormLabel mb="0" htmlFor="name">
+                    Nome
+                  </FormLabel>
                   <Input
+                    id="name"
                     {...register("name", { required: true })}
                     maxLength={20}
                     placeholder="Nome do projeto"
@@ -158,8 +162,9 @@ export function ModalNewProject() {
                   )}
                 </Stack>
                 <Stack mb="3">
-                  <FormLabel mb="0">Descrição</FormLabel>
+                  <FormLabel mb="0" htmlFor="description">Descrição</FormLabel>
                   <Textarea
+                    id="description"
                     {...register("description", { required: true })}
                     placeholder="Nome do projeto"
                     sx={{
@@ -184,7 +189,6 @@ export function ModalNewProject() {
                   </Select>
                   {errors.status && <Text>Error</Text>}
                 </Stack>
-
                 <Box p={4} pt={6}>
                   <FormLabel mb="8">Porcentagem do projeto</FormLabel>
                   <Slider
@@ -223,17 +227,7 @@ export function ModalNewProject() {
                 <Button mr={3} onClick={onClose}>
                   Cancelar
                 </Button>
-                <Button type="submit" colorScheme="blue" w="50%">
-                  {loading ? (
-                    <Spinner color="white" size="md" />
-                  ) : (
-                    <Text>
-                      {modalType === "editproject"
-                        ? "Atualizar projeto"
-                        : "Adicionar projeto"}
-                    </Text>
-                  )}
-                </Button>
+                <ButtonAction loading={loading} />
               </ModalFooter>
             </form>
           </ModalContent>
