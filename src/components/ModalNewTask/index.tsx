@@ -21,13 +21,13 @@ import { useModal } from "../../contexts/ModalControlProject";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   addNewTask,
-  getAllProjectsByIdOfUser,
   updatedTask,
 } from "../../services/projectService";
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 import { useToast } from "@chakra-ui/react";
 import { useAuth } from "@/src/contexts/Auth/AuthContext";
 import { useManagementProject } from "@/src/contexts/ManagementOfProject";
+import { ButtonAction } from "./ButtonAction";
 
 interface Inputs {
   taskName: string;
@@ -108,7 +108,7 @@ export function ModalNewTask() {
         }
       } catch (error) {
         toast({
-          title: "Houve um ao criar tarefa, tente novamente!",
+          title: "Houve um erro ao criar tarefa, tente novamente!",
           status: "error",
         });
       }
@@ -145,8 +145,8 @@ export function ModalNewTask() {
             <ModalHeader color="gray.700">
               {modalType == "edit" ? "Editar tarefa" : "Nova tarefa"}
             </ModalHeader>
-            <ModalCloseButton />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <ModalCloseButton data-testid="close-modal" />
+            <form data-testid="form-element" onSubmit={handleSubmit(onSubmit)}>
               <ModalBody>
                 <Stack mb="3">
                   <FormLabel mb="0">Tarefa</FormLabel>
@@ -188,17 +188,7 @@ export function ModalNewTask() {
                 <Button mr={3} onClick={onClose}>
                   Cancelar
                 </Button>
-                <Button type="submit" colorScheme="blue" w="50%">
-                  {loading ? (
-                    <Spinner color="white" size="md" />
-                  ) : (
-                    <Text>
-                      {modalType === "edit"
-                        ? "Atualizar tarefa"
-                        : "Adicionar tarefa"}
-                    </Text>
-                  )}
-                </Button>
+                <ButtonAction loading={loading}/>
               </ModalFooter>
             </form>
           </ModalContent>

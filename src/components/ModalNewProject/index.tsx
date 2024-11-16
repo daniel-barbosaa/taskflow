@@ -102,7 +102,7 @@ export function ModalNewProject() {
         }
       } catch (error) {
         toast({
-          title: "Houve um ao criar projeto, tente novamente!",
+          title: "Houve um erro ao criar projeto, tente novamente!",
           status: "error",
         });
         setLoading(false);

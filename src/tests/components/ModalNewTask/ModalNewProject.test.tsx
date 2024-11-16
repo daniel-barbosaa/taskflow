@@ -3,17 +3,14 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useModal } from "../../../contexts/ModalControlProject";
 import { useManagementProject } from "../../../contexts/ManagementOfProject";
 import { useAuth } from "../../../contexts/Auth/AuthContext";
-
-import {
-  addNewProject,
-  updatedProject,
-} from "../../../services/projectService";
+import { addNewTask, updatedTask } from "../../../services/projectService";
 import { useBreakpointValue, useToast } from "@chakra-ui/react";
-
+import { useManagementTask } from "../../../contexts/ManagementOfTask";
+import { ModalNewTask } from "@/src/components/ModalNewTask";
 
 jest.mock("../../../services/projectService", () => ({
-  addNewProject: jest.fn(),
-  updatedProject: jest.fn(),
+  addNewTask: jest.fn(),
+  updatedTask: jest.fn(),
 }));
 
 jest.mock("react-hook-form", () => ({
@@ -34,6 +31,9 @@ jest.mock("../../../contexts/ModalControlProject", () => ({
 jest.mock("../../../contexts/ManagementOfProject", () => ({
   useManagementProject: jest.fn(),
 }));
+jest.mock("../../../contexts/ManagementOfTask", () => ({
+  useManagementTask: jest.fn(),
+}));
 
 jest.mock("../../../contexts/Auth/AuthContext", () => ({
   useAuth: jest.fn(),
@@ -45,9 +45,7 @@ jest.mock("@chakra-ui/react", () => ({
   useToast: jest.fn(),
 }));
 
-
 describe("ModalNewProject", () => {
-    
   it("render correctly", () => {
     (useModal as jest.Mock).mockReturnValue({
       isOpen: true,
@@ -59,15 +57,24 @@ describe("ModalNewProject", () => {
     });
     (useManagementProject as jest.Mock).mockReturnValue({
       projectId: jest.fn(),
-      projects: jest.fn(),
+      projects: [
+        {
+          id: "existingProjectId",
+          name: "Projeto Atual",
+          description: "Descrição atual",
+        },
+      ],
+    });
+    (useManagementTask as jest.Mock).mockReturnValue({
+      taskId: jest.fn(),
     });
     (useAuth as jest.Mock).mockReturnValue({
       user: { uid: "useruid" },
     });
 
-    render(<ModalNewProject />);
+    render(<ModalNewTask />);
 
-    expect(screen.getByText("Nome")).toBeInTheDocument();
+    expect(screen.getByText("Tarefa")).toBeInTheDocument();
   });
 
   it("button closes modal", () => {
@@ -80,15 +87,11 @@ describe("ModalNewProject", () => {
       onClose: mockOnClose,
       modalOfInfo: true,
     });
-    (useManagementProject as jest.Mock).mockReturnValue({
-      projectId: jest.fn(),
-      projects: jest.fn(),
-    });
     (useAuth as jest.Mock).mockReturnValueOnce({
       user: { uid: "useruid" },
     });
 
-    render(<ModalNewProject />);
+    render(<ModalNewTask />);
 
     const buttonCloseModal = screen.getByTestId("close-modal");
     expect(buttonCloseModal).toBeInTheDocument();
@@ -97,87 +100,65 @@ describe("ModalNewProject", () => {
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  it("adds project wath onSubmit", async () => {
+  it("adds task when onSubmit", async () => {
     jest.useFakeTimers();
     const mockToast = jest.fn();
     const mockOnClose = jest.fn();
-    (useModal as jest.Mock).mockReturnValueOnce({
+    (useModal as jest.Mock).mockReturnValue({
       isOpen: true,
       modalOfInfo: true,
       modalType: "add",
       onClose: mockOnClose,
     });
-    (useManagementProject as jest.Mock).mockReturnValueOnce({
-      projectId: "existingProjectId",
-      projects: [
-        {
-          id: "existingProjectId",
-          name: "Projeto Atual",
-          description: "Descrição atual",
-        },
-      ],
-    });
-    (addNewProject as jest.Mock).mockReturnValueOnce(true);
-    (useToast as jest.Mock).mockReturnValueOnce(mockToast);
+    (addNewTask as jest.Mock).mockResolvedValue(true);
+    (useToast as jest.Mock).mockReturnValue(mockToast);
 
-    render(<ModalNewProject />);
-
+    render(<ModalNewTask />);
 
     const buttonAdd = screen.getByTestId("button-action");
     expect(buttonAdd).toBeInTheDocument();
-    
 
-    fireEvent.submit(screen.getByTestId('form-element'));
+    fireEvent.submit(screen.getByTestId("form-element"));
 
     jest.advanceTimersByTime(2000);
+
     await waitFor(() => {
-      expect(addNewProject).toHaveBeenCalledTimes(1);
-      expect(mockOnClose).toHaveBeenCalledTimes(1)
+      expect(addNewTask).toHaveBeenCalledTimes(1);
+      expect(mockOnClose).toHaveBeenCalledTimes(1);
       expect(mockToast).toHaveBeenCalledWith({
-        title: "Projeto criado!",
+        title: "Tarefa criada!",
         status: "success",
-      })
+      });
     });
   });
 
-  it("edit project when onSubmit", async () => {
+  it("edit task when onSubmit", async () => {
     jest.useFakeTimers();
     const mockToast = jest.fn();
     const mockOnClose = jest.fn();
-    (useModal as jest.Mock).mockReturnValueOnce({
+    (useModal as jest.Mock).mockReturnValue({
       isOpen: true,
       modalOfInfo: true,
       modalType: "edit",
       onClose: mockOnClose,
     });
-    (useManagementProject as jest.Mock).mockReturnValueOnce({
-      projectId: "existingProjectId",
-      projects: [
-        {
-          id: "existingProjectId",
-          name: "Projeto Atual",
-          description: "Descrição atual",
-        },
-      ],
-    });
-    (updatedProject as jest.Mock).mockReturnValueOnce(true);
-    (useToast as jest.Mock).mockReturnValueOnce(mockToast);
+    (updatedTask as jest.Mock).mockResolvedValue(true);
+    (useToast as jest.Mock).mockReturnValue(mockToast);
 
-    render(<ModalNewProject />);
-
+    render(<ModalNewTask />);
 
     const buttonAdd = screen.getByTestId("button-action");
     expect(buttonAdd).toBeInTheDocument();
-    
 
-    fireEvent.submit(screen.getByTestId('form-element'));
+    fireEvent.submit(screen.getByTestId("form-element"));
 
     jest.advanceTimersByTime(2000);
+
     await waitFor(() => {
-      expect(updatedProject).toHaveBeenCalledTimes(1);
+      expect(updatedTask).toHaveBeenCalledTimes(1);
       expect(mockOnClose).toHaveBeenCalledTimes(1)
       expect(mockToast).toHaveBeenCalledWith({
-        title: "Projeto atualizado!",
+        title: "Tarefa atualizada!",
         status: "info",
       })
     });
@@ -186,40 +167,58 @@ describe("ModalNewProject", () => {
   it("show message if error", async () => {
     jest.useFakeTimers();
     const mockToast = jest.fn();
-    (useModal as jest.Mock).mockReturnValueOnce({
+    const mockOnClose = jest.fn();
+    (useModal as jest.Mock).mockReturnValue({
       isOpen: true,
       modalOfInfo: true,
       modalType: "add",
+      onClose: mockOnClose,
     });
-    (useManagementProject as jest.Mock).mockReturnValueOnce({
-      projectId: "existingProjectId",
-      projects: [
-        {
-          id: "existingProjectId",
-          name: "Projeto Atual",
-          description: "Descrição atual",
-        },
-      ],
-    });
-    (addNewProject as jest.Mock).mockRejectedValue(new Error("Houve um erro"));
-    (useToast as jest.Mock).mockReturnValueOnce(mockToast);
 
-    render(<ModalNewProject />);
+    (addNewTask as jest.Mock).mockRejectedValue(new Error("Houve um erro!"));
+    (useToast as jest.Mock).mockReturnValue(mockToast);
 
+    render(<ModalNewTask />);
 
     const buttonAdd = screen.getByTestId("button-action");
     expect(buttonAdd).toBeInTheDocument();
-    
 
-    fireEvent.submit(screen.getByTestId('form-element'));
+    fireEvent.submit(screen.getByTestId("form-element"));
+
     jest.advanceTimersByTime(2000);
 
     await waitFor(() => {
       expect(mockToast).toHaveBeenCalledWith({
-        title: "Houve um erro ao criar projeto, tente novamente!",
+        title: "Houve um erro ao criar tarefa, tente novamente!",
         status: "error",
       })
     });
   });
   
+  //   jest.useFakeTimers();
+  //   const mockToast = jest.fn();
+  //   (useModal as jest.Mock).mockReturnValueOnce({
+  //     isOpen: true,
+  //     modalOfInfo: true,
+  //     modalType: "add",
+  //   });
+  
+  //   (addNewTask as jest.Mock).mockRejectedValue(new Error("Houve um erro"));
+  //   (useToast as jest.Mock).mockReturnValueOnce(mockToast);
+
+  //   render(<ModalNewTask />);
+
+  //   const buttonAdd = screen.getByTestId("button-action");
+  //   expect(buttonAdd).toBeInTheDocument();
+
+  //   fireEvent.submit(screen.getByTestId('form-element'));
+  //   jest.advanceTimersByTime(2000);
+
+  //   await waitFor(() => {
+  //     expect(mockToast).toHaveBeenCalledWith({
+  //       title: "Houve um erro ao criar tarefa, tente novamente!",
+  //       status: "error",
+  //     })
+  //   });
+  // });
 });
