@@ -4,12 +4,10 @@ import {
   ModalContent,
   ModalHeader,
   ModalCloseButton,
-  Box,
   ModalBody,
   Flex,
   Text,
   Progress,
-  Spinner,
   Divider,
   useBreakpointValue,
 } from "@chakra-ui/react";
@@ -20,7 +18,6 @@ import { useManagementProject } from "@/src/contexts/ManagementOfProject";
 import moment from "moment";
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 
-// Adicionar função de exluir projeto
 
 export function ProjectInfoModal() {
   const { projectInfo } = useManagementProject();
@@ -39,7 +36,7 @@ export function ProjectInfoModal() {
           <ModalOverlay w="100%" h="100%" />
           <ModalContent w={andBigScreen ? 'lg' : "xs"}>
             <ModalHeader color="gray.700">{projectInfo?.name}</ModalHeader>
-            <ModalCloseButton />
+            <ModalCloseButton data-testid="close-button" />
             <ModalBody>
               <Flex direction="column" gap="3">
                 <Flex direction="row" maxW={200} justify="space-between">

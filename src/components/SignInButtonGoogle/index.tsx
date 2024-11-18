@@ -4,10 +4,11 @@ import ImageGoogle from "../../assets/Google.png";
 import { useGoogleLoggin } from "../../hooks/useGoogleLoggin";
 
 export function SignInButtonGoogle() {
-  const { logginWithGoogle, loading } = useGoogleLoggin();
+  const { logginWithGoogle } = useGoogleLoggin();
 
   return (
     <Box
+      data-testid="loggin-click"
       onClick={logginWithGoogle}
       bg="white"
       padding="13px"
