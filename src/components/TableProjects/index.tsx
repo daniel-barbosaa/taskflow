@@ -8,23 +8,15 @@ import {
   TableContainer,
   Flex,
   Text,
-  SkeletonText,
   useBreakpointValue,
+  
 } from "@chakra-ui/react";
+import { SkeletonText } from "../../components/ui/skeleton";
+
 import { useManagementProject } from "../../contexts/ManagementOfProject";
 import moment from "moment";
 import Image from "next/image";
 import AddProject from "../../assets/addDraw.png";
-
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  progress: number;
-  status: string;
-  createdAt?: any;
-  updatedAt?: any;
-}
 
 export function TableProjects() {
   moment.locale("pt-br");
@@ -69,13 +61,13 @@ export function TableProjects() {
         <Tbody color="gray.500">
           {justThreeRecent.map((project) => (
             <Tr key={project.id}>
-              <Td border="none">
-                <SkeletonText noOfLines={1} isLoaded={loaded}>
+              <Td height="100%">
+                <SkeletonText noOfLines={1} h="4" isLoaded={loaded}>
                   {project.name}
                 </SkeletonText>
               </Td>
-              <Td>
-                <SkeletonText noOfLines={1} isLoaded={loaded}>
+              <Td height="100%">
+                <SkeletonText noOfLines={1} h={5} isLoaded={loaded}>
                   <Flex align="center" gap="5px">
                     <Flex align="center" gap="5px"></Flex>
 
@@ -126,8 +118,8 @@ export function TableProjects() {
                   </Flex>
                 </SkeletonText>
               </Td>
-              <Td isNumeric>
-                <SkeletonText noOfLines={1} isLoaded={loaded}>
+              <Td isNumeric height="100%">
+                <SkeletonText noOfLines={1}  h="4" isLoaded={loaded}>
                   {moment(project.updatedAt).fromNow()}
                 </SkeletonText>
               </Td>

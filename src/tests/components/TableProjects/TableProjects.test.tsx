@@ -18,7 +18,7 @@ describe("TableProjects", () => {
     const mockProject = [
       {
         id: "teste123",
-        name: "Projeto ",
+        name: "Projeto",
         description: "Descrição atual",
         status: "finalizado",
         updatedAt: "2023-10-21T10:00:00Z",
