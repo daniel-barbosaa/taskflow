@@ -11,15 +11,13 @@ jest.mock("../../../contexts/ManagementOfProject", () => ({
   useManagementProject: jest.fn(),
 }));
 
-
-// Erro no SkeletonText, alguma propriedade esta indo como undefined.
 describe("TableProjects", () => {
   it("render correctly", () => {
     const mockProject = [
       {
         id: "teste123",
         name: "Projeto",
-        description: "Descrição atual",
+        description: "Finanças",
         status: "finalizado",
         updatedAt: "2023-10-21T10:00:00Z",
       },
@@ -36,8 +34,20 @@ describe("TableProjects", () => {
       loaded: true,
     });
 
-    const {debug} = render(<TableProjects />);
+    render(<TableProjects />);
 
-    debug()
+    expect(screen.getByText("Ultima atualização")).toBeInTheDocument();
+  });
+  
+  it("render correctly when not has project", () => {
+    (useBreakpointValue as jest.Mock).mockReturnValue(true);
+    (useManagementProject as jest.Mock).mockReturnValue({
+      projects: [],
+      loaded: true,
+    });
+
+    render(<TableProjects />);
+
+    expect(screen.getByText("Nenhum projeto foi criado ainda. Crie seu primeiro projeto agora!")).toBeInTheDocument();
   });
 });

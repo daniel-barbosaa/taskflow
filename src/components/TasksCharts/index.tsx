@@ -1,7 +1,7 @@
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
 import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell } from "recharts";
 import Image from "next/image";
 import addTask from "../../assets/addfilepng.png";
 import Link from "next/link";
@@ -28,7 +28,7 @@ export function TasksCharts() {
     base: false,
     lg: true,
   });
-
+ 
   tasks.forEach((task) => {
     switch (task.status) {
       case "na fila":
@@ -114,6 +114,7 @@ export function TasksCharts() {
             {isClient && (
               <PieChart width={200} height={200}>
                 <Pie
+                  data-testid="task"
                   cx={80}
                   cy={100}
                   data={data}

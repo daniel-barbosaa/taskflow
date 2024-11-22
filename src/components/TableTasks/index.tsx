@@ -10,7 +10,6 @@ import {
   Text,
   Accordion,
   AccordionItem,
-  Heading,
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
@@ -19,7 +18,8 @@ import { ActionPopoverTasks } from "../ActionsPopoverTasks";
 import moment from "moment";
 import "moment/locale/pt-br";
 import { useManagementTask } from "@/src/contexts/ManagementOfTask";
-import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import { } from "@chakra-ui/react";
+import { SkeletonText } from "../../components/ui/skeleton";
 
 interface Task {
   id: string;
