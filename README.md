@@ -27,10 +27,7 @@ O TaskFlow é uma plataforma para organizar projetos e tarefas de forma simples 
 - [Typescript](https://www.typescriptlang.org/docs/)
 - [NextJs](https://nextjs.org/docs)
 - [ReactJs](https://legacy.reactjs.org/docs/getting-started.html)
-- [NodeJs](https://nodejs.org/docs/latest/api/)
-- [FaunaDB](https://docs.fauna.com/fauna/current/)
-- [Stripe](https://docs.stripe.com/payments?payments=popular)
-- [Primic](https://prismic.io/docs)
+- [Firebase](https://firebase.google.com/docs)
 - [Chakra UI](https://v2.chakra-ui.com/docs/components)
 
 
