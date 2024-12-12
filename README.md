@@ -1,40 +1,115 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# taskFlow
 
-## Getting Started
+O TaskFlow é um painel de gerenciamento de projetos, intuitivo e funcional.
 
-First, run the development server:
+##  Índice
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. [Descrição](#descrição)
+2. [Tecnologias Utilizadas](#tecnologias-utilizadas)
+3. [Instalação](#instalação)
+4. [Uso](#uso)
+5. [Configuração](#configuração)
+6. [Contato](#contato)
+7. [Agradecimentos](#agradecimentos)
+
+
+## Descrição 
+
+O TaskFlow é uma plataforma para organizar projetos e tarefas de forma simples e eficiente, oferecendo uma experiência intuitiva para melhorar a produtividade. 🚀
+
+<img src="https://github.com/daniel-barbosaa/ig-news/assets/101154066/26234b6a-0d79-493d-85e6-408856234ebd" alt="capa-do-projeto">
+<img src="https://github.com/daniel-barbosaa/ig-news/assets/101154066/91e3541a-e7ab-4608-ac32-2b9cf6b4b568" alt="capa-do-projeto">
+
+
+## Tecnologias utilizadas 
+
+- [Typescript](https://www.typescriptlang.org/docs/)
+- [NextJs](https://nextjs.org/docs)
+- [ReactJs](https://legacy.reactjs.org/docs/getting-started.html)
+- [NodeJs](https://nodejs.org/docs/latest/api/)
+- [FaunaDB](https://docs.fauna.com/fauna/current/)
+- [Stripe](https://docs.stripe.com/payments?payments=popular)
+- [Primic](https://prismic.io/docs)
+- [Chakra UI](https://v2.chakra-ui.com/docs/components)
+
+
+## Instalação
+
+```sh
+# Instalar o CLI na maquina. É importante que faça essa etapa para o funcionamento correto da aplicação
+https://learn.microsoft.com/pt-br/dotnet/machine-learning/how-to-guides/install-ml-net-cli?tabs=windows
+
+
+# Clone o repositório
+git clone https://github.com/daniel-barbosaa/ig-news.git
+
+# Entre no diretório do projeto
+cd ig-news
+
+# Instale as dependências
+npm install
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Uso
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```sh
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# Iniciar
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+npm dev
+ou
+yarn dev
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+## Configuração
 
-## Learn More
+```sh
+# Antes de usar a aplicação faça isso, essa é a etapa para ouvir o webhooks da aplicação para que funcione conforme o esperado
+# Execute na linha de comando do seu pc:
 
-To learn more about Next.js, take a look at the following resources:
+stripe login
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+stripe listen --forward-to localhost:3000/api/webhooks
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# Acesse
+http://localhost:3000
 
-## Deploy on Vercel
+# Na raiz do projeto crie um arquivo .env.local e cole o seguinte
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+require('dotenv').config({ path: '.env.local' });
+#Stripe
+STRIPE_WEBHOOKS_SECRET=whsec_293081bf91fa31a34964200ee41d033d09bcf2448df5bbe1ef3b1480153fccc8
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_51P47skAuruhV4Wv0au1oZBChZYGb23BZb30gPTWL3poARWUiUHhleEDlmXWcdeAyyWxFdNJbL4fj69uxraUVaLPn000UgOM0LI
+STRIPE_API_KEY=sk_test_51P47skAuruhV4Wv0mQJgTS7LQgkuHjaa6zCyGnwImhmoisTKz5t08anRhOBShhu9fVSs2Ts6E5LC5zZkucPZ1OqZ00welrzgRb
+STRIPE_SUCCESS_URL=http://localhost:3000/posts
+STRIPE_CANCEL_URL=http://localhost:3000/
+# Github
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+GITHUB_CLIENT_ID=b3a3195fe8574bdbc2fc
+GITHUB_CLIENT_SECRET=33b3b14750cc65caaefad86521c065bb283ac2b0 
+
+#FaunaDB
+
+FAUNADB_KEY=fnAFe1Y5mGAAQBDoN-uEqnjD6r-Rw-bel2ckfj4R
+
+#PRISMIC CMS
+
+PRISMIC_ACCESS_TOKEN=MC5aakFVOEJFQUFDWUFfZk1I.77-9L0fvv73vv70777-977-9B--_ve-_vQJM77-977-977-9Dz_vv70JVHJ3FX7vv70rO1zvv71P77-9
+
+#NEXT 
+
+NEXTAUTH_SECRET=evZ/4L1O3J+AuB0TUrhP2WqFgGGdE0c1UO1BbgEUDvw
+
+NEXTAUTH_URL=http://localhost:3000
+
+```
+
+## Contato
+
+• Email: danielmendess.dev@gmail.com <br></br>
+• LinkedIn: https://www.linkedin.com/in/daniel-barbos/
+
+
+
+
