@@ -9,9 +9,6 @@ O TaskFlow é um painel de gerenciamento de projetos, intuitivo e funcional.
 3. [Instalação](#instalação)
 4. [Uso](#uso)
 5. [Configuração](#configuração)
-6. [Contato](#contato)
-7. [Agradecimentos](#agradecimentos)
-
 
 ## Descrição 
 
@@ -29,6 +26,8 @@ O TaskFlow é uma plataforma para organizar projetos e tarefas de forma simples 
 - [ReactJs](https://legacy.reactjs.org/docs/getting-started.html)
 - [Firebase](https://firebase.google.com/docs)
 - [Chakra UI](https://v2.chakra-ui.com/docs/components)
+- [Jest](https://jestjs.io/pt-BR/)
+- [Testing Library](https://testing-library.com)
 
 
 ## Instalação
@@ -39,10 +38,10 @@ https://learn.microsoft.com/pt-br/dotnet/machine-learning/how-to-guides/install-
 
 
 # Clone o repositório
-git clone https://github.com/daniel-barbosaa/ig-news.git
+git clone https://github.com/daniel-barbosaa/taskflow.git
 
 # Entre no diretório do projeto
-cd ig-news
+cd taskflow
 
 # Instale as dependências
 npm install
@@ -59,54 +58,52 @@ npm dev
 ou
 yarn dev
 
+# Rodar testes
+
+npm test
+ou
+yarn test
+
 ```
 ## Configuração
 
 ```sh
-# Antes de usar a aplicação faça isso, essa é a etapa para ouvir o webhooks da aplicação para que funcione conforme o esperado
-# Execute na linha de comando do seu pc:
+# Antes de usar a aplicação faça isso, este projeto requer a configuração de um ambiente Firebase para funcionar.
 
-stripe login
+# Para clonar e executar o sistema, você precisa:
 
-stripe listen --forward-to localhost:3000/api/webhooks
+- Criar um projeto no Firebase Console.
+- Configurar os serviços necessários, como Firestore, Authentication e Storage.
+- Obter as credenciais do cliente e do admin no Firebase:
+- Configurações do cliente (para as variáveis NEXT_PUBLIC_*).
+- Credenciais do SDK Admin (para as variáveis privadas).
 
-# Acesse
-http://localhost:3000
+#Sem essas configurações, a aplicação não pode ser executada corretamente.
 
-# Na raiz do projeto crie um arquivo .env.local e cole o seguinte
+#Configuração do Ambiente
 
-require('dotenv').config({ path: '.env.local' });
-#Stripe
-STRIPE_WEBHOOKS_SECRET=whsec_293081bf91fa31a34964200ee41d033d09bcf2448df5bbe1ef3b1480153fccc8
-NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_51P47skAuruhV4Wv0au1oZBChZYGb23BZb30gPTWL3poARWUiUHhleEDlmXWcdeAyyWxFdNJbL4fj69uxraUVaLPn000UgOM0LI
-STRIPE_API_KEY=sk_test_51P47skAuruhV4Wv0mQJgTS7LQgkuHjaa6zCyGnwImhmoisTKz5t08anRhOBShhu9fVSs2Ts6E5LC5zZkucPZ1OqZ00welrzgRb
-STRIPE_SUCCESS_URL=http://localhost:3000/posts
-STRIPE_CANCEL_URL=http://localhost:3000/
-# Github
+#Após configurar seu projeto no Firebase, crie um arquivo .env na raiz do repositório com as variáveis de ambiente necessárias. Consulte a documentação do Firebase para obter os valores apropriados.
 
-GITHUB_CLIENT_ID=b3a3195fe8574bdbc2fc
-GITHUB_CLIENT_SECRET=33b3b14750cc65caaefad86521c065bb283ac2b0 
+# Exemplo de estrutura
 
-#FaunaDB
+//Client
+#NEXT_PUBLIC_FIREBASE_API_KEY=
+#NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+#NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+#NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+#NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+#NEXT_PUBLIC_FIREBASE_APP_ID=
+#NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=
+...
+//Admin
 
-FAUNADB_KEY=fnAFe1Y5mGAAQBDoN-uEqnjD6r-Rw-bel2ckfj4R
+FIREBASE_PRIVATE_KEY=FIREBASE_PRIVATE_KEY=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PROJECT_ID=
 
-#PRISMIC CMS
-
-PRISMIC_ACCESS_TOKEN=MC5aakFVOEJFQUFDWUFfZk1I.77-9L0fvv73vv70777-977-9B--_ve-_vQJM77-977-977-9Dz_vv70JVHJ3FX7vv70rO1zvv71P77-9
-
-#NEXT 
-
-NEXTAUTH_SECRET=evZ/4L1O3J+AuB0TUrhP2WqFgGGdE0c1UO1BbgEUDvw
-
-NEXTAUTH_URL=http://localhost:3000
 
 ```
 
-## Contato
-
-• Email: danielmendess.dev@gmail.com <br></br>
-• LinkedIn: https://www.linkedin.com/in/daniel-barbos/
 
 
 
